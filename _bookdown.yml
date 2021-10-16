@@ -1,0 +1,13 @@
+output_dir: "docs"
+book_filename: "estimation-graphical-model"
+delete_merged_file: true
+tables: yes
+rmd_files:
+  - "index.Rmd"
+  - "chapters/01_Introduction.Rmd"
+  - "chapters/02_Review_and_Background.Rmd"
+  - "chapters/03_Methods.Rmd"
+  - "chapters/04_Method_Theory.Rmd"
+  - "chapters/05_Simulation.Rmd"
+  - "chapters/06_Application_to_Data.Rmd"
+  - "chapters/10_Reference.Rmd"

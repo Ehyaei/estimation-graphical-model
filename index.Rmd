@@ -1,0 +1,25 @@
+--- 
+title: "Estimation Graphical Model"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+author: [Mona Azadkia, Ahmad Ehyaei]
+titlepage: true
+page-background-color: f6f6f6
+logo-secondary: src/img/ethz_logo_white.eps
+logo-secondary-size: 0.03
+titlepage-bottom-color: 1B1835
+titlepage-text-color: FFFFFF
+chapter-title-color: E90649
+titlepage-author-text-color: FFFFFF
+title-vjust: 50
+author-vjust: -310
+titlepage-top-background: src/img/bg_1.jpg
+site: bookdown::bookdown_site
+bibliography: [chapters/bib/book.bib, chapters/bib/packages.bib]
+biblio-style: apalike
+link-citations: yes
+---
+
+```{r, include = FALSE}
+source("manuscript/global.R")
+```
+
