@@ -1,5 +1,5 @@
 introduction
-review-and-background-of-directed-acyclic-model-estimation.
+review-and-background
 methods
 theoretical-properties
 simulation
