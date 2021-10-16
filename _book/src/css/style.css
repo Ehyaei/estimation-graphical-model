@@ -40,7 +40,7 @@ body {
 /* ------------------------------------------ */
 
 .title, .subtitle,.author,.date {
-  color: #116656;
+  color: #009EE2;
   text-align: center;
 }
 .title {
@@ -92,7 +92,7 @@ body {
 /* ------------------------------------------ */
 
 .toc-logo {
-  width: 120px !important;
+  width: 300px !important;
   object-fit: contain;
   margin: 0 auto;
 }

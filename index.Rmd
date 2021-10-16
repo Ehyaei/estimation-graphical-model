@@ -1,19 +1,18 @@
 --- 
-title: "Statistical Analysis of Behavioral Data"
+title: "Estimation Graphical Model"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
-author: [Ahmad Ehyaei, Sara Ershadmanesh]
-affiliation: Max Planck Institute for Biological Cybernetics 
-location: Tübingen
+author: [Mona Azadkia, Ahmad Ehyaei]
 titlepage: true
-book: false
 page-background-color: f6f6f6
-logo-primary: src/icon/MPILogoWhite.eps
-titlepage-top-color: f03e4c
+logo-secondary: src/img/ethz_logo_white.eps
+logo-secondary-size: 0.03
+titlepage-bottom-color: 1B1835
 titlepage-text-color: FFFFFF
 chapter-title-color: E90649
-titlepage-author-text-color: f03e4c
-author-vjust: 80
-titlepage-bottom-background: src/img/bottom_background.png
+titlepage-author-text-color: FFFFFF
+title-vjust: 50
+author-vjust: -310
+titlepage-top-background: src/img/bg_1.jpg
 site: bookdown::bookdown_site
 bibliography: [chapters/bib/book.bib, chapters/bib/packages.bib]
 biblio-style: apalike
@@ -24,9 +23,3 @@ link-citations: yes
 source("manuscript/global.R")
 ```
 
-\frontmatter
-
-```{r, child="chapters/setup/main.Rmd",eval=TRUE}
-```
-
-\mainmatter
