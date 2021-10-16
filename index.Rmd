@@ -17,6 +17,7 @@ site: bookdown::bookdown_site
 bibliography: [chapters/bib/book.bib, chapters/bib/packages.bib]
 biblio-style: apalike
 link-citations: yes
+github-repo: ehyaei/estimation-graphical-model
 ---
 
 ```{r, include = FALSE}

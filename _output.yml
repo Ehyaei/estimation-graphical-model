@@ -7,7 +7,7 @@ bookdown::gitbook:
     toc:
       collapse: section
       before: |
-        <li class="toc-logo"><a href="./"><img src="src/img/n-uni-zurich-en-logo.svg"></a></li>
+        <li class="toc-logo"><a href="introduction.html"><img src="src/img/n-uni-zurich-en-logo.svg"></a></li>
       scroll_highlight: yes
     download: ["pdf"]
 bookdown::pdf_book:
