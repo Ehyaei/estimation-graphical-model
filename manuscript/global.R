@@ -37,6 +37,8 @@ library(dplyr)
 library(grid)
 library(gt)
 library(kableExtra)
+library(dplyr)
+library(gt)
 
 ############################################################
 #                                                          #

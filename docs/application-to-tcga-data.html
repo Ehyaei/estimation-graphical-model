@@ -55,7 +55,93 @@
 <script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
 
 
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
 
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
 
 <link rel="stylesheet" href="src/css/style.css" type="text/css" />
 <link rel="stylesheet" href="src/css/environments.css" type="text/css" />
@@ -79,7 +165,10 @@
 <li class="chapter" data-level="3" data-path="methods.html"><a href="methods.html"><i class="fa fa-check"></i><b>3</b> Methods</a></li>
 <li class="chapter" data-level="4" data-path="theoretical-properties.html"><a href="theoretical-properties.html"><i class="fa fa-check"></i><b>4</b> Theoretical properties</a></li>
 <li class="chapter" data-level="5" data-path="simulation.html"><a href="simulation.html"><i class="fa fa-check"></i><b>5</b> Simulation</a></li>
-<li class="chapter" data-level="6" data-path="application-to-tcga-data.html"><a href="application-to-tcga-data.html"><i class="fa fa-check"></i><b>6</b> Application to TCGA data</a></li>
+<li class="chapter" data-level="6" data-path="application-to-tcga-data.html"><a href="application-to-tcga-data.html"><i class="fa fa-check"></i><b>6</b> Application to TCGA data</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="application-to-tcga-data.html"><a href="application-to-tcga-data.html#download-data-from-tcga-portal"><i class="fa fa-check"></i><b>6.1</b> Download Data from TCGA Portal</a></li>
+</ul></li>
 <li class="chapter" data-level="7" data-path="reference.html"><a href="reference.html"><i class="fa fa-check"></i><b>7</b> Reference</a></li>
 </ul>
 
@@ -100,7 +189,2271 @@
             <section class="normal" id="section-">
 <div id="application-to-tcga-data" class="section level1" number="6">
 <h1><span class="header-section-number">6</span> Application to TCGA data</h1>
+<p>For download the RNA-seq breast cancer data from Cancer Genome Atlas (TCGA) database we use <code>TCGAbiolinks</code> package <span class="citation">(<a href="#ref-TCGAbiolinks" role="doc-biblioref">Silva et al. 2016</a>)</span>.</p>
+<div id="download-data-from-tcga-portal" class="section level2" number="6.1">
+<h2><span class="header-section-number">6.1</span> Download Data from TCGA Portal</h2>
+<p><a href="https://bioconductor.org/packages/release/bioc/html/TCGAbiolinks.html">TCGAbiolinks</a>’ purpose is to make it easier to access GDC data, build preprocessing methods, and provide multiple methods for analysis and visualization. For install package run below commands:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="application-to-tcga-data.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(<span class="st">&quot;BiocManager&quot;</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb1-2"><a href="application-to-tcga-data.html#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">install.packages</span>(<span class="st">&quot;BiocManager&quot;</span>)</span>
+<span id="cb1-3"><a href="application-to-tcga-data.html#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="application-to-tcga-data.html#cb1-4" aria-hidden="true" tabindex="-1"></a>BiocManager<span class="sc">::</span><span class="fu">install</span>(<span class="st">&quot;TCGAbiolinks&quot;</span>)</span></code></pre></div>
+<p>Fist we download clinical data related to <code>TCGA-BRCA</code> study</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="application-to-tcga-data.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(TCGAbiolinks)</span>
+<span id="cb2-2"><a href="application-to-tcga-data.html#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="application-to-tcga-data.html#cb2-3" aria-hidden="true" tabindex="-1"></a>clinical_data <span class="ot">&lt;-</span> TCGAbiolinks<span class="sc">::</span><span class="fu">getLinkedOmicsData</span>(</span>
+<span id="cb2-4"><a href="application-to-tcga-data.html#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">project =</span> <span class="st">&quot;TCGA-BRCA&quot;</span>,</span>
+<span id="cb2-5"><a href="application-to-tcga-data.html#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">dataset =</span> <span class="st">&quot;Clinical&quot;</span></span>
+<span id="cb2-6"><a href="application-to-tcga-data.html#cb2-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-7"><a href="application-to-tcga-data.html#cb2-7" aria-hidden="true" tabindex="-1"></a>readr<span class="sc">::</span><span class="fu">write_rds</span>(clinical_data,<span class="st">&quot;data/clinical_brca.rds&quot;</span>)</span></code></pre></div>
+<div style="page-break-after: always;"></div>
+<div id="xxnwierjyn" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
 
+#xxnwierjyn .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#xxnwierjyn .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#xxnwierjyn .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#xxnwierjyn .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#xxnwierjyn .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#xxnwierjyn .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#xxnwierjyn .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#xxnwierjyn .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#xxnwierjyn .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#xxnwierjyn .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#xxnwierjyn .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#xxnwierjyn .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#xxnwierjyn .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#xxnwierjyn .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#xxnwierjyn .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#xxnwierjyn .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#xxnwierjyn .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#xxnwierjyn .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#xxnwierjyn .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#xxnwierjyn .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#xxnwierjyn .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#xxnwierjyn .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#xxnwierjyn .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#xxnwierjyn .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#xxnwierjyn .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#xxnwierjyn .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#xxnwierjyn .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#xxnwierjyn .gt_left {
+  text-align: left;
+}
+
+#xxnwierjyn .gt_center {
+  text-align: center;
+}
+
+#xxnwierjyn .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#xxnwierjyn .gt_font_normal {
+  font-weight: normal;
+}
+
+#xxnwierjyn .gt_font_bold {
+  font-weight: bold;
+}
+
+#xxnwierjyn .gt_font_italic {
+  font-style: italic;
+}
+
+#xxnwierjyn .gt_super {
+  font-size: 65%;
+}
+
+#xxnwierjyn .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 65%;
+}
+</style>
+<table class="gt_table">
+  <thead class="gt_header">
+    <tr>
+      <th colspan="4" class="gt_heading gt_title gt_font_normal gt_bottom_border" style>TCGA BRCA Clinical Data Header</th>
+    </tr>
+    
+  </thead>
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">attrib_name</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">TCGA.5L.AAT0</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">TCGA.5L.AAT1</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">TCGA.A1.A0SP</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td class="gt_row gt_left">years_to_birth</td>
+<td class="gt_row gt_left">42</td>
+<td class="gt_row gt_left">63</td>
+<td class="gt_row gt_left">40</td></tr>
+    <tr><td class="gt_row gt_left">Tumor_purity</td>
+<td class="gt_row gt_left">0.6501</td>
+<td class="gt_row gt_left">0.5553</td>
+<td class="gt_row gt_left">0.6913</td></tr>
+    <tr><td class="gt_row gt_left">pathologic_stage</td>
+<td class="gt_row gt_left">stageii</td>
+<td class="gt_row gt_left">stageiv</td>
+<td class="gt_row gt_left">stageii</td></tr>
+    <tr><td class="gt_row gt_left">pathology_T_stage</td>
+<td class="gt_row gt_left">t2</td>
+<td class="gt_row gt_left">t2</td>
+<td class="gt_row gt_left">t2</td></tr>
+    <tr><td class="gt_row gt_left">pathology_N_stage</td>
+<td class="gt_row gt_left">n0</td>
+<td class="gt_row gt_left">n0</td>
+<td class="gt_row gt_left">n0</td></tr>
+    <tr><td class="gt_row gt_left">pathology_M_stage</td>
+<td class="gt_row gt_left">m0</td>
+<td class="gt_row gt_left">m1</td>
+<td class="gt_row gt_left">m0</td></tr>
+    <tr><td class="gt_row gt_left">histological_type</td>
+<td class="gt_row gt_left">infiltratinglobularcarcinoma</td>
+<td class="gt_row gt_left">infiltratinglobularcarcinoma</td>
+<td class="gt_row gt_left">infiltratingductalcarcinoma</td></tr>
+    <tr><td class="gt_row gt_left">number_of_lymph_nodes</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_left">0</td></tr>
+    <tr><td class="gt_row gt_left">PAM50</td>
+<td class="gt_row gt_left"></td>
+<td class="gt_row gt_left"></td>
+<td class="gt_row gt_left">Basal</td></tr>
+    <tr><td class="gt_row gt_left">ER.Status</td>
+<td class="gt_row gt_left"></td>
+<td class="gt_row gt_left"></td>
+<td class="gt_row gt_left"></td></tr>
+    <tr><td class="gt_row gt_left">PR.Status</td>
+<td class="gt_row gt_left"></td>
+<td class="gt_row gt_left"></td>
+<td class="gt_row gt_left"></td></tr>
+    <tr><td class="gt_row gt_left">HER2.Status</td>
+<td class="gt_row gt_left"></td>
+<td class="gt_row gt_left"></td>
+<td class="gt_row gt_left"></td></tr>
+    <tr><td class="gt_row gt_left">gender</td>
+<td class="gt_row gt_left">female</td>
+<td class="gt_row gt_left">female</td>
+<td class="gt_row gt_left">female</td></tr>
+    <tr><td class="gt_row gt_left">radiation_therapy</td>
+<td class="gt_row gt_left">yes</td>
+<td class="gt_row gt_left">no</td>
+<td class="gt_row gt_left"></td></tr>
+    <tr><td class="gt_row gt_left">race</td>
+<td class="gt_row gt_left">white</td>
+<td class="gt_row gt_left">white</td>
+<td class="gt_row gt_left"></td></tr>
+    <tr><td class="gt_row gt_left">ethnicity</td>
+<td class="gt_row gt_left">hispanicorlatino</td>
+<td class="gt_row gt_left">hispanicorlatino</td>
+<td class="gt_row gt_left">nothispanicorlatino</td></tr>
+    <tr><td class="gt_row gt_left">Median_overall_survival</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_left">0</td></tr>
+    <tr><td class="gt_row gt_left">overall_survival</td>
+<td class="gt_row gt_left">1477</td>
+<td class="gt_row gt_left">1471</td>
+<td class="gt_row gt_left">584</td></tr>
+    <tr><td class="gt_row gt_left">status</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_left">0</td></tr>
+    <tr><td class="gt_row gt_left">overallsurvival</td>
+<td class="gt_row gt_left">1477,0</td>
+<td class="gt_row gt_left">1471,0</td>
+<td class="gt_row gt_left">584,0</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+<p>The above table contains clinical data of patients. The name of each column is related to the patient’s id.</p>
+<p>The GDC mRNA quantification analysis pipeline measures gene level expression in HT-Seq raw read count, Fragments per Kilobase of transcript per Million mapped reads (FPKM), and FPKM-UQ (upper quartile normalization). For see more information see <a href="https://docs.gdc.cancer.gov/Data/Bioinformatics_Pipelines/Expression_mRNA_Pipeline/">mRNA Analysis Pipeline</a> GDC document.</p>
+<div class="Definition">
+<p>RNA-Seq expression level read counts produced by HT-Seq are normalized using two similar methods: FPKM and FPKM-UQ. Normalized values should be used only within the context of the entire gene set. Users are encouraged to normalize raw read count values if a subset of genes is investigated.</p>
+<p><strong>FPKM</strong>:</p>
+<p>The Fragments per Kilobase of transcript per Million mapped reads (FPKM) calculation normalizes read count by dividing it by the gene length and the total number of reads mapped to protein-coding genes.</p>
+<p><span class="math display">\[FPKM = \dfrac{RC_g*10^9}{RC_{pc}*L}\]</span></p>
+<p><strong>Upper Quartile FPKM</strong></p>
+<p>The upper quartile FPKM (FPKM-UQ) is a modified FPKM calculation in which the total protein-coding read count is replaced by the 75th percentile read count value for the sample.</p>
+<p><span class="math display">\[FPKM-UQ = \dfrac{RC_g*10^9}{RC_{g75}*L}\]</span></p>
+<p><span class="math inline">\(RC_g\)</span>: Number of reads mapped to the gene</p>
+<p><span class="math inline">\(RC_{pc}\)</span>: Number of reads mapped to all protein-coding genes</p>
+<p><span class="math inline">\(RC_{g75}\)</span>: The 75th percentile read count value for genes in the sample</p>
+<p><span class="math inline">\(L\)</span>: Length of the gene in base pairs; Calculated as the sum of all exons in a gene</p>
+<p>The read count is multiplied by a scalar <span class="math inline">\(10^9\)</span> during normalization to account for the kilobase and ‘million mapped reads’ units.</p>
+<p></p>
+</div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="application-to-tcga-data.html#cb3-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-2"><a href="application-to-tcga-data.html#cb3-2" aria-hidden="true" tabindex="-1"></a>measurements <span class="ot">=</span> <span class="fu">c</span>( <span class="st">&quot;HTSeq - Counts&quot;</span>, <span class="st">&quot;HTSeq - FPKM&quot;</span>, <span class="st">&quot;HTSeq - FPKM-UQ&quot;</span>)</span>
+<span id="cb3-3"><a href="application-to-tcga-data.html#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>( m <span class="cf">in</span> measurements){</span>
+<span id="cb3-4"><a href="application-to-tcga-data.html#cb3-4" aria-hidden="true" tabindex="-1"></a>  query <span class="ot">&lt;-</span> <span class="fu">GDCquery</span>(</span>
+<span id="cb3-5"><a href="application-to-tcga-data.html#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">project =</span> <span class="st">&quot;TCGA-BRCA&quot;</span>, </span>
+<span id="cb3-6"><a href="application-to-tcga-data.html#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">data.category =</span> <span class="st">&quot;Transcriptome Profiling&quot;</span>, </span>
+<span id="cb3-7"><a href="application-to-tcga-data.html#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">data.type =</span> <span class="st">&quot;Gene Expression Quantification&quot;</span>, </span>
+<span id="cb3-8"><a href="application-to-tcga-data.html#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">workflow.type =</span> <span class="st">&quot;HTSeq - FPKM-UQ&quot;</span>,</span>
+<span id="cb3-9"><a href="application-to-tcga-data.html#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">barcode =</span>  <span class="fu">colnames</span>(clinical_data)[<span class="sc">-</span><span class="dv">1</span>] <span class="co"># List of all patients id.</span></span>
+<span id="cb3-10"><a href="application-to-tcga-data.html#cb3-10" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb3-11"><a href="application-to-tcga-data.html#cb3-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-12"><a href="application-to-tcga-data.html#cb3-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">GDCdownload</span>(query,<span class="at">files.per.chunk =</span> <span class="dv">100</span>)</span>
+<span id="cb3-13"><a href="application-to-tcga-data.html#cb3-13" aria-hidden="true" tabindex="-1"></a>   <span class="fu">GDCprepare</span>(<span class="at">query =</span> query, <span class="at">summarizedExperiment =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-14"><a href="application-to-tcga-data.html#cb3-14" aria-hidden="true" tabindex="-1"></a>  readr<span class="sc">::</span><span class="fu">write_rds</span>(<span class="fu">sprintf</span>(<span class="st">&quot;data/TCGA_BRCA_%s.rds&quot;</span>,<span class="fu">gsub</span>(<span class="st">&quot; - &quot;</span>,<span class="st">&quot;_&quot;</span>,m)))</span>
+<span id="cb3-15"><a href="application-to-tcga-data.html#cb3-15" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>In the below table, the header of the HT-Seq count data can be found:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="application-to-tcga-data.html#cb4-1" aria-hidden="true" tabindex="-1"></a>Sample_HTSeq_Counts <span class="ot">=</span> readr<span class="sc">::</span><span class="fu">read_rds</span>(<span class="st">&quot;data/Sample_TCGA_BRCA_HTSeq_Counts.rds&quot;</span>) </span>
+<span id="cb4-2"><a href="application-to-tcga-data.html#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="application-to-tcga-data.html#cb4-3" aria-hidden="true" tabindex="-1"></a>Sample_HTSeq_Counts <span class="sc">%&gt;%</span></span>
+<span id="cb4-4"><a href="application-to-tcga-data.html#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb4-5"><a href="application-to-tcga-data.html#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_header</span>(<span class="at">title =</span> <span class="st">&quot;mRNA HT-Seq Count Data&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-6"><a href="application-to-tcga-data.html#cb4-6" aria-hidden="true" tabindex="-1"></a>   <span class="fu">fmt_missing</span>(<span class="at">columns =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>,<span class="at">missing_text =</span> <span class="st">&quot;&quot;</span>)</span></code></pre></div>
+<div id="gfyapojwbf" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#gfyapojwbf .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#gfyapojwbf .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#gfyapojwbf .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#gfyapojwbf .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#gfyapojwbf .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#gfyapojwbf .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#gfyapojwbf .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#gfyapojwbf .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#gfyapojwbf .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#gfyapojwbf .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#gfyapojwbf .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#gfyapojwbf .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#gfyapojwbf .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#gfyapojwbf .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#gfyapojwbf .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#gfyapojwbf .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#gfyapojwbf .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#gfyapojwbf .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#gfyapojwbf .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#gfyapojwbf .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#gfyapojwbf .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#gfyapojwbf .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#gfyapojwbf .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#gfyapojwbf .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#gfyapojwbf .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#gfyapojwbf .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#gfyapojwbf .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#gfyapojwbf .gt_left {
+  text-align: left;
+}
+
+#gfyapojwbf .gt_center {
+  text-align: center;
+}
+
+#gfyapojwbf .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#gfyapojwbf .gt_font_normal {
+  font-weight: normal;
+}
+
+#gfyapojwbf .gt_font_bold {
+  font-weight: bold;
+}
+
+#gfyapojwbf .gt_font_italic {
+  font-style: italic;
+}
+
+#gfyapojwbf .gt_super {
+  font-size: 65%;
+}
+
+#gfyapojwbf .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 65%;
+}
+</style>
+<table class="gt_table">
+  <thead class="gt_header">
+    <tr>
+      <th colspan="4" class="gt_heading gt_title gt_font_normal gt_bottom_border" style>mRNA HT-Seq Count Data</th>
+    </tr>
+    
+  </thead>
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">Gene</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">TCGA-3C-AAAU-01A-11R-A41B-07</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">TCGA-3C-AALI-01A-11R-A41B-07</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">TCGA-3C-AALJ-01A-31R-A41B-07</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td class="gt_row gt_left">ENSG00000225411.2</td>
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_right">0</td></tr>
+    <tr><td class="gt_row gt_left">ENSG00000236662.1</td>
+<td class="gt_row gt_right">6</td>
+<td class="gt_row gt_right">6</td>
+<td class="gt_row gt_right">1</td></tr>
+    <tr><td class="gt_row gt_left">ENSG00000244501.3</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td></tr>
+    <tr><td class="gt_row gt_left">ENSG00000242067.1</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td></tr>
+    <tr><td class="gt_row gt_left">ENSG00000140319.9</td>
+<td class="gt_row gt_right">12112</td>
+<td class="gt_row gt_right">3039</td>
+<td class="gt_row gt_right">6117</td></tr>
+    <tr><td class="gt_row gt_left">ENSG00000200112.1</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td></tr>
+    <tr><td class="gt_row gt_left">ENSG00000230496.1</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td></tr>
+    <tr><td class="gt_row gt_left">ENSG00000250261.1</td>
+<td class="gt_row gt_right">2</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">1</td></tr>
+    <tr><td class="gt_row gt_left">ENSG00000135838.12</td>
+<td class="gt_row gt_right">647</td>
+<td class="gt_row gt_right">720</td>
+<td class="gt_row gt_right">441</td></tr>
+    <tr><td class="gt_row gt_left">ENSG00000268906.1</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+<p>The <code>HTSeq-Counts</code> contains 60488 genes.
+To replicate <span class="citation">(<a href="#ref-yang2021model" role="doc-biblioref">Yang et al. 2021</a>)</span> paper,
+we consider only genes in RNA-seq whose read number is more than 20 in at least 25% of the samples. We also use <code>HTSeq-FPKM-UQ</code>, which is more robust than <code>HTSeq-Counts</code> using the total number of reads per sample.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="application-to-tcga-data.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Find Most Frequent Genes</span></span>
+<span id="cb5-2"><a href="application-to-tcga-data.html#cb5-2" aria-hidden="true" tabindex="-1"></a>SeqMat <span class="ot">=</span> HTSeq_Counts</span>
+<span id="cb5-3"><a href="application-to-tcga-data.html#cb5-3" aria-hidden="true" tabindex="-1"></a>SeqMat<span class="sc">$</span>Gene <span class="ot">=</span> <span class="cn">NULL</span></span>
+<span id="cb5-4"><a href="application-to-tcga-data.html#cb5-4" aria-hidden="true" tabindex="-1"></a>SeqMat  <span class="ot">=</span>  <span class="fu">as.matrix</span>(SeqMat)</span>
+<span id="cb5-5"><a href="application-to-tcga-data.html#cb5-5" aria-hidden="true" tabindex="-1"></a>GeneList <span class="ot">=</span> HTSeq_Counts<span class="sc">$</span>Gene[<span class="fu">rowSums</span>(SeqMat<span class="sc">&gt;</span><span class="dv">20</span>)<span class="sc">/</span><span class="fu">ncol</span>(SeqMat)<span class="sc">&gt;</span><span class="fl">0.25</span>]</span>
+<span id="cb5-6"><a href="application-to-tcga-data.html#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="application-to-tcga-data.html#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter HTSeq_FPKM_UQ to Most Frequent Genes</span></span>
+<span id="cb5-8"><a href="application-to-tcga-data.html#cb5-8" aria-hidden="true" tabindex="-1"></a>readr<span class="sc">::</span><span class="fu">read_rds</span>(<span class="st">&quot;data/TCGA_BRCA_HTSeq_FPKM_UQ.rds&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-9"><a href="application-to-tcga-data.html#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(X1 <span class="sc">%in%</span> GeneList) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-10"><a href="application-to-tcga-data.html#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">Gene =</span> X1 ) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-11"><a href="application-to-tcga-data.html#cb5-11" aria-hidden="true" tabindex="-1"></a>  readr<span class="sc">::</span><span class="fu">write_rds</span>(<span class="st">&quot;data/RNASeq.rds&quot;</span>)</span></code></pre></div>
+<p>After frequent restriction, 20131 genes remained.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="application-to-tcga-data.html#cb6-1" aria-hidden="true" tabindex="-1"></a>RNASeq <span class="ot">=</span> readr<span class="sc">::</span><span class="fu">read_rds</span>(<span class="st">&quot;data/RNASeq.rds&quot;</span>)  </span></code></pre></div>
+<p>To use name and id of genes, we download genes metadata tables with <code>biomaRt</code> package.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="application-to-tcga-data.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(biomaRt)</span>
+<span id="cb7-2"><a href="application-to-tcga-data.html#cb7-2" aria-hidden="true" tabindex="-1"></a>mart <span class="ot">&lt;-</span> <span class="fu">useMart</span>(<span class="at">biomart =</span> <span class="st">&quot;ensembl&quot;</span>, <span class="at">dataset =</span> <span class="st">&quot;hsapiens_gene_ensembl&quot;</span>)</span>
+<span id="cb7-3"><a href="application-to-tcga-data.html#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">listAttributes</span>(mart)</span>
+<span id="cb7-4"><a href="application-to-tcga-data.html#cb7-4" aria-hidden="true" tabindex="-1"></a>geneTable <span class="ot">&lt;-</span> <span class="fu">getBM</span>(</span>
+<span id="cb7-5"><a href="application-to-tcga-data.html#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">attributes =</span> <span class="fu">c</span>(<span class="st">&quot;ensembl_gene_id&quot;</span>,<span class="st">&quot;chromosome_name&quot;</span>,<span class="st">&quot;start_position&quot;</span>,</span>
+<span id="cb7-6"><a href="application-to-tcga-data.html#cb7-6" aria-hidden="true" tabindex="-1"></a>                 <span class="st">&quot;end_position&quot;</span>,<span class="st">&quot;strand&quot;</span>,<span class="st">&quot;band&quot;</span>,</span>
+<span id="cb7-7"><a href="application-to-tcga-data.html#cb7-7" aria-hidden="true" tabindex="-1"></a>                 <span class="st">&quot;hgnc_id&quot;</span>,<span class="st">&quot;hgnc_symbol&quot;</span>),</span>
+<span id="cb7-8"><a href="application-to-tcga-data.html#cb7-8" aria-hidden="true" tabindex="-1"></a>                       <span class="at">mart =</span> mart)</span>
+<span id="cb7-9"><a href="application-to-tcga-data.html#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="application-to-tcga-data.html#cb7-10" aria-hidden="true" tabindex="-1"></a>geneTable <span class="sc">%&gt;%</span> </span>
+<span id="cb7-11"><a href="application-to-tcga-data.html#cb7-11" aria-hidden="true" tabindex="-1"></a>  readr<span class="sc">::</span><span class="fu">write_rds</span>(<span class="st">&quot;data/geneTable.rds&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="application-to-tcga-data.html#cb8-1" aria-hidden="true" tabindex="-1"></a>geneTable <span class="ot">=</span> readr<span class="sc">::</span><span class="fu">read_rds</span>(<span class="st">&quot;data/geneTable.rds&quot;</span>)</span>
+<span id="cb8-2"><a href="application-to-tcga-data.html#cb8-2" aria-hidden="true" tabindex="-1"></a>geneTable <span class="sc">%&gt;%</span> </span>
+<span id="cb8-3"><a href="application-to-tcga-data.html#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb8-4"><a href="application-to-tcga-data.html#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-5"><a href="application-to-tcga-data.html#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb8-6"><a href="application-to-tcga-data.html#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_header</span>(<span class="at">title =</span> <span class="st">&quot;Some Fields of Genes Meta Data&quot;</span>)</span></code></pre></div>
+<div id="cdwjghfefx" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#cdwjghfefx .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#cdwjghfefx .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#cdwjghfefx .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#cdwjghfefx .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#cdwjghfefx .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#cdwjghfefx .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#cdwjghfefx .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#cdwjghfefx .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#cdwjghfefx .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#cdwjghfefx .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#cdwjghfefx .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#cdwjghfefx .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#cdwjghfefx .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#cdwjghfefx .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#cdwjghfefx .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#cdwjghfefx .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#cdwjghfefx .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#cdwjghfefx .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#cdwjghfefx .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#cdwjghfefx .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#cdwjghfefx .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#cdwjghfefx .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#cdwjghfefx .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#cdwjghfefx .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#cdwjghfefx .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#cdwjghfefx .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#cdwjghfefx .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#cdwjghfefx .gt_left {
+  text-align: left;
+}
+
+#cdwjghfefx .gt_center {
+  text-align: center;
+}
+
+#cdwjghfefx .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#cdwjghfefx .gt_font_normal {
+  font-weight: normal;
+}
+
+#cdwjghfefx .gt_font_bold {
+  font-weight: bold;
+}
+
+#cdwjghfefx .gt_font_italic {
+  font-style: italic;
+}
+
+#cdwjghfefx .gt_super {
+  font-size: 65%;
+}
+
+#cdwjghfefx .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 65%;
+}
+</style>
+<table class="gt_table">
+  <thead class="gt_header">
+    <tr>
+      <th colspan="8" class="gt_heading gt_title gt_font_normal gt_bottom_border" style>Some Fields of Genes Meta Data</th>
+    </tr>
+    
+  </thead>
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">ensembl_gene_id</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">chromosome_name</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">start_position</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">end_position</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">strand</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">band</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">hgnc_id</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">hgnc_symbol</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td class="gt_row gt_left">ENSG00000210049</td>
+<td class="gt_row gt_left">MT</td>
+<td class="gt_row gt_right">577</td>
+<td class="gt_row gt_right">647</td>
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_left"></td>
+<td class="gt_row gt_left">HGNC:7481</td>
+<td class="gt_row gt_left">MT-TF</td></tr>
+    <tr><td class="gt_row gt_left">ENSG00000211459</td>
+<td class="gt_row gt_left">MT</td>
+<td class="gt_row gt_right">648</td>
+<td class="gt_row gt_right">1601</td>
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_left"></td>
+<td class="gt_row gt_left">HGNC:7470</td>
+<td class="gt_row gt_left">MT-RNR1</td></tr>
+    <tr><td class="gt_row gt_left">ENSG00000210077</td>
+<td class="gt_row gt_left">MT</td>
+<td class="gt_row gt_right">1602</td>
+<td class="gt_row gt_right">1670</td>
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_left"></td>
+<td class="gt_row gt_left">HGNC:7500</td>
+<td class="gt_row gt_left">MT-TV</td></tr>
+    <tr><td class="gt_row gt_left">ENSG00000210082</td>
+<td class="gt_row gt_left">MT</td>
+<td class="gt_row gt_right">1671</td>
+<td class="gt_row gt_right">3229</td>
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_left"></td>
+<td class="gt_row gt_left">HGNC:7471</td>
+<td class="gt_row gt_left">MT-RNR2</td></tr>
+    <tr><td class="gt_row gt_left">ENSG00000209082</td>
+<td class="gt_row gt_left">MT</td>
+<td class="gt_row gt_right">3230</td>
+<td class="gt_row gt_right">3304</td>
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_left"></td>
+<td class="gt_row gt_left">HGNC:7490</td>
+<td class="gt_row gt_left">MT-TL1</td></tr>
+    <tr><td class="gt_row gt_left">ENSG00000198888</td>
+<td class="gt_row gt_left">MT</td>
+<td class="gt_row gt_right">3307</td>
+<td class="gt_row gt_right">4262</td>
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_left"></td>
+<td class="gt_row gt_left">HGNC:7455</td>
+<td class="gt_row gt_left">MT-ND1</td></tr>
+    <tr><td class="gt_row gt_left">ENSG00000210100</td>
+<td class="gt_row gt_left">MT</td>
+<td class="gt_row gt_right">4263</td>
+<td class="gt_row gt_right">4331</td>
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_left"></td>
+<td class="gt_row gt_left">HGNC:7488</td>
+<td class="gt_row gt_left">MT-TI</td></tr>
+    <tr><td class="gt_row gt_left">ENSG00000210107</td>
+<td class="gt_row gt_left">MT</td>
+<td class="gt_row gt_right">4329</td>
+<td class="gt_row gt_right">4400</td>
+<td class="gt_row gt_right">-1</td>
+<td class="gt_row gt_left"></td>
+<td class="gt_row gt_left">HGNC:7495</td>
+<td class="gt_row gt_left">MT-TQ</td></tr>
+    <tr><td class="gt_row gt_left">ENSG00000210112</td>
+<td class="gt_row gt_left">MT</td>
+<td class="gt_row gt_right">4402</td>
+<td class="gt_row gt_right">4469</td>
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_left"></td>
+<td class="gt_row gt_left">HGNC:7492</td>
+<td class="gt_row gt_left">MT-TM</td></tr>
+    <tr><td class="gt_row gt_left">ENSG00000198763</td>
+<td class="gt_row gt_left">MT</td>
+<td class="gt_row gt_right">4470</td>
+<td class="gt_row gt_right">5511</td>
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_left"></td>
+<td class="gt_row gt_left">HGNC:7456</td>
+<td class="gt_row gt_left">MT-ND2</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+<blockquote>
+<p>We envision this collection as the starting point for your exploration of the MSigDB resource and GSEA. Hallmark gene sets summarize and
+represent specific well-defined biological states or processes and display coherent expression. These gene sets were generated by a computational methodology based on identifying gene set overlaps and retaining genes that display coordinate expression. The hallmarks reduce noise and redundancy and provide a better delineated biological space for GSEA. We refer to the original overlapping gene sets, from which a hallmark is derived, as its ‘founder’ sets. Hallmark gene set pages provide links to the corresponding founder sets for deeper follow up.
+This collection is an initial release of 50 hallmarks which condense information from over 4,000 original overlapping gene sets .<span class="citation">(<a href="#ref-liberzon2015molecular" role="doc-biblioref">Liberzon et al. 2015</a>)</span></p>
+</blockquote>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="application-to-tcga-data.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span><span class="fu">require</span>(msigdbr)) <span class="fu">install.packages</span>(<span class="st">&quot;msigdbr&quot;</span>)</span>
+<span id="cb9-2"><a href="application-to-tcga-data.html#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(msigdbr)</span>
+<span id="cb9-3"><a href="application-to-tcga-data.html#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="application-to-tcga-data.html#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Retrieve human H (hallmark) gene set</span></span>
+<span id="cb9-5"><a href="application-to-tcga-data.html#cb9-5" aria-hidden="true" tabindex="-1"></a>msigdb <span class="ot">&lt;-</span> <span class="fu">msigdbr</span>(<span class="at">species =</span> <span class="st">&quot;Homo sapiens&quot;</span>, <span class="at">category =</span> <span class="st">&quot;H&quot;</span>)</span>
+<span id="cb9-6"><a href="application-to-tcga-data.html#cb9-6" aria-hidden="true" tabindex="-1"></a>readr<span class="sc">::</span><span class="fu">write_rds</span>(msigdb,<span class="st">&quot;data/msigdb.rds&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="application-to-tcga-data.html#cb10-1" aria-hidden="true" tabindex="-1"></a>msigdb <span class="ot">=</span> readr<span class="sc">::</span><span class="fu">read_rds</span>(<span class="st">&quot;data/msigdb.rds&quot;</span>)</span>
+<span id="cb10-2"><a href="application-to-tcga-data.html#cb10-2" aria-hidden="true" tabindex="-1"></a>msigdb <span class="sc">%&gt;%</span> </span>
+<span id="cb10-3"><a href="application-to-tcga-data.html#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">3</span><span class="sc">:</span><span class="dv">10</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb10-4"><a href="application-to-tcga-data.html#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb10-5"><a href="application-to-tcga-data.html#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb10-6"><a href="application-to-tcga-data.html#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_header</span>(<span class="at">title =</span> <span class="st">&quot;Head of Human H (hallmark) Gene Set&quot;</span>)</span></code></pre></div>
+<div id="tsmsbrwlxg" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#tsmsbrwlxg .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#tsmsbrwlxg .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#tsmsbrwlxg .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#tsmsbrwlxg .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#tsmsbrwlxg .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#tsmsbrwlxg .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#tsmsbrwlxg .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#tsmsbrwlxg .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#tsmsbrwlxg .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#tsmsbrwlxg .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#tsmsbrwlxg .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#tsmsbrwlxg .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#tsmsbrwlxg .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#tsmsbrwlxg .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#tsmsbrwlxg .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#tsmsbrwlxg .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#tsmsbrwlxg .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#tsmsbrwlxg .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#tsmsbrwlxg .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#tsmsbrwlxg .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#tsmsbrwlxg .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#tsmsbrwlxg .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#tsmsbrwlxg .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#tsmsbrwlxg .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#tsmsbrwlxg .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#tsmsbrwlxg .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#tsmsbrwlxg .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#tsmsbrwlxg .gt_left {
+  text-align: left;
+}
+
+#tsmsbrwlxg .gt_center {
+  text-align: center;
+}
+
+#tsmsbrwlxg .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#tsmsbrwlxg .gt_font_normal {
+  font-weight: normal;
+}
+
+#tsmsbrwlxg .gt_font_bold {
+  font-weight: bold;
+}
+
+#tsmsbrwlxg .gt_font_italic {
+  font-style: italic;
+}
+
+#tsmsbrwlxg .gt_super {
+  font-size: 65%;
+}
+
+#tsmsbrwlxg .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 65%;
+}
+</style>
+<table class="gt_table">
+  <thead class="gt_header">
+    <tr>
+      <th colspan="8" class="gt_heading gt_title gt_font_normal gt_bottom_border" style>Head of Human H (hallmark) Gene Set</th>
+    </tr>
+    
+  </thead>
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">gs_name</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">gene_symbol</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">entrez_gene</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">ensembl_gene</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">human_gene_symbol</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">human_entrez_gene</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">human_ensembl_gene</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">gs_id</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td class="gt_row gt_left">HALLMARK_ADIPOGENESIS</td>
+<td class="gt_row gt_left">ABCA1</td>
+<td class="gt_row gt_right">19</td>
+<td class="gt_row gt_left">ENSG00000165029</td>
+<td class="gt_row gt_left">ABCA1</td>
+<td class="gt_row gt_right">19</td>
+<td class="gt_row gt_left">ENSG00000165029</td>
+<td class="gt_row gt_left">M5905</td></tr>
+    <tr><td class="gt_row gt_left">HALLMARK_ADIPOGENESIS</td>
+<td class="gt_row gt_left">ABCB8</td>
+<td class="gt_row gt_right">11194</td>
+<td class="gt_row gt_left">ENSG00000197150</td>
+<td class="gt_row gt_left">ABCB8</td>
+<td class="gt_row gt_right">11194</td>
+<td class="gt_row gt_left">ENSG00000197150</td>
+<td class="gt_row gt_left">M5905</td></tr>
+    <tr><td class="gt_row gt_left">HALLMARK_ADIPOGENESIS</td>
+<td class="gt_row gt_left">ACAA2</td>
+<td class="gt_row gt_right">10449</td>
+<td class="gt_row gt_left">ENSG00000167315</td>
+<td class="gt_row gt_left">ACAA2</td>
+<td class="gt_row gt_right">10449</td>
+<td class="gt_row gt_left">ENSG00000167315</td>
+<td class="gt_row gt_left">M5905</td></tr>
+    <tr><td class="gt_row gt_left">HALLMARK_ADIPOGENESIS</td>
+<td class="gt_row gt_left">ACADL</td>
+<td class="gt_row gt_right">33</td>
+<td class="gt_row gt_left">ENSG00000115361</td>
+<td class="gt_row gt_left">ACADL</td>
+<td class="gt_row gt_right">33</td>
+<td class="gt_row gt_left">ENSG00000115361</td>
+<td class="gt_row gt_left">M5905</td></tr>
+    <tr><td class="gt_row gt_left">HALLMARK_ADIPOGENESIS</td>
+<td class="gt_row gt_left">ACADM</td>
+<td class="gt_row gt_right">34</td>
+<td class="gt_row gt_left">ENSG00000117054</td>
+<td class="gt_row gt_left">ACADM</td>
+<td class="gt_row gt_right">34</td>
+<td class="gt_row gt_left">ENSG00000117054</td>
+<td class="gt_row gt_left">M5905</td></tr>
+    <tr><td class="gt_row gt_left">HALLMARK_ADIPOGENESIS</td>
+<td class="gt_row gt_left">ACADS</td>
+<td class="gt_row gt_right">35</td>
+<td class="gt_row gt_left">ENSG00000122971</td>
+<td class="gt_row gt_left">ACADS</td>
+<td class="gt_row gt_right">35</td>
+<td class="gt_row gt_left">ENSG00000122971</td>
+<td class="gt_row gt_left">M5905</td></tr>
+    <tr><td class="gt_row gt_left">HALLMARK_ADIPOGENESIS</td>
+<td class="gt_row gt_left">ACLY</td>
+<td class="gt_row gt_right">47</td>
+<td class="gt_row gt_left">ENSG00000131473</td>
+<td class="gt_row gt_left">ACLY</td>
+<td class="gt_row gt_right">47</td>
+<td class="gt_row gt_left">ENSG00000131473</td>
+<td class="gt_row gt_left">M5905</td></tr>
+    <tr><td class="gt_row gt_left">HALLMARK_ADIPOGENESIS</td>
+<td class="gt_row gt_left">ACO2</td>
+<td class="gt_row gt_right">50</td>
+<td class="gt_row gt_left">ENSG00000100412</td>
+<td class="gt_row gt_left">ACO2</td>
+<td class="gt_row gt_right">50</td>
+<td class="gt_row gt_left">ENSG00000100412</td>
+<td class="gt_row gt_left">M5905</td></tr>
+    <tr><td class="gt_row gt_left">HALLMARK_ADIPOGENESIS</td>
+<td class="gt_row gt_left">ACOX1</td>
+<td class="gt_row gt_right">51</td>
+<td class="gt_row gt_left">ENSG00000161533</td>
+<td class="gt_row gt_left">ACOX1</td>
+<td class="gt_row gt_right">51</td>
+<td class="gt_row gt_left">ENSG00000161533</td>
+<td class="gt_row gt_left">M5905</td></tr>
+    <tr><td class="gt_row gt_left">HALLMARK_ADIPOGENESIS</td>
+<td class="gt_row gt_left">ADCY6</td>
+<td class="gt_row gt_right">112</td>
+<td class="gt_row gt_left">ENSG00000174233</td>
+<td class="gt_row gt_left">ADCY6</td>
+<td class="gt_row gt_right">112</td>
+<td class="gt_row gt_left">ENSG00000174233</td>
+<td class="gt_row gt_left">M5905</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+<blockquote>
+<p><a href="http://www.pathwaycommons.org">Pathway Commons</a> is a collection of publicly available pathway data from multiple organisms. Pathway Commons provides a web-based interface that enables biologists to browse and search a comprehensive collection of pathways from multiple sources represented in a common language, a download site that provides integrated bulk sets of pathway information in standard or convenient formats and a web service that software developers can use to conveniently query and access all data. Database providers can share their pathway data via a common repository. Pathways include biochemical reactions, complex assembly, transport and catalysis events and physical interactions involving proteins, DNA, RNA, small molecules and complexes. Pathway Commons aims to collect and integrate all public pathway data available in standard formats.
+<span class="citation">(<a href="#ref-cerami2010pathway" role="doc-biblioref">Cerami et al. 2010</a>)</span></p>
+</blockquote>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="application-to-tcga-data.html#cb11-1" aria-hidden="true" tabindex="-1"></a>pc <span class="ot">=</span> readr<span class="sc">::</span><span class="fu">read_delim</span>(<span class="st">&quot;raw-data/PathwayCommons12.All.hgnc.txt&quot;</span>,<span class="at">delim =</span> <span class="st">&quot;</span><span class="sc">\t</span><span class="st">&quot;</span>)</span>
+<span id="cb11-2"><a href="application-to-tcga-data.html#cb11-2" aria-hidden="true" tabindex="-1"></a>pc<span class="sc">$</span>MEDIATOR_IDS <span class="ot">=</span> <span class="cn">NULL</span></span>
+<span id="cb11-3"><a href="application-to-tcga-data.html#cb11-3" aria-hidden="true" tabindex="-1"></a>readr<span class="sc">::</span><span class="fu">write_rds</span>(pc,<span class="st">&quot;data/pathwaycommons.rds&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="application-to-tcga-data.html#cb12-1" aria-hidden="true" tabindex="-1"></a>pc <span class="ot">=</span> readr<span class="sc">::</span><span class="fu">read_rds</span>(<span class="st">&quot;data/pathwaycommons.rds&quot;</span>)</span>
+<span id="cb12-2"><a href="application-to-tcga-data.html#cb12-2" aria-hidden="true" tabindex="-1"></a>pc <span class="sc">%&gt;%</span> </span>
+<span id="cb12-3"><a href="application-to-tcga-data.html#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb12-4"><a href="application-to-tcga-data.html#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb12-5"><a href="application-to-tcga-data.html#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>()</span></code></pre></div>
+<div id="shujpetlvl" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#shujpetlvl .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#shujpetlvl .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#shujpetlvl .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#shujpetlvl .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#shujpetlvl .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#shujpetlvl .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#shujpetlvl .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#shujpetlvl .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#shujpetlvl .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#shujpetlvl .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#shujpetlvl .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#shujpetlvl .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#shujpetlvl .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#shujpetlvl .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#shujpetlvl .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#shujpetlvl .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#shujpetlvl .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#shujpetlvl .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#shujpetlvl .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#shujpetlvl .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#shujpetlvl .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#shujpetlvl .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#shujpetlvl .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#shujpetlvl .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#shujpetlvl .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#shujpetlvl .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#shujpetlvl .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#shujpetlvl .gt_left {
+  text-align: left;
+}
+
+#shujpetlvl .gt_center {
+  text-align: center;
+}
+
+#shujpetlvl .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#shujpetlvl .gt_font_normal {
+  font-weight: normal;
+}
+
+#shujpetlvl .gt_font_bold {
+  font-weight: bold;
+}
+
+#shujpetlvl .gt_font_italic {
+  font-style: italic;
+}
+
+#shujpetlvl .gt_super {
+  font-size: 65%;
+}
+
+#shujpetlvl .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 65%;
+}
+</style>
+<table class="gt_table">
+  
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">PARTICIPANT_A</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">INTERACTION_TYPE</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">PARTICIPANT_B</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">INTERACTION_DATA_SOURCE</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">INTERACTION_PUBMED_ID</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td class="gt_row gt_left">A1BG</td>
+<td class="gt_row gt_left">controls-expression-of</td>
+<td class="gt_row gt_left">A2M</td>
+<td class="gt_row gt_left">pid</td>
+<td class="gt_row gt_left">12456685;7678052;9794795</td></tr>
+    <tr><td class="gt_row gt_left">A1BG</td>
+<td class="gt_row gt_left">interacts-with</td>
+<td class="gt_row gt_left">ABCC6</td>
+<td class="gt_row gt_left">BioGRID</td>
+<td class="gt_row gt_left">21988832</td></tr>
+    <tr><td class="gt_row gt_left">A1BG</td>
+<td class="gt_row gt_left">interacts-with</td>
+<td class="gt_row gt_left">ACE2</td>
+<td class="gt_row gt_left">BIND</td>
+<td class="gt_row gt_left">15791205</td></tr>
+    <tr><td class="gt_row gt_left">A1BG</td>
+<td class="gt_row gt_left">interacts-with</td>
+<td class="gt_row gt_left">ADAM10</td>
+<td class="gt_row gt_left">BIND</td>
+<td class="gt_row gt_left">15280379</td></tr>
+    <tr><td class="gt_row gt_left">A1BG</td>
+<td class="gt_row gt_left">interacts-with</td>
+<td class="gt_row gt_left">ADAM17</td>
+<td class="gt_row gt_left">BIND</td>
+<td class="gt_row gt_left">15280379</td></tr>
+    <tr><td class="gt_row gt_left">A1BG</td>
+<td class="gt_row gt_left">interacts-with</td>
+<td class="gt_row gt_left">ADAM9</td>
+<td class="gt_row gt_left">BIND</td>
+<td class="gt_row gt_left">15280379</td></tr>
+    <tr><td class="gt_row gt_left">A1BG</td>
+<td class="gt_row gt_left">interacts-with</td>
+<td class="gt_row gt_left">AGO1</td>
+<td class="gt_row gt_left">BIND</td>
+<td class="gt_row gt_left">15152257</td></tr>
+    <tr><td class="gt_row gt_left">A1BG</td>
+<td class="gt_row gt_left">controls-phosphorylation-of</td>
+<td class="gt_row gt_left">AKT1</td>
+<td class="gt_row gt_left">pid</td>
+<td class="gt_row gt_left">10574698;10949937;11313365;12445202;14551191;15735674;15823093;17485554;18339839;9736715</td></tr>
+    <tr><td class="gt_row gt_left">A1BG</td>
+<td class="gt_row gt_left">controls-state-change-of</td>
+<td class="gt_row gt_left">AKT1</td>
+<td class="gt_row gt_left">pid</td>
+<td class="gt_row gt_left">10574698;10949937;11313365;12445202;14551191;15735674;15823093;17485554;18339839;9736715</td></tr>
+    <tr><td class="gt_row gt_left">A1BG</td>
+<td class="gt_row gt_left">interacts-with</td>
+<td class="gt_row gt_left">ANXA7</td>
+<td class="gt_row gt_left">IntAct;BioGRID</td>
+<td class="gt_row gt_left">21900206</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+
+</div>
+</div>
+<h3> Reference</h3>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-cerami2010pathway" class="csl-entry">
+Cerami, Ethan G, Benjamin E Gross, Emek Demir, Igor Rodchenkov, Özgün Babur, Nadia Anwar, Nikolaus Schultz, Gary D Bader, and Chris Sander. 2010. <span>“Pathway Commons, a Web Resource for Biological Pathway Data.”</span> <em>Nucleic Acids Research</em> 39 (suppl_1): D685–90.
+</div>
+<div id="ref-liberzon2015molecular" class="csl-entry">
+Liberzon, Arthur, Chet Birger, Helga Thorvaldsdóttir, Mahmoud Ghandi, Jill P Mesirov, and Pablo Tamayo. 2015. <span>“The Molecular Signatures Database Hallmark Gene Set Collection.”</span> <em>Cell Systems</em> 1 (6): 417–25.
+</div>
+<div id="ref-TCGAbiolinks" class="csl-entry">
+Silva, Tiago C, Colaprico, Antonio, Olsen, Catharina, D’Angelo, et al. 2016. <span>“TCGA Workflow: Analyze Cancer Genomics and Epigenomics Data Using Bioconductor Packages.”</span> <em>F1000Research</em> 5.
+</div>
+<div id="ref-yang2021model" class="csl-entry">
+Yang, Jenny, Yang Liu, Yufeng Liu, and Wei Sun. 2021. <span>“Model Free Estimation of Graphical Model Using Gene Expression Data.”</span> <em>The Annals of Applied Statistics</em> 15 (1): 194–207.
+</div>
 </div>
             </section>
 
@@ -150,6 +2503,20 @@ gitbook.start({
 });
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>

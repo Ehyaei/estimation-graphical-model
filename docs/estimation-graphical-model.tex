@@ -43,6 +43,46 @@
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
 \urlstyle{same} % disable monospaced font for URLs
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
 \usepackage{longtable,booktabs,array}
 \usepackage{calc} % for calculating minipage widths
 % Correct order of tables after \paragraph or \subparagraph
@@ -57,6 +97,29 @@
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 \setcounter{secnumdepth}{5}
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newlength{\csllabelwidth}
+\setlength{\csllabelwidth}{3em}
+\newlength{\cslentryspacingunit} % times entry-spacing
+\setlength{\cslentryspacingunit}{\parskip}
+\newenvironment{CSLReferences}[2] % #1 hanging-ident, #2 entry spacing
+ {% don't indent paragraphs
+  \setlength{\parindent}{0pt}
+  % turn on hanging indent if param 1 is 1
+  \ifodd #1
+  \let\oldpar\par
+  \def\par{\hangindent=\cslhangindent\oldpar}
+  \fi
+  % set entry spacing
+  \setlength{\parskip}{#2\cslentryspacingunit}
+ }%
+ {}
+\usepackage{calc}
+\newcommand{\CSLBlock}[1]{#1\hfill\break}
+\newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{#1}}
+\newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{#1}\break}
+\newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
 
 \usepackage{booktabs}
 \usepackage{longtable}
@@ -72,13 +135,15 @@
 \usepackage[normalem]{ulem}
 \usepackage{makecell}
 \usepackage{xcolor}
+\usepackage{amsmath}
+\usepackage{caption}
 \ifLuaTeX
   \usepackage{selnolig}  % disable illegal ligatures
 \fi
 
 \title{Estimation Graphical Model}
 \author{Mona Azadkia \and Ahmad Ehyaei}
-\date{16 Oktober, 2021}
+\date{24 Oktober, 2021}
 
 % ...................................................................... %
 %
@@ -534,7 +599,7 @@ BoldItalicFont = UniversLTStd-Bold.otf
   
   
   % add bodoni font to date
-    \huge{\uppercase{16 Oktober, 2021}}
+    \huge{\uppercase{24 Oktober, 2021}}
   \vspace{0.3cm}
   
   \vspace{0.6cm}
@@ -597,8 +662,190 @@ BoldItalicFont = UniversLTStd-Bold.otf
 \hypertarget{application-to-tcga-data}{%
 \chapter{Application to TCGA data}\label{application-to-tcga-data}}
 
+For download the RNA-seq breast cancer data from Cancer Genome Atlas (TCGA) database we use \texttt{TCGAbiolinks} package (\protect\hyperlink{ref-TCGAbiolinks}{Silva et al. 2016}).
+
+\hypertarget{download-data-from-tcga-portal}{%
+\section{Download Data from TCGA Portal}\label{download-data-from-tcga-portal}}
+
+\href{https://bioconductor.org/packages/release/bioc/html/TCGAbiolinks.html}{TCGAbiolinks}' purpose is to make it easier to access GDC data, build preprocessing methods, and provide multiple methods for analysis and visualization. For install package run below commands:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ControlFlowTok{if}\NormalTok{ (}\SpecialCharTok{!}\FunctionTok{requireNamespace}\NormalTok{(}\StringTok{"BiocManager"}\NormalTok{, }\AttributeTok{quietly =} \ConstantTok{TRUE}\NormalTok{))}
+    \FunctionTok{install.packages}\NormalTok{(}\StringTok{"BiocManager"}\NormalTok{)}
+
+\NormalTok{BiocManager}\SpecialCharTok{::}\FunctionTok{install}\NormalTok{(}\StringTok{"TCGAbiolinks"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Fist we download clinical data related to \texttt{TCGA-BRCA} study
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(TCGAbiolinks)}
+
+\NormalTok{clinical\_data }\OtherTok{\textless{}{-}}\NormalTok{ TCGAbiolinks}\SpecialCharTok{::}\FunctionTok{getLinkedOmicsData}\NormalTok{(}
+  \AttributeTok{project =} \StringTok{"TCGA{-}BRCA"}\NormalTok{,}
+  \AttributeTok{dataset =} \StringTok{"Clinical"}
+\NormalTok{)}
+\NormalTok{readr}\SpecialCharTok{::}\FunctionTok{write\_rds}\NormalTok{(clinical\_data,}\StringTok{"data/clinical\_brca.rds"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\newpage
+
+\captionsetup[table]{labelformat=empty,skip=1pt}
+\begin{longtable}{llll}
+\caption*{
+{\large TCGA BRCA Clinical Data Header}
+} \\ 
+\toprule
+attrib\_name & TCGA.5L.AAT0 & TCGA.5L.AAT1 & TCGA.A1.A0SP \\ 
+\midrule
+years\_to\_birth & 42 & 63 & 40 \\ 
+Tumor\_purity & 0.6501 & 0.5553 & 0.6913 \\ 
+pathologic\_stage & stageii & stageiv & stageii \\ 
+pathology\_T\_stage & t2 & t2 & t2 \\ 
+pathology\_N\_stage & n0 & n0 & n0 \\ 
+pathology\_M\_stage & m0 & m1 & m0 \\ 
+histological\_type & infiltratinglobularcarcinoma & infiltratinglobularcarcinoma & infiltratingductalcarcinoma \\ 
+number\_of\_lymph\_nodes & 0 & 0 & 0 \\ 
+PAM50 &  &  & Basal \\ 
+ER.Status &  &  &  \\ 
+PR.Status &  &  &  \\ 
+HER2.Status &  &  &  \\ 
+gender & female & female & female \\ 
+radiation\_therapy & yes & no &  \\ 
+race & white & white &  \\ 
+ethnicity & hispanicorlatino & hispanicorlatino & nothispanicorlatino \\ 
+Median\_overall\_survival & 0 & 0 & 0 \\ 
+overall\_survival & 1477 & 1471 & 584 \\ 
+status & 0 & 0 & 0 \\ 
+overallsurvival & 1477,0 & 1471,0 & 584,0 \\ 
+ \bottomrule
+\end{longtable}
+
+The above table contains clinical data of patients. The name of each column is related to the patient's id.
+
+The GDC mRNA quantification analysis pipeline measures gene level expression in HT-Seq raw read count, Fragments per Kilobase of transcript per Million mapped reads (FPKM), and FPKM-UQ (upper quartile normalization). For see more information see \href{https://docs.gdc.cancer.gov/Data/Bioinformatics_Pipelines/Expression_mRNA_Pipeline/}{mRNA Analysis Pipeline} GDC document.
+
+\begin{Definition}{HT Seq Normalization}{}
+RNA-Seq expression level read counts produced by HT-Seq are normalized using two similar methods: FPKM and FPKM-UQ. Normalized values should be used only within the context of the entire gene set. Users are encouraged to normalize raw read count values if a subset of genes is investigated.
+
+\textbf{FPKM}:
+
+The Fragments per Kilobase of transcript per Million mapped reads (FPKM) calculation normalizes read count by dividing it by the gene length and the total number of reads mapped to protein-coding genes.
+
+\[FPKM = \dfrac{RC_g*10^9}{RC_{pc}*L}\]
+
+\hfill{0.3}
+
+\textbf{Upper Quartile FPKM}
+
+The upper quartile FPKM (FPKM-UQ) is a modified FPKM calculation in which the total protein-coding read count is replaced by the 75th percentile read count value for the sample.
+
+\[FPKM-UQ = \dfrac{RC_g*10^9}{RC_{g75}*L}\]
+
+\(RC_g\): Number of reads mapped to the gene
+
+\(RC_{pc}\): Number of reads mapped to all protein-coding genes
+
+\(RC_{g75}\): The 75th percentile read count value for genes in the sample
+
+\(L\): Length of the gene in base pairs; Calculated as the sum of all exons in a gene
+
+The read count is multiplied by a scalar \(10^9\) during normalization to account for the kilobase and `million mapped reads' units.
+
+\href{https://docs.gdc.cancer.gov/Data/Bioinformatics_Pipelines/Expression_mRNA_Pipeline/#mrna-expression-ht-seq-normalization}{mRNA Expression HT-Seq Normalization}
+
+\end{Definition}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+
+\NormalTok{measurements }\OtherTok{=} \FunctionTok{c}\NormalTok{( }\StringTok{"HTSeq {-} Counts"}\NormalTok{, }\StringTok{"HTSeq {-} FPKM"}\NormalTok{, }\StringTok{"HTSeq {-} FPKM{-}UQ"}\NormalTok{)}
+\ControlFlowTok{for}\NormalTok{( m }\ControlFlowTok{in}\NormalTok{ measurements)\{}
+\NormalTok{  query }\OtherTok{\textless{}{-}} \FunctionTok{GDCquery}\NormalTok{(}
+    \AttributeTok{project =} \StringTok{"TCGA{-}BRCA"}\NormalTok{, }
+    \AttributeTok{data.category =} \StringTok{"Transcriptome Profiling"}\NormalTok{, }
+    \AttributeTok{data.type =} \StringTok{"Gene Expression Quantification"}\NormalTok{, }
+    \AttributeTok{workflow.type =} \StringTok{"HTSeq {-} FPKM{-}UQ"}\NormalTok{,}
+    \AttributeTok{barcode =}  \FunctionTok{colnames}\NormalTok{(clinical\_data)[}\SpecialCharTok{{-}}\DecValTok{1}\NormalTok{] }\CommentTok{\# List of all patients id.}
+\NormalTok{  )}
+  
+  \FunctionTok{GDCdownload}\NormalTok{(query,}\AttributeTok{files.per.chunk =} \DecValTok{100}\NormalTok{)}
+   \FunctionTok{GDCprepare}\NormalTok{(}\AttributeTok{query =}\NormalTok{ query, }\AttributeTok{summarizedExperiment =} \ConstantTok{FALSE}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+\NormalTok{  readr}\SpecialCharTok{::}\FunctionTok{write\_rds}\NormalTok{(}\FunctionTok{sprintf}\NormalTok{(}\StringTok{"data/TCGA\_BRCA\_\%s.rds"}\NormalTok{,}\FunctionTok{gsub}\NormalTok{(}\StringTok{" {-} "}\NormalTok{,}\StringTok{"\_"}\NormalTok{,m)))}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+In the below table, the header of the HT-Seq count data can be found:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{Sample\_HTSeq\_Counts }\OtherTok{=}\NormalTok{ readr}\SpecialCharTok{::}\FunctionTok{read\_rds}\NormalTok{(}\StringTok{"data/Sample\_TCGA\_BRCA\_HTSeq\_Counts.rds"}\NormalTok{) }
+
+\NormalTok{Sample\_HTSeq\_Counts }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{gt}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{tab\_header}\NormalTok{(}\AttributeTok{title =} \StringTok{"mRNA HT{-}Seq Count Data"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+   \FunctionTok{fmt\_missing}\NormalTok{(}\AttributeTok{columns =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{4}\NormalTok{,}\AttributeTok{missing\_text =} \StringTok{""}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\captionsetup[table]{labelformat=empty,skip=1pt}
+\begin{longtable}{lrrr}
+\caption*{
+{\large mRNA HT-Seq Count Data}
+} \\ 
+\toprule
+Gene & TCGA-3C-AAAU-01A-11R-A41B-07 & TCGA-3C-AALI-01A-11R-A41B-07 & TCGA-3C-AALJ-01A-31R-A41B-07 \\ 
+\midrule
+ENSG00000225411.2 & 1 & 1 & 0 \\ 
+ENSG00000236662.1 & 6 & 6 & 1 \\ 
+ENSG00000244501.3 & 0 & 0 & 0 \\ 
+ENSG00000242067.1 & 0 & 0 & 0 \\ 
+ENSG00000140319.9 & 12112 & 3039 & 6117 \\ 
+ENSG00000200112.1 & 0 & 0 & 0 \\ 
+ENSG00000230496.1 & 0 & 0 & 0 \\ 
+ENSG00000250261.1 & 2 & 0 & 1 \\ 
+ENSG00000135838.12 & 647 & 720 & 441 \\ 
+ENSG00000268906.1 & 0 & 0 & 0 \\ 
+ \bottomrule
+\end{longtable}
+
+The \texttt{HTSeq-Counts} contains 60488 genes.
+To replicate (\protect\hyperlink{ref-yang2021model}{Yang et al. 2021}) paper,
+we consider only genes in RNA-seq whose read number is more than 20 in at least 25\% of the samples. We also use \texttt{HTSeq-FPKM-UQ}, which is more robust than \texttt{HTSeq-Counts} using the total number of reads per sample.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Find Most Frequent Genes}
+\NormalTok{SeqMat }\OtherTok{=}\NormalTok{ HTSeq\_Counts}
+\NormalTok{SeqMat}\SpecialCharTok{$}\NormalTok{Gene }\OtherTok{=} \ConstantTok{NULL}
+\NormalTok{SeqMat  }\OtherTok{=}  \FunctionTok{as.matrix}\NormalTok{(SeqMat)}
+\NormalTok{GeneList }\OtherTok{=}\NormalTok{ HTSeq\_Counts}\SpecialCharTok{$}\NormalTok{Gene[}\FunctionTok{rowSums}\NormalTok{(SeqMat}\SpecialCharTok{\textgreater{}}\DecValTok{20}\NormalTok{)}\SpecialCharTok{/}\FunctionTok{ncol}\NormalTok{(SeqMat)}\SpecialCharTok{\textgreater{}}\FloatTok{0.25}\NormalTok{]}
+
+\CommentTok{\# Filter HTSeq\_FPKM\_UQ to Most Frequent Genes}
+\NormalTok{readr}\SpecialCharTok{::}\FunctionTok{read\_rds}\NormalTok{(}\StringTok{"data/TCGA\_BRCA\_HTSeq\_FPKM\_UQ.rds"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{filter}\NormalTok{(X1 }\SpecialCharTok{\%in\%}\NormalTok{ GeneList) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{rename}\NormalTok{(}\AttributeTok{Gene =}\NormalTok{ X1 ) }\SpecialCharTok{\%\textgreater{}\%} 
+\NormalTok{  readr}\SpecialCharTok{::}\FunctionTok{read\_rds}\NormalTok{(}\StringTok{"data/RNASeq.rds"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
 \hypertarget{reference}{%
 \chapter{Reference}\label{reference}}
+
+\hypertarget{refs}{}
+\begin{CSLReferences}{1}{0}
+\leavevmode\vadjust pre{\hypertarget{ref-TCGAbiolinks}{}}%
+Silva, Tiago C, Colaprico, Antonio, Olsen, Catharina, D'Angelo, et al. 2016. {``TCGA Workflow: Analyze Cancer Genomics and Epigenomics Data Using Bioconductor Packages.''} \emph{F1000Research} 5.
+
+\leavevmode\vadjust pre{\hypertarget{ref-yang2021model}{}}%
+Yang, Jenny, Yang Liu, Yufeng Liu, and Wei Sun. 2021. {``Model Free Estimation of Graphical Model Using Gene Expression Data.''} \emph{The Annals of Applied Statistics} 15 (1): 194--207.
+
+\end{CSLReferences}
 
 
 

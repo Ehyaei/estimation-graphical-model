@@ -4,4 +4,5 @@ methods
 theoretical-properties
 simulation
 application-to-tcga-data
+download-data-from-tcga-portal
 reference

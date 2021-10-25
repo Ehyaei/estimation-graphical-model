@@ -1,1 +1,206 @@
 # Application to TCGA data
+
+For download the RNA-seq breast cancer data from Cancer Genome Atlas (TCGA) database we use `TCGAbiolinks` package [@TCGAbiolinks]. 
+
+
+## Download Data 
+
+[TCGAbiolinks](https://bioconductor.org/packages/release/bioc/html/TCGAbiolinks.html)' purpose is to make it easier to access GDC data, build preprocessing methods, and provide multiple methods for analysis and visualization. For install package run below commands:
+
+```{r,eval=FALSE,echo=TRUE}
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+BiocManager::install("TCGAbiolinks")
+```
+
+Fist we download clinical data related to `TCGA-BRCA` study
+
+```{r,eval=FALSE,echo=TRUE}
+library(TCGAbiolinks)
+
+clinical_data <- TCGAbiolinks::getLinkedOmicsData(
+  project = "TCGA-BRCA",
+  dataset = "Clinical"
+)
+readr::write_rds(clinical_data,"data/clinical_brca.rds")
+```
+
+\newpage
+
+```{r,echo=FALSE}
+clinical_data = readr::read_rds("data/clinical_brca.rds")
+clinical_data[,1:4] %>%
+  gt() %>% 
+  tab_header(title = "TCGA BRCA Clinical Data Header") %>% 
+   fmt_missing(columns = 1:4,missing_text = "")
+```
+
+The above table contains clinical data of patients. The name of each column is related to the patient's id.
+
+The GDC mRNA quantification analysis pipeline measures gene level expression in HT-Seq raw read count, Fragments per Kilobase of transcript per Million mapped reads (FPKM), and FPKM-UQ (upper quartile normalization). For see more information see [mRNA Analysis Pipeline](https://docs.gdc.cancer.gov/Data/Bioinformatics_Pipelines/Expression_mRNA_Pipeline/) GDC document.
+
+
+::: {.Definition data-latex="{HT Seq Normalization}{}"}
+
+RNA-Seq expression level read counts produced by HT-Seq are normalized using two similar methods: FPKM and FPKM-UQ. Normalized values should be used only within the context of the entire gene set. Users are encouraged to normalize raw read count values if a subset of genes is investigated.
+
+**FPKM**:
+
+The Fragments per Kilobase of transcript per Million mapped reads (FPKM) calculation normalizes read count by dividing it by the gene length and the total number of reads mapped to protein-coding genes.
+
+$$FPKM = \dfrac{RC_g*10^9}{RC_{pc}*L}$$
+
+\hfill{0.3}
+
+**Upper Quartile FPKM** 
+
+The upper quartile FPKM (FPKM-UQ) is a modified FPKM calculation in which the total protein-coding read count is replaced by the 75th percentile read count value for the sample.
+
+$$FPKM-UQ = \dfrac{RC_g*10^9}{RC_{g75}*L}$$
+
+$RC_g$: Number of reads mapped to the gene
+
+$RC_{pc}$: Number of reads mapped to all protein-coding genes
+
+$RC_{g75}$: The 75th percentile read count value for genes in the sample
+
+$L$: Length of the gene in base pairs; Calculated as the sum of all exons in a gene
+
+The read count is multiplied by a scalar $10^9$ during normalization to account for the kilobase and 'million mapped reads' units.
+
+\href{https://docs.gdc.cancer.gov/Data/Bioinformatics_Pipelines/Expression_mRNA_Pipeline/#mrna-expression-ht-seq-normalization}{mRNA Expression HT-Seq Normalization}
+
+:::
+
+```{r,eval=FALSE,echo=TRUE}
+
+measurements = c( "HTSeq - Counts", "HTSeq - FPKM", "HTSeq - FPKM-UQ")
+for( m in measurements){
+  query <- GDCquery(
+    project = "TCGA-BRCA", 
+    data.category = "Transcriptome Profiling", 
+    data.type = "Gene Expression Quantification", 
+    workflow.type = "HTSeq - FPKM-UQ",
+    barcode =  colnames(clinical_data)[-1] # List of all patients id.
+  )
+  
+  GDCdownload(query,files.per.chunk = 100)
+   GDCprepare(query = query, summarizedExperiment = FALSE) %>% 
+  readr::write_rds(sprintf("data/TCGA_BRCA_%s.rds",gsub(" - ","_",m)))
+}
+```
+
+In the below table, the header of the HT-Seq count data can be found:
+
+```{r, eval=FALSE, echo=FALSE}
+HTSeq_Counts = readr::read_rds("data/TCGA_BRCA_HTSeq_Counts.rds")
+colnames(HTSeq_Counts)[1] = "Gene"
+HTSeq_Counts[sample(1:nrow(HTSeq_Counts),10),1:4] %>% readr::write_rds("data/Sample_TCGA_BRCA_HTSeq_Counts.rds")
+```
+
+
+```{r}
+Sample_HTSeq_Counts = readr::read_rds("data/Sample_TCGA_BRCA_HTSeq_Counts.rds") 
+
+Sample_HTSeq_Counts %>%
+  gt() %>% 
+  tab_header(title = "mRNA HT-Seq Count Data") %>% 
+   fmt_missing(columns = 1:4,missing_text = "")
+
+```
+
+The `HTSeq-Counts` contains 60488 genes. 
+To replicate [@yang2021model] paper,
+we consider only genes in RNA-seq whose read number is more than 20 in at least 25% of the samples. We also use `HTSeq-FPKM-UQ`, which is more robust than `HTSeq-Counts` using the total number of reads per sample.
+
+```{r,eval=FALSE,echo=T}
+# Find Most Frequent Genes
+SeqMat = HTSeq_Counts
+SeqMat$Gene = NULL
+SeqMat  =  as.matrix(SeqMat)
+GeneList = HTSeq_Counts$Gene[rowSums(SeqMat>20)/ncol(SeqMat)>0.25]
+
+# Filter HTSeq_FPKM_UQ to Most Frequent Genes
+readr::read_rds("data/TCGA_BRCA_HTSeq_FPKM_UQ.rds") %>% 
+  filter(X1 %in% GeneList) %>% 
+  rename(Gene = X1 ) %>% 
+  readr::write_rds("data/RNASeq.rds")
+```
+
+After frequent restriction, 20131 genes remained. 
+
+```{r}
+RNASeq = readr::read_rds("data/RNASeq.rds")  
+```
+
+To use name and id of genes, we download genes metadata tables with `biomaRt` package.
+
+```{r,eval=FALSE,echo=TRUE}
+library(biomaRt)
+mart <- useMart(biomart = "ensembl", dataset = "hsapiens_gene_ensembl")
+listAttributes(mart)
+geneTable <- getBM(
+  attributes = c("ensembl_gene_id","chromosome_name","start_position",
+                 "end_position","strand","band",
+                 "hgnc_id","hgnc_symbol"),
+                       mart = mart)
+
+geneTable %>% 
+  readr::write_rds("data/geneTable.rds")
+```
+
+
+```{r}
+geneTable = readr::read_rds("data/geneTable.rds")
+geneTable %>% 
+  slice() %>% 
+  slice(1:10) %>% 
+  gt() %>% 
+  tab_header(title = "Some Fields of Genes Meta Data")
+```
+
+>We envision this collection as the starting point for your exploration of the MSigDB resource and GSEA. Hallmark gene sets summarize and 
+represent specific well-defined biological states or processes and display coherent expression. These gene sets were generated by a computational methodology based on identifying gene set overlaps and retaining genes that display coordinate expression. The hallmarks reduce noise and redundancy and provide a better delineated biological space for GSEA. We refer to the original overlapping gene sets, from which a hallmark is derived, as its 'founder' sets. Hallmark gene set pages provide links to the corresponding founder sets for deeper follow up.
+This collection is an initial release of 50 hallmarks which condense information from over 4,000 original overlapping gene sets .[@liberzon2015molecular]
+
+
+```{r,eval=FALSE,echo=TRUE}
+if(!require(msigdbr)) install.packages("msigdbr")
+library(msigdbr)
+
+# Retrieve human H (hallmark) gene set
+msigdb <- msigdbr(species = "Homo sapiens", category = "H")
+readr::write_rds(msigdb,"data/msigdb.rds")
+```
+
+```{r}
+msigdb = readr::read_rds("data/msigdb.rds")
+msigdb %>% 
+  select(3:10) %>% 
+  slice(1:10) %>% 
+  gt() %>% 
+  tab_header(title = "Head of Human H (hallmark) Gene Set")
+```
+
+
+> [Pathway Commons](http://www.pathwaycommons.org) is a collection of publicly available pathway data from multiple organisms. Pathway Commons provides a web-based interface that enables biologists to browse and search a comprehensive collection of pathways from multiple sources represented in a common language, a download site that provides integrated bulk sets of pathway information in standard or convenient formats and a web service that software developers can use to conveniently query and access all data. Database providers can share their pathway data via a common repository. Pathways include biochemical reactions, complex assembly, transport and catalysis events and physical interactions involving proteins, DNA, RNA, small molecules and complexes. Pathway Commons aims to collect and integrate all public pathway data available in standard formats. 
+[@cerami2010pathway]
+
+```{r,eval=FALSE}
+pc = readr::read_delim("raw-data/PathwayCommons12.All.hgnc.txt",delim = "\t")
+pc$MEDIATOR_IDS = NULL
+readr::write_rds(pc,"data/pathwaycommons.rds")
+```
+
+```{r}
+pc = readr::read_rds("data/pathwaycommons.rds")
+pc %>% 
+  select(1:5) %>% 
+  slice(1:10) %>% 
+  gt()
+```
+
+## Cleansing Data
+
+
