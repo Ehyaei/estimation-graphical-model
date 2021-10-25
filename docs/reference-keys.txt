@@ -4,5 +4,10 @@ methods
 theoretical-properties
 simulation
 application-to-tcga-data
-download-data-from-tcga-portal
+download-data
+tcga-portal
+gense-metadata
+msigdb-hallmark-50
+pathway-commons
+cleansing-data
 reference

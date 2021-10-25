@@ -167,7 +167,14 @@ div.csl-indent {
 <li class="chapter" data-level="5" data-path="simulation.html"><a href="simulation.html"><i class="fa fa-check"></i><b>5</b> Simulation</a></li>
 <li class="chapter" data-level="6" data-path="application-to-tcga-data.html"><a href="application-to-tcga-data.html"><i class="fa fa-check"></i><b>6</b> Application to TCGA data</a>
 <ul>
-<li class="chapter" data-level="6.1" data-path="application-to-tcga-data.html"><a href="application-to-tcga-data.html#download-data-from-tcga-portal"><i class="fa fa-check"></i><b>6.1</b> Download Data from TCGA Portal</a></li>
+<li class="chapter" data-level="6.1" data-path="application-to-tcga-data.html"><a href="application-to-tcga-data.html#download-data"><i class="fa fa-check"></i><b>6.1</b> Download Data</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="application-to-tcga-data.html"><a href="application-to-tcga-data.html#tcga-portal"><i class="fa fa-check"></i><b>6.1.1</b> TCGA Portal</a></li>
+<li class="chapter" data-level="6.1.2" data-path="application-to-tcga-data.html"><a href="application-to-tcga-data.html#gense-metadata"><i class="fa fa-check"></i><b>6.1.2</b> Gense Metadata</a></li>
+<li class="chapter" data-level="6.1.3" data-path="application-to-tcga-data.html"><a href="application-to-tcga-data.html#msigdb-hallmark-50"><i class="fa fa-check"></i><b>6.1.3</b> MSigDB Hallmark 50</a></li>
+<li class="chapter" data-level="6.1.4" data-path="application-to-tcga-data.html"><a href="application-to-tcga-data.html#pathway-commons"><i class="fa fa-check"></i><b>6.1.4</b> Pathway Commons</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="application-to-tcga-data.html"><a href="application-to-tcga-data.html#cleansing-data"><i class="fa fa-check"></i><b>6.2</b> Cleansing Data</a></li>
 </ul></li>
 <li class="chapter" data-level="7" data-path="reference.html"><a href="reference.html"><i class="fa fa-check"></i><b>7</b> Reference</a></li>
 </ul>
@@ -190,8 +197,10 @@ div.csl-indent {
 <div id="application-to-tcga-data" class="section level1" number="6">
 <h1><span class="header-section-number">6</span> Application to TCGA data</h1>
 <p>For download the RNA-seq breast cancer data from Cancer Genome Atlas (TCGA) database we use <code>TCGAbiolinks</code> package <span class="citation">(<a href="#ref-TCGAbiolinks" role="doc-biblioref">Silva et al. 2016</a>)</span>.</p>
-<div id="download-data-from-tcga-portal" class="section level2" number="6.1">
-<h2><span class="header-section-number">6.1</span> Download Data from TCGA Portal</h2>
+<div id="download-data" class="section level2" number="6.1">
+<h2><span class="header-section-number">6.1</span> Download Data</h2>
+<div id="tcga-portal" class="section level3" number="6.1.1">
+<h3><span class="header-section-number">6.1.1</span> TCGA Portal</h3>
 <p><a href="https://bioconductor.org/packages/release/bioc/html/TCGAbiolinks.html">TCGAbiolinks</a>’ purpose is to make it easier to access GDC data, build preprocessing methods, and provide multiple methods for analysis and visualization. For install package run below commands:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="application-to-tcga-data.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(<span class="st">&quot;BiocManager&quot;</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>))</span>
 <span id="cb1-2"><a href="application-to-tcga-data.html#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">install.packages</span>(<span class="st">&quot;BiocManager&quot;</span>)</span>
@@ -1083,40 +1092,28 @@ div.csl-indent {
   
 </table>
 </div>
-<p>The <code>HTSeq-Counts</code> contains 60488 genes.
-To replicate <span class="citation">(<a href="#ref-yang2021model" role="doc-biblioref">Yang et al. 2021</a>)</span> paper,
-we consider only genes in RNA-seq whose read number is more than 20 in at least 25% of the samples. We also use <code>HTSeq-FPKM-UQ</code>, which is more robust than <code>HTSeq-Counts</code> using the total number of reads per sample.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="application-to-tcga-data.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Find Most Frequent Genes</span></span>
-<span id="cb5-2"><a href="application-to-tcga-data.html#cb5-2" aria-hidden="true" tabindex="-1"></a>SeqMat <span class="ot">=</span> HTSeq_Counts</span>
-<span id="cb5-3"><a href="application-to-tcga-data.html#cb5-3" aria-hidden="true" tabindex="-1"></a>SeqMat<span class="sc">$</span>Gene <span class="ot">=</span> <span class="cn">NULL</span></span>
-<span id="cb5-4"><a href="application-to-tcga-data.html#cb5-4" aria-hidden="true" tabindex="-1"></a>SeqMat  <span class="ot">=</span>  <span class="fu">as.matrix</span>(SeqMat)</span>
-<span id="cb5-5"><a href="application-to-tcga-data.html#cb5-5" aria-hidden="true" tabindex="-1"></a>GeneList <span class="ot">=</span> HTSeq_Counts<span class="sc">$</span>Gene[<span class="fu">rowSums</span>(SeqMat<span class="sc">&gt;</span><span class="dv">20</span>)<span class="sc">/</span><span class="fu">ncol</span>(SeqMat)<span class="sc">&gt;</span><span class="fl">0.25</span>]</span>
-<span id="cb5-6"><a href="application-to-tcga-data.html#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-7"><a href="application-to-tcga-data.html#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter HTSeq_FPKM_UQ to Most Frequent Genes</span></span>
-<span id="cb5-8"><a href="application-to-tcga-data.html#cb5-8" aria-hidden="true" tabindex="-1"></a>readr<span class="sc">::</span><span class="fu">read_rds</span>(<span class="st">&quot;data/TCGA_BRCA_HTSeq_FPKM_UQ.rds&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb5-9"><a href="application-to-tcga-data.html#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(X1 <span class="sc">%in%</span> GeneList) <span class="sc">%&gt;%</span> </span>
-<span id="cb5-10"><a href="application-to-tcga-data.html#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">Gene =</span> X1 ) <span class="sc">%&gt;%</span> </span>
-<span id="cb5-11"><a href="application-to-tcga-data.html#cb5-11" aria-hidden="true" tabindex="-1"></a>  readr<span class="sc">::</span><span class="fu">write_rds</span>(<span class="st">&quot;data/RNASeq.rds&quot;</span>)</span></code></pre></div>
-<p>After frequent restriction, 20131 genes remained.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="application-to-tcga-data.html#cb6-1" aria-hidden="true" tabindex="-1"></a>RNASeq <span class="ot">=</span> readr<span class="sc">::</span><span class="fu">read_rds</span>(<span class="st">&quot;data/RNASeq.rds&quot;</span>)  </span></code></pre></div>
+<p>The <code>HTSeq-Counts</code> contains 60488 genes.</p>
+</div>
+<div id="gense-metadata" class="section level3" number="6.1.2">
+<h3><span class="header-section-number">6.1.2</span> Gense Metadata</h3>
 <p>To use name and id of genes, we download genes metadata tables with <code>biomaRt</code> package.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="application-to-tcga-data.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(biomaRt)</span>
-<span id="cb7-2"><a href="application-to-tcga-data.html#cb7-2" aria-hidden="true" tabindex="-1"></a>mart <span class="ot">&lt;-</span> <span class="fu">useMart</span>(<span class="at">biomart =</span> <span class="st">&quot;ensembl&quot;</span>, <span class="at">dataset =</span> <span class="st">&quot;hsapiens_gene_ensembl&quot;</span>)</span>
-<span id="cb7-3"><a href="application-to-tcga-data.html#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">listAttributes</span>(mart)</span>
-<span id="cb7-4"><a href="application-to-tcga-data.html#cb7-4" aria-hidden="true" tabindex="-1"></a>geneTable <span class="ot">&lt;-</span> <span class="fu">getBM</span>(</span>
-<span id="cb7-5"><a href="application-to-tcga-data.html#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">attributes =</span> <span class="fu">c</span>(<span class="st">&quot;ensembl_gene_id&quot;</span>,<span class="st">&quot;chromosome_name&quot;</span>,<span class="st">&quot;start_position&quot;</span>,</span>
-<span id="cb7-6"><a href="application-to-tcga-data.html#cb7-6" aria-hidden="true" tabindex="-1"></a>                 <span class="st">&quot;end_position&quot;</span>,<span class="st">&quot;strand&quot;</span>,<span class="st">&quot;band&quot;</span>,</span>
-<span id="cb7-7"><a href="application-to-tcga-data.html#cb7-7" aria-hidden="true" tabindex="-1"></a>                 <span class="st">&quot;hgnc_id&quot;</span>,<span class="st">&quot;hgnc_symbol&quot;</span>),</span>
-<span id="cb7-8"><a href="application-to-tcga-data.html#cb7-8" aria-hidden="true" tabindex="-1"></a>                       <span class="at">mart =</span> mart)</span>
-<span id="cb7-9"><a href="application-to-tcga-data.html#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-10"><a href="application-to-tcga-data.html#cb7-10" aria-hidden="true" tabindex="-1"></a>geneTable <span class="sc">%&gt;%</span> </span>
-<span id="cb7-11"><a href="application-to-tcga-data.html#cb7-11" aria-hidden="true" tabindex="-1"></a>  readr<span class="sc">::</span><span class="fu">write_rds</span>(<span class="st">&quot;data/geneTable.rds&quot;</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="application-to-tcga-data.html#cb8-1" aria-hidden="true" tabindex="-1"></a>geneTable <span class="ot">=</span> readr<span class="sc">::</span><span class="fu">read_rds</span>(<span class="st">&quot;data/geneTable.rds&quot;</span>)</span>
-<span id="cb8-2"><a href="application-to-tcga-data.html#cb8-2" aria-hidden="true" tabindex="-1"></a>geneTable <span class="sc">%&gt;%</span> </span>
-<span id="cb8-3"><a href="application-to-tcga-data.html#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb8-4"><a href="application-to-tcga-data.html#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb8-5"><a href="application-to-tcga-data.html#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb8-6"><a href="application-to-tcga-data.html#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_header</span>(<span class="at">title =</span> <span class="st">&quot;Some Fields of Genes Meta Data&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="application-to-tcga-data.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(biomaRt)</span>
+<span id="cb5-2"><a href="application-to-tcga-data.html#cb5-2" aria-hidden="true" tabindex="-1"></a>mart <span class="ot">&lt;-</span> <span class="fu">useMart</span>(<span class="at">biomart =</span> <span class="st">&quot;ensembl&quot;</span>, <span class="at">dataset =</span> <span class="st">&quot;hsapiens_gene_ensembl&quot;</span>)</span>
+<span id="cb5-3"><a href="application-to-tcga-data.html#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">listAttributes</span>(mart)</span>
+<span id="cb5-4"><a href="application-to-tcga-data.html#cb5-4" aria-hidden="true" tabindex="-1"></a>geneTable <span class="ot">&lt;-</span> <span class="fu">getBM</span>(</span>
+<span id="cb5-5"><a href="application-to-tcga-data.html#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">attributes =</span> <span class="fu">c</span>(<span class="st">&quot;ensembl_gene_id&quot;</span>,<span class="st">&quot;chromosome_name&quot;</span>,<span class="st">&quot;start_position&quot;</span>,</span>
+<span id="cb5-6"><a href="application-to-tcga-data.html#cb5-6" aria-hidden="true" tabindex="-1"></a>                 <span class="st">&quot;end_position&quot;</span>,<span class="st">&quot;strand&quot;</span>,<span class="st">&quot;band&quot;</span>,</span>
+<span id="cb5-7"><a href="application-to-tcga-data.html#cb5-7" aria-hidden="true" tabindex="-1"></a>                 <span class="st">&quot;hgnc_id&quot;</span>,<span class="st">&quot;hgnc_symbol&quot;</span>),</span>
+<span id="cb5-8"><a href="application-to-tcga-data.html#cb5-8" aria-hidden="true" tabindex="-1"></a>                       <span class="at">mart =</span> mart)</span>
+<span id="cb5-9"><a href="application-to-tcga-data.html#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-10"><a href="application-to-tcga-data.html#cb5-10" aria-hidden="true" tabindex="-1"></a>geneTable <span class="sc">%&gt;%</span> </span>
+<span id="cb5-11"><a href="application-to-tcga-data.html#cb5-11" aria-hidden="true" tabindex="-1"></a>  readr<span class="sc">::</span><span class="fu">write_rds</span>(<span class="st">&quot;data/geneTable.rds&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="application-to-tcga-data.html#cb6-1" aria-hidden="true" tabindex="-1"></a>geneTable <span class="ot">=</span> readr<span class="sc">::</span><span class="fu">read_rds</span>(<span class="st">&quot;data/geneTable.rds&quot;</span>)</span>
+<span id="cb6-2"><a href="application-to-tcga-data.html#cb6-2" aria-hidden="true" tabindex="-1"></a>geneTable <span class="sc">%&gt;%</span> </span>
+<span id="cb6-3"><a href="application-to-tcga-data.html#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb6-4"><a href="application-to-tcga-data.html#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-5"><a href="application-to-tcga-data.html#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb6-6"><a href="application-to-tcga-data.html#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_header</span>(<span class="at">title =</span> <span class="st">&quot;Some Fields of Genes Meta Data&quot;</span>)</span></code></pre></div>
 <div id="cdwjghfefx" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
@@ -1560,23 +1557,26 @@ we consider only genes in RNA-seq whose read number is more than 20 in at least 
   
 </table>
 </div>
+</div>
+<div id="msigdb-hallmark-50" class="section level3" number="6.1.3">
+<h3><span class="header-section-number">6.1.3</span> MSigDB Hallmark 50</h3>
 <blockquote>
 <p>We envision this collection as the starting point for your exploration of the MSigDB resource and GSEA. Hallmark gene sets summarize and
 represent specific well-defined biological states or processes and display coherent expression. These gene sets were generated by a computational methodology based on identifying gene set overlaps and retaining genes that display coordinate expression. The hallmarks reduce noise and redundancy and provide a better delineated biological space for GSEA. We refer to the original overlapping gene sets, from which a hallmark is derived, as its ‘founder’ sets. Hallmark gene set pages provide links to the corresponding founder sets for deeper follow up.
 This collection is an initial release of 50 hallmarks which condense information from over 4,000 original overlapping gene sets .<span class="citation">(<a href="#ref-liberzon2015molecular" role="doc-biblioref">Liberzon et al. 2015</a>)</span></p>
 </blockquote>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="application-to-tcga-data.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span><span class="fu">require</span>(msigdbr)) <span class="fu">install.packages</span>(<span class="st">&quot;msigdbr&quot;</span>)</span>
-<span id="cb9-2"><a href="application-to-tcga-data.html#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(msigdbr)</span>
-<span id="cb9-3"><a href="application-to-tcga-data.html#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-4"><a href="application-to-tcga-data.html#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Retrieve human H (hallmark) gene set</span></span>
-<span id="cb9-5"><a href="application-to-tcga-data.html#cb9-5" aria-hidden="true" tabindex="-1"></a>msigdb <span class="ot">&lt;-</span> <span class="fu">msigdbr</span>(<span class="at">species =</span> <span class="st">&quot;Homo sapiens&quot;</span>, <span class="at">category =</span> <span class="st">&quot;H&quot;</span>)</span>
-<span id="cb9-6"><a href="application-to-tcga-data.html#cb9-6" aria-hidden="true" tabindex="-1"></a>readr<span class="sc">::</span><span class="fu">write_rds</span>(msigdb,<span class="st">&quot;data/msigdb.rds&quot;</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="application-to-tcga-data.html#cb10-1" aria-hidden="true" tabindex="-1"></a>msigdb <span class="ot">=</span> readr<span class="sc">::</span><span class="fu">read_rds</span>(<span class="st">&quot;data/msigdb.rds&quot;</span>)</span>
-<span id="cb10-2"><a href="application-to-tcga-data.html#cb10-2" aria-hidden="true" tabindex="-1"></a>msigdb <span class="sc">%&gt;%</span> </span>
-<span id="cb10-3"><a href="application-to-tcga-data.html#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">3</span><span class="sc">:</span><span class="dv">10</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb10-4"><a href="application-to-tcga-data.html#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb10-5"><a href="application-to-tcga-data.html#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb10-6"><a href="application-to-tcga-data.html#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_header</span>(<span class="at">title =</span> <span class="st">&quot;Head of Human H (hallmark) Gene Set&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="application-to-tcga-data.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span><span class="fu">require</span>(msigdbr)) <span class="fu">install.packages</span>(<span class="st">&quot;msigdbr&quot;</span>)</span>
+<span id="cb7-2"><a href="application-to-tcga-data.html#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(msigdbr)</span>
+<span id="cb7-3"><a href="application-to-tcga-data.html#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="application-to-tcga-data.html#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Retrieve human H (hallmark) gene set</span></span>
+<span id="cb7-5"><a href="application-to-tcga-data.html#cb7-5" aria-hidden="true" tabindex="-1"></a>msigdb <span class="ot">&lt;-</span> <span class="fu">msigdbr</span>(<span class="at">species =</span> <span class="st">&quot;Homo sapiens&quot;</span>, <span class="at">category =</span> <span class="st">&quot;H&quot;</span>)</span>
+<span id="cb7-6"><a href="application-to-tcga-data.html#cb7-6" aria-hidden="true" tabindex="-1"></a>readr<span class="sc">::</span><span class="fu">write_rds</span>(msigdb,<span class="st">&quot;data/msigdb.rds&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="application-to-tcga-data.html#cb8-1" aria-hidden="true" tabindex="-1"></a>msigdb <span class="ot">=</span> readr<span class="sc">::</span><span class="fu">read_rds</span>(<span class="st">&quot;data/msigdb.rds&quot;</span>)</span>
+<span id="cb8-2"><a href="application-to-tcga-data.html#cb8-2" aria-hidden="true" tabindex="-1"></a>msigdb <span class="sc">%&gt;%</span> </span>
+<span id="cb8-3"><a href="application-to-tcga-data.html#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">3</span><span class="sc">:</span><span class="dv">10</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-4"><a href="application-to-tcga-data.html#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-5"><a href="application-to-tcga-data.html#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb8-6"><a href="application-to-tcga-data.html#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_header</span>(<span class="at">title =</span> <span class="st">&quot;Head of Human H (hallmark) Gene Set&quot;</span>)</span></code></pre></div>
 <div id="tsmsbrwlxg" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
@@ -2020,18 +2020,21 @@ This collection is an initial release of 50 hallmarks which condense information
   
 </table>
 </div>
+</div>
+<div id="pathway-commons" class="section level3" number="6.1.4">
+<h3><span class="header-section-number">6.1.4</span> Pathway Commons</h3>
 <blockquote>
 <p><a href="http://www.pathwaycommons.org">Pathway Commons</a> is a collection of publicly available pathway data from multiple organisms. Pathway Commons provides a web-based interface that enables biologists to browse and search a comprehensive collection of pathways from multiple sources represented in a common language, a download site that provides integrated bulk sets of pathway information in standard or convenient formats and a web service that software developers can use to conveniently query and access all data. Database providers can share their pathway data via a common repository. Pathways include biochemical reactions, complex assembly, transport and catalysis events and physical interactions involving proteins, DNA, RNA, small molecules and complexes. Pathway Commons aims to collect and integrate all public pathway data available in standard formats.
 <span class="citation">(<a href="#ref-cerami2010pathway" role="doc-biblioref">Cerami et al. 2010</a>)</span></p>
 </blockquote>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="application-to-tcga-data.html#cb11-1" aria-hidden="true" tabindex="-1"></a>pc <span class="ot">=</span> readr<span class="sc">::</span><span class="fu">read_delim</span>(<span class="st">&quot;raw-data/PathwayCommons12.All.hgnc.txt&quot;</span>,<span class="at">delim =</span> <span class="st">&quot;</span><span class="sc">\t</span><span class="st">&quot;</span>)</span>
-<span id="cb11-2"><a href="application-to-tcga-data.html#cb11-2" aria-hidden="true" tabindex="-1"></a>pc<span class="sc">$</span>MEDIATOR_IDS <span class="ot">=</span> <span class="cn">NULL</span></span>
-<span id="cb11-3"><a href="application-to-tcga-data.html#cb11-3" aria-hidden="true" tabindex="-1"></a>readr<span class="sc">::</span><span class="fu">write_rds</span>(pc,<span class="st">&quot;data/pathwaycommons.rds&quot;</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="application-to-tcga-data.html#cb12-1" aria-hidden="true" tabindex="-1"></a>pc <span class="ot">=</span> readr<span class="sc">::</span><span class="fu">read_rds</span>(<span class="st">&quot;data/pathwaycommons.rds&quot;</span>)</span>
-<span id="cb12-2"><a href="application-to-tcga-data.html#cb12-2" aria-hidden="true" tabindex="-1"></a>pc <span class="sc">%&gt;%</span> </span>
-<span id="cb12-3"><a href="application-to-tcga-data.html#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb12-4"><a href="application-to-tcga-data.html#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb12-5"><a href="application-to-tcga-data.html#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="application-to-tcga-data.html#cb9-1" aria-hidden="true" tabindex="-1"></a>pc <span class="ot">=</span> readr<span class="sc">::</span><span class="fu">read_delim</span>(<span class="st">&quot;raw-data/PathwayCommons12.All.hgnc.txt&quot;</span>,<span class="at">delim =</span> <span class="st">&quot;</span><span class="sc">\t</span><span class="st">&quot;</span>)</span>
+<span id="cb9-2"><a href="application-to-tcga-data.html#cb9-2" aria-hidden="true" tabindex="-1"></a>pc<span class="sc">$</span>MEDIATOR_IDS <span class="ot">=</span> <span class="cn">NULL</span></span>
+<span id="cb9-3"><a href="application-to-tcga-data.html#cb9-3" aria-hidden="true" tabindex="-1"></a>readr<span class="sc">::</span><span class="fu">write_rds</span>(pc,<span class="st">&quot;data/pathwaycommons.rds&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="application-to-tcga-data.html#cb10-1" aria-hidden="true" tabindex="-1"></a>pc <span class="ot">=</span> readr<span class="sc">::</span><span class="fu">read_rds</span>(<span class="st">&quot;data/pathwaycommons.rds&quot;</span>)</span>
+<span id="cb10-2"><a href="application-to-tcga-data.html#cb10-2" aria-hidden="true" tabindex="-1"></a>pc <span class="sc">%&gt;%</span> </span>
+<span id="cb10-3"><a href="application-to-tcga-data.html#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb10-4"><a href="application-to-tcga-data.html#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb10-5"><a href="application-to-tcga-data.html#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>()</span></code></pre></div>
 <div id="shujpetlvl" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
@@ -2437,6 +2440,25 @@ This collection is an initial release of 50 hallmarks which condense information
   
 </table>
 </div>
+</div>
+</div>
+<div id="cleansing-data" class="section level2" number="6.2">
+<h2><span class="header-section-number">6.2</span> Cleansing Data</h2>
+<p>To replicate <span class="citation">(<a href="#ref-yang2021model" role="doc-biblioref">Yang et al. 2021</a>)</span> paper,
+we consider only genes in RNA-seq whose read number is more than 20 in at least 25% of the samples. We also use <code>HTSeq-FPKM-UQ</code>, which is more robust than <code>HTSeq-Counts</code> using the total number of reads per sample.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="application-to-tcga-data.html#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Find Most Frequent Genes</span></span>
+<span id="cb11-2"><a href="application-to-tcga-data.html#cb11-2" aria-hidden="true" tabindex="-1"></a>SeqMat <span class="ot">=</span> HTSeq_Counts</span>
+<span id="cb11-3"><a href="application-to-tcga-data.html#cb11-3" aria-hidden="true" tabindex="-1"></a>SeqMat<span class="sc">$</span>Gene <span class="ot">=</span> <span class="cn">NULL</span></span>
+<span id="cb11-4"><a href="application-to-tcga-data.html#cb11-4" aria-hidden="true" tabindex="-1"></a>SeqMat  <span class="ot">=</span>  <span class="fu">as.matrix</span>(SeqMat)</span>
+<span id="cb11-5"><a href="application-to-tcga-data.html#cb11-5" aria-hidden="true" tabindex="-1"></a>GeneList <span class="ot">=</span> HTSeq_Counts<span class="sc">$</span>Gene[<span class="fu">rowSums</span>(SeqMat<span class="sc">&gt;</span><span class="dv">20</span>)<span class="sc">/</span><span class="fu">ncol</span>(SeqMat)<span class="sc">&gt;</span><span class="fl">0.25</span>]</span>
+<span id="cb11-6"><a href="application-to-tcga-data.html#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-7"><a href="application-to-tcga-data.html#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter HTSeq_FPKM_UQ to Most Frequent Genes</span></span>
+<span id="cb11-8"><a href="application-to-tcga-data.html#cb11-8" aria-hidden="true" tabindex="-1"></a>readr<span class="sc">::</span><span class="fu">read_rds</span>(<span class="st">&quot;data/TCGA_BRCA_HTSeq_FPKM_UQ.rds&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb11-9"><a href="application-to-tcga-data.html#cb11-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(X1 <span class="sc">%in%</span> GeneList) <span class="sc">%&gt;%</span> </span>
+<span id="cb11-10"><a href="application-to-tcga-data.html#cb11-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">Gene =</span> X1 ) <span class="sc">%&gt;%</span> </span>
+<span id="cb11-11"><a href="application-to-tcga-data.html#cb11-11" aria-hidden="true" tabindex="-1"></a>  readr<span class="sc">::</span><span class="fu">write_rds</span>(<span class="st">&quot;data/RNASeq.rds&quot;</span>)</span></code></pre></div>
+<p>After frequent restriction, 20131 genes remained.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="application-to-tcga-data.html#cb12-1" aria-hidden="true" tabindex="-1"></a>RNASeq <span class="ot">=</span> readr<span class="sc">::</span><span class="fu">read_rds</span>(<span class="st">&quot;data/RNASeq.rds&quot;</span>)  </span></code></pre></div>
 
 </div>
 </div>
