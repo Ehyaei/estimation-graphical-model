@@ -3,6 +3,7 @@ title: "Estimation Graphical Model"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 author: [Mona Azadkia, Ahmad Ehyaei]
 titlepage: true
+book: true
 page-background-color: f6f6f6
 logo-secondary: src/img/ethz_logo_white.eps
 logo-secondary-size: 0.03

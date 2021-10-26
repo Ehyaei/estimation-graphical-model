@@ -143,7 +143,7 @@
 
 \title{Estimation Graphical Model}
 \author{Mona Azadkia \and Ahmad Ehyaei}
-\date{24 Oktober, 2021}
+\date{26 Oktober, 2021}
 
 % ...................................................................... %
 %
@@ -430,7 +430,8 @@ BoldItalicFont = UniversLTStd-Bold.otf
   }
 \newtcolorbox{rmdcode}{
   enhanced,
-  boxrule=0pt,frame hidden,
+  boxrule=0pt,
+  colframe=rcolor,
   borderline west={4pt}{0pt}{rcolor},
   colback=rcolor!5!white,
   sharp corners
@@ -441,14 +442,34 @@ BoldItalicFont = UniversLTStd-Bold.otf
 
 \BeforeBeginEnvironment{Highlighting}{\begin{rmdcode}}
 \AfterEndEnvironment{Highlighting}{\end{rmdcode}}
-\definecolor{shadecolor}{HTML}{ffffff}
+
+\definecolor{shadecolor}{HTML}{f6f6f6}
+
+
+
+% Add quote section
+\definecolor{quotecolor}{HTML}{989898}
+
+\newtcolorbox{rmdquote}{
+  enhanced,
+  boxrule=0pt,
+  colframe=quotecolor,
+  borderline west={4pt}{0pt}{quotecolor},
+  colback=quotecolor!15!white,
+  sharp corners
+  }
+\BeforeBeginEnvironment{quote}{\begin{rmdquote}}
+\AfterEndEnvironment{quote}{\end{rmdquote}}
+
+% prevent vertically justifying the contents
+\raggedbottom
 
 %......................................................................%
 % add packages for title page
 
 \usepackage{tikz}
 
-\usepackage[margin=1.5cm,includehead=true,includefoot=true,centering]{geometry}
+\usepackage[left=1.5cm,right=1.5cm,top=1.5cm,bottom=1.5cm]{geometry}
 
 % ----------------------------------------------------------------------------- %
 %                                   Set Geometry                                %
@@ -519,27 +540,38 @@ BoldItalicFont = UniversLTStd-Bold.otf
 %......................................................................%
 % Remove Blank Page after Table of Contents and between chapter
 
+\let\cleardoublepage=\clearpage
+\let\cleardoublepage\clearpage\null\thispagestyle{empty}
 
 %----------------------------------------------------------------------------------------
 % Chapter Design
 \usepackage{titlesec}
 
+\titleformat{\chapter}[display]
+  {\Large\color{chapterTitleColor}}
+  {\filright\huge\chaptertitlename \huge\thechapter}
+  {1ex}
+  {\Huge\titlerule[2.5pt]\vskip3pt\titlerule\vspace{1ex}\filleft}
+
 \titleformat{\section}[block]
-  {\huge\color{chapterTitleColor}}
-  {\filright \textbf{\thesection}\vspace{1ex}}{12pt}
+  {\Large\color{chapterTitleColor}}
+  {\filright \thesection\vspace{1ex}}{12pt}
   {}
   [\titlerule]
 
-\titleformat{\subsection}[block]
+  \titleformat{\subsection}[block]
   {\Large\color{chapterTitleColor}}
-  {\filright \textbf{\thesubsection}\vspace{1ex}}{12pt}
+  {\filright \thesubsection\vspace{1ex}}{12pt}
   {}
   []
 
 
-
 %----------------------------------------------------------------------------------------
 % Remove page number in toc and strange white first page
+
+\addtocontents{toc}{\protect\thispagestyle{empty}}
+\usepackage{atbegshi}
+\AtBeginDocument{\AtBeginShipoutNext{\AtBeginShipoutDiscard}}
 
 %......................................................................%
 %
@@ -599,7 +631,7 @@ BoldItalicFont = UniversLTStd-Bold.otf
   
   
   % add bodoni font to date
-    \huge{\uppercase{24 Oktober, 2021}}
+    \huge{\uppercase{26 Oktober, 2021}}
   \vspace{0.3cm}
   
   \vspace{0.6cm}
@@ -664,8 +696,11 @@ BoldItalicFont = UniversLTStd-Bold.otf
 
 For download the RNA-seq breast cancer data from Cancer Genome Atlas (TCGA) database we use \texttt{TCGAbiolinks} package (\protect\hyperlink{ref-TCGAbiolinks}{Silva et al. 2016}).
 
-\hypertarget{download-data-from-tcga-portal}{%
-\section{Download Data from TCGA Portal}\label{download-data-from-tcga-portal}}
+\hypertarget{download-data}{%
+\section{Download Data}\label{download-data}}
+
+\hypertarget{tcga-portal}{%
+\subsection{TCGA Portal}\label{tcga-portal}}
 
 \href{https://bioconductor.org/packages/release/bioc/html/TCGAbiolinks.html}{TCGAbiolinks}' purpose is to make it easier to access GDC data, build preprocessing methods, and provide multiple methods for analysis and visualization. For install package run below commands:
 
@@ -692,38 +727,40 @@ Fist we download clinical data related to \texttt{TCGA-BRCA} study
 \end{Highlighting}
 \end{Shaded}
 
-\newpage
+\begin{table}
 
-\captionsetup[table]{labelformat=empty,skip=1pt}
-\begin{longtable}{llll}
-\caption*{
-{\large TCGA BRCA Clinical Data Header}
-} \\ 
+\caption{\label{tab:unnamed-chunk-4}TCGA BRCA Clinical Data Header}
+\centering
+\begin{tabular}[t]{lll}
 \toprule
-attrib\_name & TCGA.5L.AAT0 & TCGA.5L.AAT1 & TCGA.A1.A0SP \\ 
+attrib\_name & TCGA.5L.AAT0 & TCGA.5L.AAT1\\
 \midrule
-years\_to\_birth & 42 & 63 & 40 \\ 
-Tumor\_purity & 0.6501 & 0.5553 & 0.6913 \\ 
-pathologic\_stage & stageii & stageiv & stageii \\ 
-pathology\_T\_stage & t2 & t2 & t2 \\ 
-pathology\_N\_stage & n0 & n0 & n0 \\ 
-pathology\_M\_stage & m0 & m1 & m0 \\ 
-histological\_type & infiltratinglobularcarcinoma & infiltratinglobularcarcinoma & infiltratingductalcarcinoma \\ 
-number\_of\_lymph\_nodes & 0 & 0 & 0 \\ 
-PAM50 &  &  & Basal \\ 
-ER.Status &  &  &  \\ 
-PR.Status &  &  &  \\ 
-HER2.Status &  &  &  \\ 
-gender & female & female & female \\ 
-radiation\_therapy & yes & no &  \\ 
-race & white & white &  \\ 
-ethnicity & hispanicorlatino & hispanicorlatino & nothispanicorlatino \\ 
-Median\_overall\_survival & 0 & 0 & 0 \\ 
-overall\_survival & 1477 & 1471 & 584 \\ 
-status & 0 & 0 & 0 \\ 
-overallsurvival & 1477,0 & 1471,0 & 584,0 \\ 
- \bottomrule
-\end{longtable}
+years\_to\_birth & 42 & 63\\
+Tumor\_purity & 0.6501 & 0.5553\\
+pathologic\_stage & stageii & stageiv\\
+pathology\_T\_stage & t2 & t2\\
+pathology\_N\_stage & n0 & n0\\
+\addlinespace
+pathology\_M\_stage & m0 & m1\\
+histological\_type & infiltratinglobularcarcinoma & infiltratinglobularcarcinoma\\
+number\_of\_lymph\_nodes & 0 & 0\\
+PAM50 &  & \\
+ER.Status &  & \\
+\addlinespace
+PR.Status &  & \\
+HER2.Status &  & \\
+gender & female & female\\
+radiation\_therapy & yes & no\\
+race & white & white\\
+\addlinespace
+ethnicity & hispanicorlatino & hispanicorlatino\\
+Median\_overall\_survival & 0 & 0\\
+overall\_survival & 1477 & 1471\\
+status & 0 & 0\\
+overallsurvival & 1477,0 & 1471,0\\
+\bottomrule
+\end{tabular}
+\end{table}
 
 The above table contains clinical data of patients. The name of each column is related to the patient's id.
 
@@ -762,7 +799,6 @@ The read count is multiplied by a scalar \(10^9\) during normalization to accoun
 
 \begin{Shaded}
 \begin{Highlighting}[]
-
 \NormalTok{measurements }\OtherTok{=} \FunctionTok{c}\NormalTok{( }\StringTok{"HTSeq {-} Counts"}\NormalTok{, }\StringTok{"HTSeq {-} FPKM"}\NormalTok{, }\StringTok{"HTSeq {-} FPKM{-}UQ"}\NormalTok{)}
 \ControlFlowTok{for}\NormalTok{( m }\ControlFlowTok{in}\NormalTok{ measurements)\{}
 \NormalTok{  query }\OtherTok{\textless{}{-}} \FunctionTok{GDCquery}\NormalTok{(}
@@ -782,63 +818,212 @@ The read count is multiplied by a scalar \(10^9\) during normalization to accoun
 
 In the below table, the header of the HT-Seq count data can be found:
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{Sample\_HTSeq\_Counts }\OtherTok{=}\NormalTok{ readr}\SpecialCharTok{::}\FunctionTok{read\_rds}\NormalTok{(}\StringTok{"data/Sample\_TCGA\_BRCA\_HTSeq\_Counts.rds"}\NormalTok{) }
-
-\NormalTok{Sample\_HTSeq\_Counts }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{gt}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%} 
-  \FunctionTok{tab\_header}\NormalTok{(}\AttributeTok{title =} \StringTok{"mRNA HT{-}Seq Count Data"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
-   \FunctionTok{fmt\_missing}\NormalTok{(}\AttributeTok{columns =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{4}\NormalTok{,}\AttributeTok{missing\_text =} \StringTok{""}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
 \captionsetup[table]{labelformat=empty,skip=1pt}
-\begin{longtable}{lrrr}
+\begin{longtable}{lrr}
 \caption*{
 {\large mRNA HT-Seq Count Data}
 } \\ 
 \toprule
-Gene & TCGA-3C-AAAU-01A-11R-A41B-07 & TCGA-3C-AALI-01A-11R-A41B-07 & TCGA-3C-AALJ-01A-31R-A41B-07 \\ 
+ensembl\_gene\_id & TCGA-3C-AAAU-01A-11R-A41B-07 & TCGA-3C-AALI-01A-11R-A41B-07 \\ 
 \midrule
-ENSG00000225411.2 & 1 & 1 & 0 \\ 
-ENSG00000236662.1 & 6 & 6 & 1 \\ 
-ENSG00000244501.3 & 0 & 0 & 0 \\ 
-ENSG00000242067.1 & 0 & 0 & 0 \\ 
-ENSG00000140319.9 & 12112 & 3039 & 6117 \\ 
-ENSG00000200112.1 & 0 & 0 & 0 \\ 
-ENSG00000230496.1 & 0 & 0 & 0 \\ 
-ENSG00000250261.1 & 2 & 0 & 1 \\ 
-ENSG00000135838.12 & 647 & 720 & 441 \\ 
-ENSG00000268906.1 & 0 & 0 & 0 \\ 
+ENSG00000153786.11 & 4416 & 2818 \\ 
+ENSG00000266493.1 & 0 & 0 \\ 
+ENSG00000227488.2 & 0 & 0 \\ 
+ENSG00000249438.2 & 0 & 0 \\ 
+ENSG00000255317.1 & 0 & 0 \\ 
+ENSG00000252423.1 & 0 & 0 \\ 
+ENSG00000232685.4 & 0 & 2 \\ 
+ENSG00000123415.13 & 1369 & 1735 \\ 
+ENSG00000200702.1 & 0 & 0 \\ 
+ENSG00000181982.16 & 1812 & 1510 \\ 
  \bottomrule
 \end{longtable}
 
 The \texttt{HTSeq-Counts} contains 60488 genes.
+
+\hypertarget{gense-metadata}{%
+\subsection{Gense Metadata}\label{gense-metadata}}
+
+To use name and id of genes, we download genes metadata tables with \texttt{biomaRt} package (\protect\hyperlink{ref-BioMart}{Durinck et al. 2005}).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(biomaRt)}
+\NormalTok{mart }\OtherTok{\textless{}{-}} \FunctionTok{useMart}\NormalTok{(}\AttributeTok{biomart =} \StringTok{"ensembl"}\NormalTok{, }\AttributeTok{dataset =} \StringTok{"hsapiens\_gene\_ensembl"}\NormalTok{)}
+\FunctionTok{listAttributes}\NormalTok{(mart)}
+\NormalTok{geneTable }\OtherTok{\textless{}{-}} \FunctionTok{getBM}\NormalTok{(}
+  \AttributeTok{attributes =} \FunctionTok{c}\NormalTok{(}\StringTok{"ensembl\_gene\_id"}\NormalTok{,}\StringTok{"chromosome\_name"}\NormalTok{,}\StringTok{"start\_position"}\NormalTok{,}
+                 \StringTok{"end\_position"}\NormalTok{,}\StringTok{"strand"}\NormalTok{,}\StringTok{"band"}\NormalTok{,}
+                 \StringTok{"hgnc\_id"}\NormalTok{,}\StringTok{"hgnc\_symbol"}\NormalTok{),}
+                       \AttributeTok{mart =}\NormalTok{ mart)}
+
+\NormalTok{geneTable }\SpecialCharTok{\%\textgreater{}\%} 
+\NormalTok{  readr}\SpecialCharTok{::}\FunctionTok{write\_rds}\NormalTok{(}\StringTok{"data/geneTable.rds"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\captionsetup[table]{labelformat=empty,skip=1pt}
+\begin{longtable}{llrrrll}
+\caption*{
+{\large Some Fields of Genes Meta Data}
+} \\ 
+\toprule
+ensembl\_gene\_id & chromosome\_name & start\_position & end\_position & strand & band & hgnc\_symbol \\ 
+\midrule
+ENSG00000210049 & MT & 577 & 647 & 1 &  & MT-TF \\ 
+ENSG00000211459 & MT & 648 & 1601 & 1 &  & MT-RNR1 \\ 
+ENSG00000210077 & MT & 1602 & 1670 & 1 &  & MT-TV \\ 
+ENSG00000210082 & MT & 1671 & 3229 & 1 &  & MT-RNR2 \\ 
+ENSG00000209082 & MT & 3230 & 3304 & 1 &  & MT-TL1 \\ 
+ENSG00000198888 & MT & 3307 & 4262 & 1 &  & MT-ND1 \\ 
+ENSG00000210100 & MT & 4263 & 4331 & 1 &  & MT-TI \\ 
+ENSG00000210107 & MT & 4329 & 4400 & -1 &  & MT-TQ \\ 
+ENSG00000210112 & MT & 4402 & 4469 & 1 &  & MT-TM \\ 
+ENSG00000198763 & MT & 4470 & 5511 & 1 &  & MT-ND2 \\ 
+ \bottomrule
+\end{longtable}
+
+\hypertarget{msigdb-hallmark-50}{%
+\subsection{MSigDB Hallmark 50}\label{msigdb-hallmark-50}}
+
+\begin{quote}
+We envision this collection as the starting point for your exploration of the MSigDB resource and GSEA. Hallmark gene sets summarize and
+represent specific well-defined biological states or processes and display coherent expression. These gene sets were generated by a computational methodology based on identifying gene set overlaps and retaining genes that display coordinate expression. The hallmarks reduce noise and redundancy and provide a better delineated biological space for GSEA. We refer to the original overlapping gene sets, from which a hallmark is derived, as its `founder' sets. Hallmark gene set pages provide links to the corresponding founder sets for deeper follow up.
+This collection is an initial release of 50 hallmarks which condense information from over 4,000 original overlapping gene sets .(\protect\hyperlink{ref-liberzon2015molecular}{Liberzon et al. 2015})
+\end{quote}
+
+To download MSigDB we use msigdbr package (\protect\hyperlink{ref-msigdbr}{Dolgalev 2021}).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ControlFlowTok{if}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{require}\NormalTok{(msigdbr)) }\FunctionTok{install.packages}\NormalTok{(}\StringTok{"msigdbr"}\NormalTok{)}
+\FunctionTok{library}\NormalTok{(msigdbr)}
+
+\CommentTok{\# Retrieve human H (hallmark) gene set}
+\NormalTok{msigdb }\OtherTok{\textless{}{-}} \FunctionTok{msigdbr}\NormalTok{(}\AttributeTok{species =} \StringTok{"Homo sapiens"}\NormalTok{, }\AttributeTok{category =} \StringTok{"H"}\NormalTok{)}
+\NormalTok{readr}\SpecialCharTok{::}\FunctionTok{write\_rds}\NormalTok{(msigdb,}\StringTok{"data/msigdb.rds"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\captionsetup[table]{labelformat=empty,skip=1pt}
+\begin{longtable}{llrl}
+\caption*{
+{\large Head of Human H (hallmark) Gene Set}
+} \\ 
+\toprule
+gs\_name & gene\_symbol & entrez\_gene & ensembl\_gene \\ 
+\midrule
+HALLMARK\_ADIPOGENESIS & ABCA1 & 19 & ENSG00000165029 \\ 
+HALLMARK\_ADIPOGENESIS & ABCB8 & 11194 & ENSG00000197150 \\ 
+HALLMARK\_ADIPOGENESIS & ACAA2 & 10449 & ENSG00000167315 \\ 
+HALLMARK\_ADIPOGENESIS & ACADL & 33 & ENSG00000115361 \\ 
+HALLMARK\_ADIPOGENESIS & ACADM & 34 & ENSG00000117054 \\ 
+HALLMARK\_ADIPOGENESIS & ACADS & 35 & ENSG00000122971 \\ 
+HALLMARK\_ADIPOGENESIS & ACLY & 47 & ENSG00000131473 \\ 
+HALLMARK\_ADIPOGENESIS & ACO2 & 50 & ENSG00000100412 \\ 
+HALLMARK\_ADIPOGENESIS & ACOX1 & 51 & ENSG00000161533 \\ 
+HALLMARK\_ADIPOGENESIS & ADCY6 & 112 & ENSG00000174233 \\ 
+ \bottomrule
+\end{longtable}
+
+\hypertarget{pathway-commons}{%
+\subsection{Pathway Commons}\label{pathway-commons}}
+
+\begin{quote}
+\href{http://www.pathwaycommons.org}{Pathway Commons} is a collection of publicly available pathway data from multiple organisms. Pathway Commons provides a web-based interface that enables biologists to browse and search a comprehensive collection of pathways from multiple sources represented in a common language, a download site that provides integrated bulk sets of pathway information in standard or convenient formats and a web service that software developers can use to conveniently query and access all data. Database providers can share their pathway data via a common repository. Pathways include biochemical reactions, complex assembly, transport and catalysis events and physical interactions involving proteins, DNA, RNA, small molecules and complexes. Pathway Commons aims to collect and integrate all public pathway data available in standard formats.
+(\protect\hyperlink{ref-cerami2010pathway}{Cerami et al. 2010})
+\end{quote}
+
+To access Pathway Commons data we download \texttt{PathwayCommons12.All.hgnc.txt.gz} from data \href{https://www.pathwaycommons.org/archives/PC2/v12/}{page}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pc }\OtherTok{=}\NormalTok{ readr}\SpecialCharTok{::}\FunctionTok{read\_delim}\NormalTok{(}\StringTok{"raw{-}data/PathwayCommons12.All.hgnc.txt"}\NormalTok{,}\AttributeTok{delim =} \StringTok{"}\SpecialCharTok{\textbackslash{}t}\StringTok{"}\NormalTok{)}
+\NormalTok{pc}\SpecialCharTok{$}\NormalTok{MEDIATOR\_IDS }\OtherTok{=} \ConstantTok{NULL}
+\NormalTok{readr}\SpecialCharTok{::}\FunctionTok{write\_rds}\NormalTok{(pc,}\StringTok{"data/pathwaycommons.rds"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\captionsetup[table]{labelformat=empty,skip=1pt}
+\begin{longtable}{llll}
+\caption*{
+{\large Sample Data of Pathway Commons}
+} \\ 
+\toprule
+PARTICIPANT\_A & INTERACTION\_TYPE & PARTICIPANT\_B & INTERACTION\_DATA\_SOURCE \\ 
+\midrule
+A1BG & controls-expression-of & A2M & pid \\ 
+A1BG & interacts-with & ABCC6 & BioGRID \\ 
+A1BG & interacts-with & ACE2 & BIND \\ 
+A1BG & interacts-with & ADAM10 & BIND \\ 
+A1BG & interacts-with & ADAM17 & BIND \\ 
+A1BG & interacts-with & ADAM9 & BIND \\ 
+A1BG & interacts-with & AGO1 & BIND \\ 
+A1BG & controls-phosphorylation-of & AKT1 & pid \\ 
+A1BG & controls-state-change-of & AKT1 & pid \\ 
+A1BG & interacts-with & ANXA7 & IntAct;BioGRID \\ 
+ \bottomrule
+\end{longtable}
+
+\hypertarget{cleansing-data}{%
+\section{Cleansing Data}\label{cleansing-data}}
+
 To replicate (\protect\hyperlink{ref-yang2021model}{Yang et al. 2021}) paper,
 we consider only genes in RNA-seq whose read number is more than 20 in at least 25\% of the samples. We also use \texttt{HTSeq-FPKM-UQ}, which is more robust than \texttt{HTSeq-Counts} using the total number of reads per sample.
 
 \begin{Shaded}
 \begin{Highlighting}[]
+\CommentTok{\# Load gene Table}
+\NormalTok{geneTable }\OtherTok{=}\NormalTok{ readr}\SpecialCharTok{::}\FunctionTok{read\_rds}\NormalTok{(}\StringTok{"data/geneTable.rds"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{select}\NormalTok{(ensembl\_gene\_id,hgnc\_symbol)}
+
+\NormalTok{HTSeq\_Counts }\OtherTok{=}\NormalTok{ readr}\SpecialCharTok{::}\FunctionTok{read\_rds}\NormalTok{(}\StringTok{"data/TCGA\_BRCA\_HTSeq\_Counts.rds"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{rename}\NormalTok{( }\AttributeTok{gene\_id =}\NormalTok{ X1) }
+  
 \CommentTok{\# Find Most Frequent Genes}
-\NormalTok{SeqMat }\OtherTok{=}\NormalTok{ HTSeq\_Counts}
-\NormalTok{SeqMat}\SpecialCharTok{$}\NormalTok{Gene }\OtherTok{=} \ConstantTok{NULL}
-\NormalTok{SeqMat  }\OtherTok{=}  \FunctionTok{as.matrix}\NormalTok{(SeqMat)}
-\NormalTok{GeneList }\OtherTok{=}\NormalTok{ HTSeq\_Counts}\SpecialCharTok{$}\NormalTok{Gene[}\FunctionTok{rowSums}\NormalTok{(SeqMat}\SpecialCharTok{\textgreater{}}\DecValTok{20}\NormalTok{)}\SpecialCharTok{/}\FunctionTok{ncol}\NormalTok{(SeqMat)}\SpecialCharTok{\textgreater{}}\FloatTok{0.25}\NormalTok{]}
+\NormalTok{SeqMat }\OtherTok{=}\NormalTok{ HTSeq\_Counts }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{select}\NormalTok{(}\FunctionTok{starts\_with}\NormalTok{(}\StringTok{"TCGA"}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{as.matrix}\NormalTok{()}
+\NormalTok{GeneList }\OtherTok{=}\NormalTok{ HTSeq\_Counts}\SpecialCharTok{$}\NormalTok{gene\_id[}\FunctionTok{rowSums}\NormalTok{(SeqMat}\SpecialCharTok{\textgreater{}}\DecValTok{20}\NormalTok{)}\SpecialCharTok{/}\FunctionTok{ncol}\NormalTok{(SeqMat)}\SpecialCharTok{\textgreater{}}\FloatTok{0.25}\NormalTok{]}
 
 \CommentTok{\# Filter HTSeq\_FPKM\_UQ to Most Frequent Genes}
 \NormalTok{readr}\SpecialCharTok{::}\FunctionTok{read\_rds}\NormalTok{(}\StringTok{"data/TCGA\_BRCA\_HTSeq\_FPKM\_UQ.rds"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
-  \FunctionTok{filter}\NormalTok{(X1 }\SpecialCharTok{\%in\%}\NormalTok{ GeneList) }\SpecialCharTok{\%\textgreater{}\%} 
-  \FunctionTok{rename}\NormalTok{(}\AttributeTok{Gene =}\NormalTok{ X1 ) }\SpecialCharTok{\%\textgreater{}\%} 
-\NormalTok{  readr}\SpecialCharTok{::}\FunctionTok{read\_rds}\NormalTok{(}\StringTok{"data/RNASeq.rds"}\NormalTok{)}
+  \FunctionTok{rename}\NormalTok{( }\AttributeTok{gene\_id =}\NormalTok{ X1) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{ensembl\_gene\_id =} \FunctionTok{substr}\NormalTok{(gene\_id,}\DecValTok{1}\NormalTok{,}\DecValTok{15}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{left\_join}\NormalTok{(geneTable,}\AttributeTok{by =} \StringTok{"ensembl\_gene\_id"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{filter}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{is.na}\NormalTok{(hgnc\_symbol)) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{filter}\NormalTok{(gene\_id }\SpecialCharTok{\%in\%}\NormalTok{ GeneList) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{select}\NormalTok{(gene\_id,hgnc\_symbol,}\FunctionTok{starts\_with}\NormalTok{(}\StringTok{"TCGA"}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%} 
+\NormalTok{  readr}\SpecialCharTok{::}\FunctionTok{write\_rds}\NormalTok{(}\StringTok{"data/RNASeq.rds"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+After frequent restriction, 19879 genes remained.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{RNASeq }\OtherTok{=}\NormalTok{ readr}\SpecialCharTok{::}\FunctionTok{read\_rds}\NormalTok{(}\StringTok{"data/RNASeq.rds"}\NormalTok{)  }
 \end{Highlighting}
 \end{Shaded}
 
 \hypertarget{reference}{%
-\chapter{Reference}\label{reference}}
+\chapter*{Reference}\label{reference}}
+\addcontentsline{toc}{chapter}{Reference}
 
 \hypertarget{refs}{}
 \begin{CSLReferences}{1}{0}
+\leavevmode\vadjust pre{\hypertarget{ref-cerami2010pathway}{}}%
+Cerami, Ethan G, Benjamin E Gross, Emek Demir, Igor Rodchenkov, Özgün Babur, Nadia Anwar, Nikolaus Schultz, Gary D Bader, and Chris Sander. 2010. {``Pathway Commons, a Web Resource for Biological Pathway Data.''} \emph{Nucleic Acids Research} 39 (suppl\_1): D685--90.
+
+\leavevmode\vadjust pre{\hypertarget{ref-msigdbr}{}}%
+Dolgalev, Igor. 2021. \emph{Msigdbr: MSigDB Gene Sets for Multiple Organisms in a Tidy Data Format}. \url{https://CRAN.R-project.org/package=msigdbr}.
+
+\leavevmode\vadjust pre{\hypertarget{ref-BioMart}{}}%
+Durinck, Steffen, Yves Moreau, Arek Kasprzyk, Sean Davis, Bart De Moor, Alvis Brazma, and Wolfgang Huber. 2005. {``BioMart and Bioconductor: A Powerful Link Between Biological Databases and Microarray Data Analysis.''} \emph{Bioinformatics} 21: 3439--40.
+
+\leavevmode\vadjust pre{\hypertarget{ref-liberzon2015molecular}{}}%
+Liberzon, Arthur, Chet Birger, Helga Thorvaldsdóttir, Mahmoud Ghandi, Jill P Mesirov, and Pablo Tamayo. 2015. {``The Molecular Signatures Database Hallmark Gene Set Collection.''} \emph{Cell Systems} 1 (6): 417--25.
+
 \leavevmode\vadjust pre{\hypertarget{ref-TCGAbiolinks}{}}%
 Silva, Tiago C, Colaprico, Antonio, Olsen, Catharina, D'Angelo, et al. 2016. {``TCGA Workflow: Analyze Cancer Genomics and Epigenomics Data Using Bioconductor Packages.''} \emph{F1000Research} 5.
 
