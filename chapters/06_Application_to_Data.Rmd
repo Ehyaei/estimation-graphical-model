@@ -219,3 +219,29 @@ After frequent restriction, 19879 genes remained.
 RNASeq = readr::read_rds("data/RNASeq.rds")  
 ```
 
+## Compare with Other Methods
+
+### Penalized Regression (PenPC)
+
+[@ha2016penpc]
+
+First download source of package PenPC and its dependency PEN package from [link](http://www.bios.unc.edu/~weisun/software/PenPC.htm).
+
+```{r,eval=FALSE, echo=TRUE}
+
+# Downlload sourcen and Install PEN Package
+download.file(url = "https://github.com/Sun-lab/penalized_estimation/archive/refs/heads/master.zip",destfile = "~/Downloads/master.zip")
+unzip("~/Downloads/master.zip")
+
+# Downlload sourcen and Install PEN Package
+download.file("http://www.bios.unc.edu/~weisun/software/PenPC_0.99.1.tar.gz","~/Downloads")
+install.packages("~/Downloads/PenPC_0.99.1.tar.gz", repos = NULL, type = "source")
+```
+
+
+```{r}
+
+```
+
+
+

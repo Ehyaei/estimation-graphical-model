@@ -1,2 +1,0 @@
-useDynLib(PEN)
-export(PEN)
