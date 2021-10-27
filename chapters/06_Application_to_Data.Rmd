@@ -215,33 +215,143 @@ readr::read_rds("data/TCGA_BRCA_HTSeq_FPKM_UQ.rds") %>%
 
 After frequent restriction, 19879 genes remained. 
 
-```{r,eval=FALSE}
-RNASeq = readr::read_rds("data/RNASeq.rds")  
-```
 
 ## Compare with Other Methods
+
+First download source of package PenPC and its dependency PEN package from [link](https://github.com/Sun-lab/penalized_estimation).
+We also install `BPrimm` package related to method uses in [@yang2021model] 
+```{r,eval=FALSE, echo=TRUE}
+gitPath = "https://github.com/Sun-lab/penalized_estimation/archive/refs/heads/master.zip"
+download.file(url = gitPath, destfile = "~/Downloads/master.zip")
+unzip(zipfile = "~/Downloads/master.zip",exdir = "~/Downloads")
+
+# Install PEN Package
+install.packages("~/Downloads/penalized_estimation-master/PEN/", 
+                 repos = NULL, type = "source")
+
+# Install PenPC Package
+install.packages("~/Downloads/penalized_estimation-master/PenPC/",
+                 repos = NULL, type = "source")
+
+install.packages(c("dr", "glmnet", "Hmisc", "gpr"))
+# Install PenPC Package
+install.packages("~/Downloads/penalized_estimation-master/BPrimm/",
+                 repos = NULL, type = "source")
+```
+
 
 ### Penalized Regression (PenPC)
 
 [@ha2016penpc]
 
-First download source of package PenPC and its dependency PEN package from [link](http://www.bios.unc.edu/~weisun/software/PenPC.htm).
 
-```{r,eval=FALSE, echo=TRUE}
+After install packages, we read required data.
 
-# Downlload sourcen and Install PEN Package
-download.file(url = "https://github.com/Sun-lab/penalized_estimation/archive/refs/heads/master.zip",destfile = "~/Downloads/master.zip")
-unzip("~/Downloads/master.zip")
+```{r,eval=FALSE}
+# Read RNA HT-Seq data
+RNASeq = readr::read_rds("data/RNASeq.rds")  
 
-# Downlload sourcen and Install PEN Package
-download.file("http://www.bios.unc.edu/~weisun/software/PenPC_0.99.1.tar.gz","~/Downloads")
-install.packages("~/Downloads/PenPC_0.99.1.tar.gz", repos = NULL, type = "source")
+# Read MSigDB Hallmark 50
+msig = readr::read_rds("data/msigdb.rds") %>% 
+  select(gs_name,gene_symbol) 
+hallmark_list = unique(msig$gs_name)
+
+# Pathway Commons
+pathwayCommons = readr::read_rds("data/pathwaycommons.rds")  %>% 
+  select(PARTICIPANT_A,PARTICIPANT_B,INTERACTION_TYPE)
+```
+
+after that, we choose genes candid by `Hallmark 50`.
+
+```{r gene_candid, eval=FALSE}
+k = 1
+
+gene_candid = msig %>% 
+  filter(gs_name == hallmark_list[1]) %>% 
+  select(gene_symbol) %>% 
+  unlist() 
+```
+
+filter data by genes candid:
+
+```{r inpudData, eval=FALSE}
+# Filter data to hallmark_list[k]
+.data  = RNASeq %>% 
+  filter( hgnc_symbol %in% gene_candid)
+
+# Keep list of genes
+RNASeqGenes = .data[["hgnc_symbol"]] 
+
+# Convert Data to matrix
+inpudData = .data %>% 
+  select(-gene_id,-hgnc_symbol) %>% 
+  as.matrix() %>% 
+  t() %>% 
+  scale() # standardize data
+```
+
+```{r trueGraph, eval=FALSE}
+# True Graph Edges
+subPath = pathwayCommons %>% 
+  filter(PARTICIPANT_A %in% RNASeqGenes & PARTICIPANT_B %in% RNASeqGenes)
+
+trueGraph = matrix(0, nrow = length(RNASeqGenes), ncol = length(RNASeqGenes))
+colnames(trueGraph) = rownames(trueGraph) = RNASeqGenes
+
+for (i in 1:nrow(subPath)){
+  trueGraph[subPath$PARTICIPANT_A[i], subPath$PARTICIPANT_B[i]] = 1
+  trueGraph[subPath$PARTICIPANT_B[i], subPath$PARTICIPANT_A[i]] = 1
+}
+```
+
+```{r performance, eval=FALSE}
+modelPerformance = function(estimateGraph,trueGraph){
+  
+  estimateGraph[estimateGraph!=0|t(estimateGraph)!=0] = 1
+  diffGraph = estimateGraph - trueGraph
+  
+  TP = sum(estimateGraph ==1 & trueGraph==1 & diffGraph == 0)/2 # True Positive
+  TN = sum(estimateGraph ==0 & trueGraph==0 & diffGraph == 0)/2 # True Negative
+  FP = sum(diffGraph == 1)/2    # False Positive
+  FN = sum(diffGraph == -1)/2   # False Negative
+  nE = sum(estimateGraph)/2     # Estimated Number of Edges
+  nE0 = sum(trueGraph)/2        # True Number of Edges
+  return(list(TP = TP, TN = TN, FP = FP, FN = FN, nE = nE, nE0 = nE0))
+}
+```
+
+```{r PenPc, eval=FALSE}
+# PEN log penalty Neighborhood Selection extBIC
+p = ncol(inpudData)
+estimateGraph  = ne.PEN(dat = inpudData, nlambda = 100, ntau = 10, 
+                        V = 1:p, order = TRUE, verbose = FALSE)
+modelPerformance(estimateGraph,trueGraph)
 ```
 
 
-```{r}
+```{r,eval=FALSE}
+vGraphM <- matrix(0, nrow = p, ncol = p) 
 
+for(c in 1:p){
+  
+  x <- inpudData[,-c]
+  y <- inpudData[,c]
+  
+  tuning <- gentp(y,x, method = "spline")
+  pmax <- ncol(x) / 2
+      
+  # multivariate group-wise adaptive penalization, method = "spline"
+  # the output for mofreds quadratic spline with one inner knot
+  
+  I <- mGAP(y,x, method = "spline", 
+              lambda = tuning$lambda,
+              tau = tuning$tau, pMax = pmax, 
+              recursive = FALSE)
+   
+  vGraphM[p, I$w_bic] <- 1 
+  print(c)
+}
+readr::write_rds(vGraphM,"data/vGraphM.rds")
+estimateGraph <- mofredsPC(mirror(vGraphM),inpudData,dimRed = TRUE)
 ```
-
-
 

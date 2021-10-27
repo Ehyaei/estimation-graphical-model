@@ -1000,9 +1000,125 @@ we consider only genes in RNA-seq whose read number is more than 20 in at least 
 
 After frequent restriction, 19879 genes remained.
 
+\hypertarget{compare-with-other-methods}{%
+\section{Compare with Other Methods}\label{compare-with-other-methods}}
+
+\hypertarget{penalized-regression-penpc}{%
+\subsection{Penalized Regression (PenPC)}\label{penalized-regression-penpc}}
+
+(\protect\hyperlink{ref-ha2016penpc}{\textbf{ha2016penpc?}})
+
+First download source of package PenPC and its dependency PEN package from \href{https://github.com/Sun-lab/penalized_estimation}{link}.
+We also install \texttt{BPrimm} package related to method uses in (\protect\hyperlink{ref-yang2021model}{Yang et al. 2021})
+
 \begin{Shaded}
 \begin{Highlighting}[]
+
+\FunctionTok{download.file}\NormalTok{(}\AttributeTok{url =} \StringTok{"https://github.com/Sun{-}lab/penalized\_estimation/archive/refs/heads/master.zip"}\NormalTok{,}\AttributeTok{destfile =} \StringTok{"\textasciitilde{}/Downloads/master.zip"}\NormalTok{)}
+\FunctionTok{unzip}\NormalTok{(}\AttributeTok{zipfile =} \StringTok{"\textasciitilde{}/Downloads/master.zip"}\NormalTok{,}\AttributeTok{exdir =} \StringTok{"\textasciitilde{}/Downloads"}\NormalTok{)}
+
+\CommentTok{\# Install PEN Package}
+\FunctionTok{install.packages}\NormalTok{(}\StringTok{"\textasciitilde{}/Downloads/penalized\_estimation{-}master/PEN/"}\NormalTok{,}\AttributeTok{repos =} \ConstantTok{NULL}\NormalTok{, }\AttributeTok{type =} \StringTok{"source"}\NormalTok{)}
+
+\CommentTok{\# Install PenPC Package}
+\FunctionTok{install.packages}\NormalTok{(}\StringTok{"\textasciitilde{}/Downloads/penalized\_estimation{-}master/PenPC/"}\NormalTok{,}\AttributeTok{repos =} \ConstantTok{NULL}\NormalTok{, }\AttributeTok{type =} \StringTok{"source"}\NormalTok{)}
+
+\FunctionTok{install.packages}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{"dr"}\NormalTok{, }\StringTok{"glmnet"}\NormalTok{, }\StringTok{"Hmisc"}\NormalTok{, }\StringTok{"gpr"}\NormalTok{))}
+\CommentTok{\# Install PenPC Package}
+\FunctionTok{install.packages}\NormalTok{(}\StringTok{"\textasciitilde{}/Downloads/penalized\_estimation{-}master/BPrimm/"}\NormalTok{,}\AttributeTok{repos =} \ConstantTok{NULL}\NormalTok{, }\AttributeTok{type =} \StringTok{"source"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+After install packages, we read required data.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Read RNA HT{-}Seq data}
 \NormalTok{RNASeq }\OtherTok{=}\NormalTok{ readr}\SpecialCharTok{::}\FunctionTok{read\_rds}\NormalTok{(}\StringTok{"data/RNASeq.rds"}\NormalTok{)  }
+
+\CommentTok{\# Read MSigDB Hallmark 50}
+\NormalTok{msig }\OtherTok{=}\NormalTok{ readr}\SpecialCharTok{::}\FunctionTok{read\_rds}\NormalTok{(}\StringTok{"data/msigdb.rds"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{select}\NormalTok{(gs\_name,gene\_symbol) }
+\NormalTok{hallmark\_list }\OtherTok{=} \FunctionTok{unique}\NormalTok{(msig}\SpecialCharTok{$}\NormalTok{gs\_name)}
+
+\CommentTok{\# Pathway Commons}
+\NormalTok{pathwayCommons }\OtherTok{=}\NormalTok{ readr}\SpecialCharTok{::}\FunctionTok{read\_rds}\NormalTok{(}\StringTok{"data/pathwaycommons.rds"}\NormalTok{)  }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{select}\NormalTok{(PARTICIPANT\_A,PARTICIPANT\_B,INTERACTION\_TYPE)}
+\end{Highlighting}
+\end{Shaded}
+
+after that, we choose genes candid by \texttt{Hallmark\ 50}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{k }\OtherTok{=} \DecValTok{1}
+
+\NormalTok{gene\_candid }\OtherTok{=}\NormalTok{ msig }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{filter}\NormalTok{(gs\_name }\SpecialCharTok{==}\NormalTok{ hallmark\_list[}\DecValTok{1}\NormalTok{]) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{select}\NormalTok{(gene\_symbol) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{unlist}\NormalTok{() }
+\end{Highlighting}
+\end{Shaded}
+
+filter data by genes candid:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Filter data to hallmark\_list[k]}
+\NormalTok{.data  }\OtherTok{=}\NormalTok{ RNASeq }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{filter}\NormalTok{( hgnc\_symbol }\SpecialCharTok{\%in\%}\NormalTok{ gene\_candid)}
+
+\CommentTok{\# Keep list of genes}
+\NormalTok{RNASeqGenes }\OtherTok{=}\NormalTok{ .data[[}\StringTok{"hgnc\_symbol"}\NormalTok{]] }
+
+\CommentTok{\# Convert Data to matrix}
+\NormalTok{inpudData }\OtherTok{=}\NormalTok{ .data }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{select}\NormalTok{(}\SpecialCharTok{{-}}\NormalTok{gene\_id,}\SpecialCharTok{{-}}\NormalTok{hgnc\_symbol) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{as.matrix}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{t}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{scale}\NormalTok{() }\CommentTok{\# standardize data}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# True Graph Edges}
+\NormalTok{subPath }\OtherTok{=}\NormalTok{ pathwayCommons }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{filter}\NormalTok{(PARTICIPANT\_A }\SpecialCharTok{\%in\%}\NormalTok{ RNASeqGenes }\SpecialCharTok{\&}\NormalTok{ PARTICIPANT\_B }\SpecialCharTok{\%in\%}\NormalTok{ RNASeqGenes)}
+
+\NormalTok{trueGraph }\OtherTok{=} \FunctionTok{matrix}\NormalTok{(}\DecValTok{0}\NormalTok{, }\AttributeTok{nrow =} \FunctionTok{length}\NormalTok{(RNASeqGenes), }\AttributeTok{ncol =} \FunctionTok{length}\NormalTok{(RNASeqGenes))}
+\FunctionTok{colnames}\NormalTok{(trueGraph) }\OtherTok{=} \FunctionTok{rownames}\NormalTok{(trueGraph) }\OtherTok{=}\NormalTok{ RNASeqGenes}
+
+\ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\FunctionTok{nrow}\NormalTok{(subPath))\{}
+\NormalTok{  trueGraph[subPath}\SpecialCharTok{$}\NormalTok{PARTICIPANT\_A[i], subPath}\SpecialCharTok{$}\NormalTok{PARTICIPANT\_B[i]] }\OtherTok{=} \DecValTok{1}
+\NormalTok{  trueGraph[subPath}\SpecialCharTok{$}\NormalTok{PARTICIPANT\_B[i], subPath}\SpecialCharTok{$}\NormalTok{PARTICIPANT\_A[i]] }\OtherTok{=} \DecValTok{1}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# PEN log penalty Neighborhood Selection extBIC}
+\NormalTok{p }\OtherTok{=} \FunctionTok{ncol}\NormalTok{(inpudData)}
+\NormalTok{estimateGraph  }\OtherTok{=} \FunctionTok{ne.PEN}\NormalTok{(}\AttributeTok{dat =}\NormalTok{ inpudData, }\AttributeTok{nlambda =} \DecValTok{100}\NormalTok{, }\AttributeTok{ntau =} \DecValTok{10}\NormalTok{, }\AttributeTok{V =} \DecValTok{1}\SpecialCharTok{:}\NormalTok{p, }\AttributeTok{order =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{verbose =} \ConstantTok{FALSE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{modelPerformance }\OtherTok{=} \ControlFlowTok{function}\NormalTok{(estimateGraph,trueGraph)\{}
+  
+\NormalTok{  estimateGraph[estimateGraph}\SpecialCharTok{!=}\DecValTok{0}\SpecialCharTok{|}\FunctionTok{t}\NormalTok{(estimateGraph)}\SpecialCharTok{!=}\DecValTok{0}\NormalTok{] }\OtherTok{=} \DecValTok{1}
+\NormalTok{  diffGraph }\OtherTok{=}\NormalTok{ estimateGraph }\SpecialCharTok{{-}}\NormalTok{ trueGraph}
+  
+\NormalTok{  TP }\OtherTok{=} \FunctionTok{sum}\NormalTok{(estimateGraph }\SpecialCharTok{==}\DecValTok{1} \SpecialCharTok{\&}\NormalTok{ trueGraph}\SpecialCharTok{==}\DecValTok{1} \SpecialCharTok{\&}\NormalTok{ diffGraph }\SpecialCharTok{==} \DecValTok{0}\NormalTok{)}\SpecialCharTok{/}\DecValTok{2} \CommentTok{\# True Positive}
+\NormalTok{  TN }\OtherTok{=} \FunctionTok{sum}\NormalTok{(estimateGraph }\SpecialCharTok{==}\DecValTok{0} \SpecialCharTok{\&}\NormalTok{ trueGraph}\SpecialCharTok{==}\DecValTok{0} \SpecialCharTok{\&}\NormalTok{ diffGraph }\SpecialCharTok{==} \DecValTok{0}\NormalTok{)}\SpecialCharTok{/}\DecValTok{2} \CommentTok{\# True Negative}
+\NormalTok{  FP }\OtherTok{=} \FunctionTok{sum}\NormalTok{(diffGraph }\SpecialCharTok{==} \DecValTok{1}\NormalTok{)}\SpecialCharTok{/}\DecValTok{2}    \CommentTok{\# False Positive}
+\NormalTok{  FN }\OtherTok{=} \FunctionTok{sum}\NormalTok{(diffGraph }\SpecialCharTok{==} \SpecialCharTok{{-}}\DecValTok{1}\NormalTok{)}\SpecialCharTok{/}\DecValTok{2}   \CommentTok{\# False Negative}
+\NormalTok{  nE }\OtherTok{=} \FunctionTok{sum}\NormalTok{(estimateGraph)}\SpecialCharTok{/}\DecValTok{2}     \CommentTok{\# Estimated Number of Edges}
+\NormalTok{  nE0 }\OtherTok{=} \FunctionTok{sum}\NormalTok{(trueGraph)}\SpecialCharTok{/}\DecValTok{2}        \CommentTok{\# True Number of Edges}
+  \FunctionTok{return}\NormalTok{(}\FunctionTok{list}\NormalTok{(}\AttributeTok{TP =}\NormalTok{ TP, }\AttributeTok{TN =}\NormalTok{ TN, }\AttributeTok{FP =}\NormalTok{ FP, }\AttributeTok{FN =}\NormalTok{ FN, }\AttributeTok{nE =}\NormalTok{ nE, }\AttributeTok{nE0 =}\NormalTok{ nE0))}
+\NormalTok{\}}
 \end{Highlighting}
 \end{Shaded}
 

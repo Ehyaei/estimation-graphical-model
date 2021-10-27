@@ -1,0 +1,15 @@
+tab:unnamed-chunk-4
+introduction
+review-and-background
+methods
+theoretical-properties
+simulation
+application-to-tcga-data
+download-data
+tcga-portal
+gense-metadata
+msigdb-hallmark-50
+pathway-commons
+cleansing-data
+compare-with-other-methods
+penalized-regression-penpc
