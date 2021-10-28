@@ -1,9 +1,10 @@
-tab:unnamed-chunk-4
+tab:unnamed-chunk-7
 introduction
 review-and-background
 methods
 theoretical-properties
 simulation
+install-pacakges
 application-to-tcga-data
 download-data
 tcga-portal
@@ -13,3 +14,4 @@ pathway-commons
 cleansing-data
 compare-with-other-methods
 penalized-regression-penpc
+pc-algorithm-for-model-free-estimation

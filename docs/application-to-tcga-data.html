@@ -166,7 +166,10 @@ div.csl-indent {
 <li class="chapter" data-level="2" data-path="review-and-background.html"><a href="review-and-background.html"><i class="fa fa-check"></i><b>2</b> Review and background</a></li>
 <li class="chapter" data-level="3" data-path="methods.html"><a href="methods.html"><i class="fa fa-check"></i><b>3</b> Methods</a></li>
 <li class="chapter" data-level="4" data-path="theoretical-properties.html"><a href="theoretical-properties.html"><i class="fa fa-check"></i><b>4</b> Theoretical properties</a></li>
-<li class="chapter" data-level="5" data-path="simulation.html"><a href="simulation.html"><i class="fa fa-check"></i><b>5</b> Simulation</a></li>
+<li class="chapter" data-level="5" data-path="simulation.html"><a href="simulation.html"><i class="fa fa-check"></i><b>5</b> Simulation</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="simulation.html"><a href="simulation.html#install-pacakges"><i class="fa fa-check"></i><b>5.1</b> Install Pacakges</a></li>
+</ul></li>
 <li class="chapter" data-level="6" data-path="application-to-tcga-data.html"><a href="application-to-tcga-data.html"><i class="fa fa-check"></i><b>6</b> Application to TCGA data</a>
 <ul>
 <li class="chapter" data-level="6.1" data-path="application-to-tcga-data.html"><a href="application-to-tcga-data.html#download-data"><i class="fa fa-check"></i><b>6.1</b> Download Data</a>
@@ -180,6 +183,7 @@ div.csl-indent {
 <li class="chapter" data-level="6.3" data-path="application-to-tcga-data.html"><a href="application-to-tcga-data.html#compare-with-other-methods"><i class="fa fa-check"></i><b>6.3</b> Compare with Other Methods</a>
 <ul>
 <li class="chapter" data-level="6.3.1" data-path="application-to-tcga-data.html"><a href="application-to-tcga-data.html#penalized-regression-penpc"><i class="fa fa-check"></i><b>6.3.1</b> Penalized Regression (PenPC)</a></li>
+<li class="chapter" data-level="6.3.2" data-path="application-to-tcga-data.html"><a href="application-to-tcga-data.html#pc-algorithm-for-model-free-estimation"><i class="fa fa-check"></i><b>6.3.2</b> PC algorithm for model free estimation</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="reference.html"><a href="reference.html"><i class="fa fa-check"></i>Reference</a></li>
@@ -208,21 +212,21 @@ div.csl-indent {
 <div id="tcga-portal" class="section level3" number="6.1.1">
 <h3><span class="header-section-number">6.1.1</span> TCGA Portal</h3>
 <p><a href="https://bioconductor.org/packages/release/bioc/html/TCGAbiolinks.html">TCGAbiolinks</a>’ purpose is to make it easier to access GDC data, build preprocessing methods, and provide multiple methods for analysis and visualization. For install package run below commands:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="application-to-tcga-data.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(<span class="st">&quot;BiocManager&quot;</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>))</span>
-<span id="cb1-2"><a href="application-to-tcga-data.html#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">install.packages</span>(<span class="st">&quot;BiocManager&quot;</span>)</span>
-<span id="cb1-3"><a href="application-to-tcga-data.html#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="application-to-tcga-data.html#cb1-4" aria-hidden="true" tabindex="-1"></a>BiocManager<span class="sc">::</span><span class="fu">install</span>(<span class="st">&quot;TCGAbiolinks&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="application-to-tcga-data.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(<span class="st">&quot;BiocManager&quot;</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb4-2"><a href="application-to-tcga-data.html#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">install.packages</span>(<span class="st">&quot;BiocManager&quot;</span>)</span>
+<span id="cb4-3"><a href="application-to-tcga-data.html#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="application-to-tcga-data.html#cb4-4" aria-hidden="true" tabindex="-1"></a>BiocManager<span class="sc">::</span><span class="fu">install</span>(<span class="st">&quot;TCGAbiolinks&quot;</span>)</span></code></pre></div>
 <p>Fist we download clinical data related to <code>TCGA-BRCA</code> study</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="application-to-tcga-data.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(TCGAbiolinks)</span>
-<span id="cb2-2"><a href="application-to-tcga-data.html#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="application-to-tcga-data.html#cb2-3" aria-hidden="true" tabindex="-1"></a>clinical_data <span class="ot">&lt;-</span> TCGAbiolinks<span class="sc">::</span><span class="fu">getLinkedOmicsData</span>(</span>
-<span id="cb2-4"><a href="application-to-tcga-data.html#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">project =</span> <span class="st">&quot;TCGA-BRCA&quot;</span>,</span>
-<span id="cb2-5"><a href="application-to-tcga-data.html#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">dataset =</span> <span class="st">&quot;Clinical&quot;</span></span>
-<span id="cb2-6"><a href="application-to-tcga-data.html#cb2-6" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb2-7"><a href="application-to-tcga-data.html#cb2-7" aria-hidden="true" tabindex="-1"></a>readr<span class="sc">::</span><span class="fu">write_rds</span>(clinical_data,<span class="st">&quot;data/clinical_brca.rds&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="application-to-tcga-data.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(TCGAbiolinks)</span>
+<span id="cb5-2"><a href="application-to-tcga-data.html#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="application-to-tcga-data.html#cb5-3" aria-hidden="true" tabindex="-1"></a>clinical_data <span class="ot">&lt;-</span> TCGAbiolinks<span class="sc">::</span><span class="fu">getLinkedOmicsData</span>(</span>
+<span id="cb5-4"><a href="application-to-tcga-data.html#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">project =</span> <span class="st">&quot;TCGA-BRCA&quot;</span>,</span>
+<span id="cb5-5"><a href="application-to-tcga-data.html#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">dataset =</span> <span class="st">&quot;Clinical&quot;</span></span>
+<span id="cb5-6"><a href="application-to-tcga-data.html#cb5-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-7"><a href="application-to-tcga-data.html#cb5-7" aria-hidden="true" tabindex="-1"></a>readr<span class="sc">::</span><span class="fu">write_rds</span>(clinical_data,<span class="st">&quot;data/clinical_brca.rds&quot;</span>)</span></code></pre></div>
 <table>
 <caption>
-<span id="tab:unnamed-chunk-4">Table 6.1: </span>TCGA BRCA Clinical Data Header
+<span id="tab:unnamed-chunk-7">Table 6.1: </span>TCGA BRCA Clinical Data Header
 </caption>
 <thead>
 <tr>
@@ -469,20 +473,20 @@ overallsurvival
 <p>The read count is multiplied by a scalar <span class="math inline">\(10^9\)</span> during normalization to account for the kilobase and ‘million mapped reads’ units.</p>
 <p></p>
 </div>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="application-to-tcga-data.html#cb3-1" aria-hidden="true" tabindex="-1"></a>measurements <span class="ot">=</span> <span class="fu">c</span>( <span class="st">&quot;HTSeq - Counts&quot;</span>, <span class="st">&quot;HTSeq - FPKM&quot;</span>, <span class="st">&quot;HTSeq - FPKM-UQ&quot;</span>)</span>
-<span id="cb3-2"><a href="application-to-tcga-data.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>( m <span class="cf">in</span> measurements){</span>
-<span id="cb3-3"><a href="application-to-tcga-data.html#cb3-3" aria-hidden="true" tabindex="-1"></a>  query <span class="ot">&lt;-</span> <span class="fu">GDCquery</span>(</span>
-<span id="cb3-4"><a href="application-to-tcga-data.html#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">project =</span> <span class="st">&quot;TCGA-BRCA&quot;</span>, </span>
-<span id="cb3-5"><a href="application-to-tcga-data.html#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">data.category =</span> <span class="st">&quot;Transcriptome Profiling&quot;</span>, </span>
-<span id="cb3-6"><a href="application-to-tcga-data.html#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">data.type =</span> <span class="st">&quot;Gene Expression Quantification&quot;</span>, </span>
-<span id="cb3-7"><a href="application-to-tcga-data.html#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">workflow.type =</span> <span class="st">&quot;HTSeq - FPKM-UQ&quot;</span>,</span>
-<span id="cb3-8"><a href="application-to-tcga-data.html#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">barcode =</span>  <span class="fu">colnames</span>(clinical_data)[<span class="sc">-</span><span class="dv">1</span>] <span class="co"># List of all patients id.</span></span>
-<span id="cb3-9"><a href="application-to-tcga-data.html#cb3-9" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb3-10"><a href="application-to-tcga-data.html#cb3-10" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb3-11"><a href="application-to-tcga-data.html#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">GDCdownload</span>(query,<span class="at">files.per.chunk =</span> <span class="dv">100</span>)</span>
-<span id="cb3-12"><a href="application-to-tcga-data.html#cb3-12" aria-hidden="true" tabindex="-1"></a>   <span class="fu">GDCprepare</span>(<span class="at">query =</span> query, <span class="at">summarizedExperiment =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb3-13"><a href="application-to-tcga-data.html#cb3-13" aria-hidden="true" tabindex="-1"></a>  readr<span class="sc">::</span><span class="fu">write_rds</span>(<span class="fu">sprintf</span>(<span class="st">&quot;data/TCGA_BRCA_%s.rds&quot;</span>,<span class="fu">gsub</span>(<span class="st">&quot; - &quot;</span>,<span class="st">&quot;_&quot;</span>,m)))</span>
-<span id="cb3-14"><a href="application-to-tcga-data.html#cb3-14" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="application-to-tcga-data.html#cb6-1" aria-hidden="true" tabindex="-1"></a>measurements <span class="ot">=</span> <span class="fu">c</span>( <span class="st">&quot;HTSeq - Counts&quot;</span>, <span class="st">&quot;HTSeq - FPKM&quot;</span>, <span class="st">&quot;HTSeq - FPKM-UQ&quot;</span>)</span>
+<span id="cb6-2"><a href="application-to-tcga-data.html#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>( m <span class="cf">in</span> measurements){</span>
+<span id="cb6-3"><a href="application-to-tcga-data.html#cb6-3" aria-hidden="true" tabindex="-1"></a>  query <span class="ot">&lt;-</span> <span class="fu">GDCquery</span>(</span>
+<span id="cb6-4"><a href="application-to-tcga-data.html#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">project =</span> <span class="st">&quot;TCGA-BRCA&quot;</span>, </span>
+<span id="cb6-5"><a href="application-to-tcga-data.html#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">data.category =</span> <span class="st">&quot;Transcriptome Profiling&quot;</span>, </span>
+<span id="cb6-6"><a href="application-to-tcga-data.html#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">data.type =</span> <span class="st">&quot;Gene Expression Quantification&quot;</span>, </span>
+<span id="cb6-7"><a href="application-to-tcga-data.html#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">workflow.type =</span> <span class="st">&quot;HTSeq - FPKM-UQ&quot;</span>,</span>
+<span id="cb6-8"><a href="application-to-tcga-data.html#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">barcode =</span>  <span class="fu">colnames</span>(clinical_data)[<span class="sc">-</span><span class="dv">1</span>] <span class="co"># List of all patients id.</span></span>
+<span id="cb6-9"><a href="application-to-tcga-data.html#cb6-9" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb6-10"><a href="application-to-tcga-data.html#cb6-10" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-11"><a href="application-to-tcga-data.html#cb6-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">GDCdownload</span>(query,<span class="at">files.per.chunk =</span> <span class="dv">100</span>)</span>
+<span id="cb6-12"><a href="application-to-tcga-data.html#cb6-12" aria-hidden="true" tabindex="-1"></a>   <span class="fu">GDCprepare</span>(<span class="at">query =</span> query, <span class="at">summarizedExperiment =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-13"><a href="application-to-tcga-data.html#cb6-13" aria-hidden="true" tabindex="-1"></a>  readr<span class="sc">::</span><span class="fu">write_rds</span>(<span class="fu">sprintf</span>(<span class="st">&quot;data/TCGA_BRCA_%s.rds&quot;</span>,<span class="fu">gsub</span>(<span class="st">&quot; - &quot;</span>,<span class="st">&quot;_&quot;</span>,m)))</span>
+<span id="cb6-14"><a href="application-to-tcga-data.html#cb6-14" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <p>In the below table, the header of the HT-Seq count data can be found:</p>
 <div id="xxnwierjyn" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
@@ -877,17 +881,17 @@ overallsurvival
 <div id="gense-metadata" class="section level3" number="6.1.2">
 <h3><span class="header-section-number">6.1.2</span> Gense Metadata</h3>
 <p>To use name and id of genes, we download genes metadata tables with <code>biomaRt</code> package <span class="citation">(<a href="#ref-BioMart" role="doc-biblioref">Durinck et al. 2005</a>)</span>.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="application-to-tcga-data.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(biomaRt)</span>
-<span id="cb4-2"><a href="application-to-tcga-data.html#cb4-2" aria-hidden="true" tabindex="-1"></a>mart <span class="ot">&lt;-</span> <span class="fu">useMart</span>(<span class="at">biomart =</span> <span class="st">&quot;ensembl&quot;</span>, <span class="at">dataset =</span> <span class="st">&quot;hsapiens_gene_ensembl&quot;</span>)</span>
-<span id="cb4-3"><a href="application-to-tcga-data.html#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">listAttributes</span>(mart)</span>
-<span id="cb4-4"><a href="application-to-tcga-data.html#cb4-4" aria-hidden="true" tabindex="-1"></a>geneTable <span class="ot">&lt;-</span> <span class="fu">getBM</span>(</span>
-<span id="cb4-5"><a href="application-to-tcga-data.html#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">attributes =</span> <span class="fu">c</span>(<span class="st">&quot;ensembl_gene_id&quot;</span>,<span class="st">&quot;chromosome_name&quot;</span>,<span class="st">&quot;start_position&quot;</span>,</span>
-<span id="cb4-6"><a href="application-to-tcga-data.html#cb4-6" aria-hidden="true" tabindex="-1"></a>                 <span class="st">&quot;end_position&quot;</span>,<span class="st">&quot;strand&quot;</span>,<span class="st">&quot;band&quot;</span>,</span>
-<span id="cb4-7"><a href="application-to-tcga-data.html#cb4-7" aria-hidden="true" tabindex="-1"></a>                 <span class="st">&quot;hgnc_id&quot;</span>,<span class="st">&quot;hgnc_symbol&quot;</span>),</span>
-<span id="cb4-8"><a href="application-to-tcga-data.html#cb4-8" aria-hidden="true" tabindex="-1"></a>                       <span class="at">mart =</span> mart)</span>
-<span id="cb4-9"><a href="application-to-tcga-data.html#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-10"><a href="application-to-tcga-data.html#cb4-10" aria-hidden="true" tabindex="-1"></a>geneTable <span class="sc">%&gt;%</span> </span>
-<span id="cb4-11"><a href="application-to-tcga-data.html#cb4-11" aria-hidden="true" tabindex="-1"></a>  readr<span class="sc">::</span><span class="fu">write_rds</span>(<span class="st">&quot;data/geneTable.rds&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="application-to-tcga-data.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(biomaRt)</span>
+<span id="cb7-2"><a href="application-to-tcga-data.html#cb7-2" aria-hidden="true" tabindex="-1"></a>mart <span class="ot">&lt;-</span> <span class="fu">useMart</span>(<span class="at">biomart =</span> <span class="st">&quot;ensembl&quot;</span>, <span class="at">dataset =</span> <span class="st">&quot;hsapiens_gene_ensembl&quot;</span>)</span>
+<span id="cb7-3"><a href="application-to-tcga-data.html#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">listAttributes</span>(mart)</span>
+<span id="cb7-4"><a href="application-to-tcga-data.html#cb7-4" aria-hidden="true" tabindex="-1"></a>geneTable <span class="ot">&lt;-</span> <span class="fu">getBM</span>(</span>
+<span id="cb7-5"><a href="application-to-tcga-data.html#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">attributes =</span> <span class="fu">c</span>(<span class="st">&quot;ensembl_gene_id&quot;</span>,<span class="st">&quot;chromosome_name&quot;</span>,<span class="st">&quot;start_position&quot;</span>,</span>
+<span id="cb7-6"><a href="application-to-tcga-data.html#cb7-6" aria-hidden="true" tabindex="-1"></a>                 <span class="st">&quot;end_position&quot;</span>,<span class="st">&quot;strand&quot;</span>,<span class="st">&quot;band&quot;</span>,</span>
+<span id="cb7-7"><a href="application-to-tcga-data.html#cb7-7" aria-hidden="true" tabindex="-1"></a>                 <span class="st">&quot;hgnc_id&quot;</span>,<span class="st">&quot;hgnc_symbol&quot;</span>),</span>
+<span id="cb7-8"><a href="application-to-tcga-data.html#cb7-8" aria-hidden="true" tabindex="-1"></a>                       <span class="at">mart =</span> mart)</span>
+<span id="cb7-9"><a href="application-to-tcga-data.html#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="application-to-tcga-data.html#cb7-10" aria-hidden="true" tabindex="-1"></a>geneTable <span class="sc">%&gt;%</span> </span>
+<span id="cb7-11"><a href="application-to-tcga-data.html#cb7-11" aria-hidden="true" tabindex="-1"></a>  readr<span class="sc">::</span><span class="fu">write_rds</span>(<span class="st">&quot;data/geneTable.rds&quot;</span>)</span></code></pre></div>
 <div id="gfyapojwbf" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
@@ -1329,12 +1333,12 @@ represent specific well-defined biological states or processes and display coher
 This collection is an initial release of 50 hallmarks which condense information from over 4,000 original overlapping gene sets .<span class="citation">(<a href="#ref-liberzon2015molecular" role="doc-biblioref">Liberzon et al. 2015</a>)</span></p>
 </blockquote>
 <p>To download MSigDB we use msigdbr package <span class="citation">(<a href="#ref-msigdbr" role="doc-biblioref">Dolgalev 2021</a>)</span>.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="application-to-tcga-data.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span><span class="fu">require</span>(msigdbr)) <span class="fu">install.packages</span>(<span class="st">&quot;msigdbr&quot;</span>)</span>
-<span id="cb5-2"><a href="application-to-tcga-data.html#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(msigdbr)</span>
-<span id="cb5-3"><a href="application-to-tcga-data.html#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-4"><a href="application-to-tcga-data.html#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Retrieve human H (hallmark) gene set</span></span>
-<span id="cb5-5"><a href="application-to-tcga-data.html#cb5-5" aria-hidden="true" tabindex="-1"></a>msigdb <span class="ot">&lt;-</span> <span class="fu">msigdbr</span>(<span class="at">species =</span> <span class="st">&quot;Homo sapiens&quot;</span>, <span class="at">category =</span> <span class="st">&quot;H&quot;</span>)</span>
-<span id="cb5-6"><a href="application-to-tcga-data.html#cb5-6" aria-hidden="true" tabindex="-1"></a>readr<span class="sc">::</span><span class="fu">write_rds</span>(msigdb,<span class="st">&quot;data/msigdb.rds&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="application-to-tcga-data.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span><span class="fu">require</span>(msigdbr)) <span class="fu">install.packages</span>(<span class="st">&quot;msigdbr&quot;</span>)</span>
+<span id="cb8-2"><a href="application-to-tcga-data.html#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(msigdbr)</span>
+<span id="cb8-3"><a href="application-to-tcga-data.html#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="application-to-tcga-data.html#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Retrieve human H (hallmark) gene set</span></span>
+<span id="cb8-5"><a href="application-to-tcga-data.html#cb8-5" aria-hidden="true" tabindex="-1"></a>msigdb <span class="ot">&lt;-</span> <span class="fu">msigdbr</span>(<span class="at">species =</span> <span class="st">&quot;Homo sapiens&quot;</span>, <span class="at">category =</span> <span class="st">&quot;H&quot;</span>)</span>
+<span id="cb8-6"><a href="application-to-tcga-data.html#cb8-6" aria-hidden="true" tabindex="-1"></a>readr<span class="sc">::</span><span class="fu">write_rds</span>(msigdb,<span class="st">&quot;data/msigdb.rds&quot;</span>)</span></code></pre></div>
 <div id="cdwjghfefx" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
@@ -1742,9 +1746,9 @@ This collection is an initial release of 50 hallmarks which condense information
 <span class="citation">(<a href="#ref-cerami2010pathway" role="doc-biblioref">Cerami et al. 2010</a>)</span></p>
 </blockquote>
 <p>To access Pathway Commons data we download <code>PathwayCommons12.All.hgnc.txt.gz</code> from data <a href="https://www.pathwaycommons.org/archives/PC2/v12/">page</a>.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="application-to-tcga-data.html#cb6-1" aria-hidden="true" tabindex="-1"></a>pc <span class="ot">=</span> readr<span class="sc">::</span><span class="fu">read_delim</span>(<span class="st">&quot;raw-data/PathwayCommons12.All.hgnc.txt&quot;</span>,<span class="at">delim =</span> <span class="st">&quot;</span><span class="sc">\t</span><span class="st">&quot;</span>)</span>
-<span id="cb6-2"><a href="application-to-tcga-data.html#cb6-2" aria-hidden="true" tabindex="-1"></a>pc<span class="sc">$</span>MEDIATOR_IDS <span class="ot">=</span> <span class="cn">NULL</span></span>
-<span id="cb6-3"><a href="application-to-tcga-data.html#cb6-3" aria-hidden="true" tabindex="-1"></a>readr<span class="sc">::</span><span class="fu">write_rds</span>(pc,<span class="st">&quot;data/pathwaycommons.rds&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="application-to-tcga-data.html#cb9-1" aria-hidden="true" tabindex="-1"></a>pc <span class="ot">=</span> readr<span class="sc">::</span><span class="fu">read_delim</span>(<span class="st">&quot;raw-data/PathwayCommons12.All.hgnc.txt&quot;</span>,<span class="at">delim =</span> <span class="st">&quot;</span><span class="sc">\t</span><span class="st">&quot;</span>)</span>
+<span id="cb9-2"><a href="application-to-tcga-data.html#cb9-2" aria-hidden="true" tabindex="-1"></a>pc<span class="sc">$</span>MEDIATOR_IDS <span class="ot">=</span> <span class="cn">NULL</span></span>
+<span id="cb9-3"><a href="application-to-tcga-data.html#cb9-3" aria-hidden="true" tabindex="-1"></a>readr<span class="sc">::</span><span class="fu">write_rds</span>(pc,<span class="st">&quot;data/pathwaycommons.rds&quot;</span>)</span></code></pre></div>
 <div id="tsmsbrwlxg" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
@@ -2150,97 +2154,86 @@ This collection is an initial release of 50 hallmarks which condense information
 <h2><span class="header-section-number">6.2</span> Cleansing Data</h2>
 <p>To replicate <span class="citation">(<a href="#ref-yang2021model" role="doc-biblioref">Yang et al. 2021</a>)</span> paper,
 we consider only genes in RNA-seq whose read number is more than 20 in at least 25% of the samples. We also use <code>HTSeq-FPKM-UQ</code>, which is more robust than <code>HTSeq-Counts</code> using the total number of reads per sample.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="application-to-tcga-data.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load gene Table</span></span>
-<span id="cb7-2"><a href="application-to-tcga-data.html#cb7-2" aria-hidden="true" tabindex="-1"></a>geneTable <span class="ot">=</span> readr<span class="sc">::</span><span class="fu">read_rds</span>(<span class="st">&quot;data/geneTable.rds&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb7-3"><a href="application-to-tcga-data.html#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(ensembl_gene_id,hgnc_symbol)</span>
-<span id="cb7-4"><a href="application-to-tcga-data.html#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-5"><a href="application-to-tcga-data.html#cb7-5" aria-hidden="true" tabindex="-1"></a>HTSeq_Counts <span class="ot">=</span> readr<span class="sc">::</span><span class="fu">read_rds</span>(<span class="st">&quot;data/TCGA_BRCA_HTSeq_Counts.rds&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb7-6"><a href="application-to-tcga-data.html#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>( <span class="at">gene_id =</span> X1) </span>
-<span id="cb7-7"><a href="application-to-tcga-data.html#cb7-7" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb7-8"><a href="application-to-tcga-data.html#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Find Most Frequent Genes</span></span>
-<span id="cb7-9"><a href="application-to-tcga-data.html#cb7-9" aria-hidden="true" tabindex="-1"></a>SeqMat <span class="ot">=</span> HTSeq_Counts <span class="sc">%&gt;%</span> </span>
-<span id="cb7-10"><a href="application-to-tcga-data.html#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">starts_with</span>(<span class="st">&quot;TCGA&quot;</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb7-11"><a href="application-to-tcga-data.html#cb7-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.matrix</span>()</span>
-<span id="cb7-12"><a href="application-to-tcga-data.html#cb7-12" aria-hidden="true" tabindex="-1"></a>GeneList <span class="ot">=</span> HTSeq_Counts<span class="sc">$</span>gene_id[<span class="fu">rowSums</span>(SeqMat<span class="sc">&gt;</span><span class="dv">20</span>)<span class="sc">/</span><span class="fu">ncol</span>(SeqMat)<span class="sc">&gt;</span><span class="fl">0.25</span>]</span>
-<span id="cb7-13"><a href="application-to-tcga-data.html#cb7-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-14"><a href="application-to-tcga-data.html#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter HTSeq_FPKM_UQ to Most Frequent Genes</span></span>
-<span id="cb7-15"><a href="application-to-tcga-data.html#cb7-15" aria-hidden="true" tabindex="-1"></a>readr<span class="sc">::</span><span class="fu">read_rds</span>(<span class="st">&quot;data/TCGA_BRCA_HTSeq_FPKM_UQ.rds&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb7-16"><a href="application-to-tcga-data.html#cb7-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>( <span class="at">gene_id =</span> X1) <span class="sc">%&gt;%</span> </span>
-<span id="cb7-17"><a href="application-to-tcga-data.html#cb7-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ensembl_gene_id =</span> <span class="fu">substr</span>(gene_id,<span class="dv">1</span>,<span class="dv">15</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb7-18"><a href="application-to-tcga-data.html#cb7-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(geneTable,<span class="at">by =</span> <span class="st">&quot;ensembl_gene_id&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb7-19"><a href="application-to-tcga-data.html#cb7-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(hgnc_symbol)) <span class="sc">%&gt;%</span> </span>
-<span id="cb7-20"><a href="application-to-tcga-data.html#cb7-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(gene_id <span class="sc">%in%</span> GeneList) <span class="sc">%&gt;%</span> </span>
-<span id="cb7-21"><a href="application-to-tcga-data.html#cb7-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(gene_id,hgnc_symbol,<span class="fu">starts_with</span>(<span class="st">&quot;TCGA&quot;</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb7-22"><a href="application-to-tcga-data.html#cb7-22" aria-hidden="true" tabindex="-1"></a>  readr<span class="sc">::</span><span class="fu">write_rds</span>(<span class="st">&quot;data/RNASeq.rds&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="application-to-tcga-data.html#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load gene Table</span></span>
+<span id="cb10-2"><a href="application-to-tcga-data.html#cb10-2" aria-hidden="true" tabindex="-1"></a>geneTable <span class="ot">=</span> readr<span class="sc">::</span><span class="fu">read_rds</span>(<span class="st">&quot;data/geneTable.rds&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb10-3"><a href="application-to-tcga-data.html#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(ensembl_gene_id,hgnc_symbol)</span>
+<span id="cb10-4"><a href="application-to-tcga-data.html#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="application-to-tcga-data.html#cb10-5" aria-hidden="true" tabindex="-1"></a>HTSeq_Counts <span class="ot">=</span> readr<span class="sc">::</span><span class="fu">read_rds</span>(<span class="st">&quot;data/TCGA_BRCA_HTSeq_Counts.rds&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb10-6"><a href="application-to-tcga-data.html#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>( <span class="at">gene_id =</span> X1) </span>
+<span id="cb10-7"><a href="application-to-tcga-data.html#cb10-7" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-8"><a href="application-to-tcga-data.html#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Find Most Frequent Genes</span></span>
+<span id="cb10-9"><a href="application-to-tcga-data.html#cb10-9" aria-hidden="true" tabindex="-1"></a>SeqMat <span class="ot">=</span> HTSeq_Counts <span class="sc">%&gt;%</span> </span>
+<span id="cb10-10"><a href="application-to-tcga-data.html#cb10-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">starts_with</span>(<span class="st">&quot;TCGA&quot;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb10-11"><a href="application-to-tcga-data.html#cb10-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.matrix</span>()</span>
+<span id="cb10-12"><a href="application-to-tcga-data.html#cb10-12" aria-hidden="true" tabindex="-1"></a>GeneList <span class="ot">=</span> HTSeq_Counts<span class="sc">$</span>gene_id[<span class="fu">rowSums</span>(SeqMat<span class="sc">&gt;</span><span class="dv">20</span>)<span class="sc">/</span><span class="fu">ncol</span>(SeqMat)<span class="sc">&gt;</span><span class="fl">0.25</span>]</span>
+<span id="cb10-13"><a href="application-to-tcga-data.html#cb10-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-14"><a href="application-to-tcga-data.html#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter HTSeq_FPKM_UQ to Most Frequent Genes</span></span>
+<span id="cb10-15"><a href="application-to-tcga-data.html#cb10-15" aria-hidden="true" tabindex="-1"></a>readr<span class="sc">::</span><span class="fu">read_rds</span>(<span class="st">&quot;data/TCGA_BRCA_HTSeq_FPKM_UQ.rds&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb10-16"><a href="application-to-tcga-data.html#cb10-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>( <span class="at">gene_id =</span> X1) <span class="sc">%&gt;%</span> </span>
+<span id="cb10-17"><a href="application-to-tcga-data.html#cb10-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ensembl_gene_id =</span> <span class="fu">substr</span>(gene_id,<span class="dv">1</span>,<span class="dv">15</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb10-18"><a href="application-to-tcga-data.html#cb10-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(geneTable,<span class="at">by =</span> <span class="st">&quot;ensembl_gene_id&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb10-19"><a href="application-to-tcga-data.html#cb10-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(hgnc_symbol)) <span class="sc">%&gt;%</span> </span>
+<span id="cb10-20"><a href="application-to-tcga-data.html#cb10-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(gene_id <span class="sc">%in%</span> GeneList) <span class="sc">%&gt;%</span> </span>
+<span id="cb10-21"><a href="application-to-tcga-data.html#cb10-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(gene_id,hgnc_symbol,<span class="fu">starts_with</span>(<span class="st">&quot;TCGA&quot;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb10-22"><a href="application-to-tcga-data.html#cb10-22" aria-hidden="true" tabindex="-1"></a>  readr<span class="sc">::</span><span class="fu">write_rds</span>(<span class="st">&quot;data/RNASeq.rds&quot;</span>)</span></code></pre></div>
 <p>After frequent restriction, 19879 genes remained.</p>
 </div>
 <div id="compare-with-other-methods" class="section level2" number="6.3">
 <h2><span class="header-section-number">6.3</span> Compare with Other Methods</h2>
-<p>First download source of package PenPC and its dependency PEN package from <a href="https://github.com/Sun-lab/penalized_estimation">link</a>.
-We also install <code>BPrimm</code> package related to method uses in <span class="citation">(<a href="#ref-yang2021model" role="doc-biblioref">Yang et al. 2021</a>)</span></p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="application-to-tcga-data.html#cb8-1" aria-hidden="true" tabindex="-1"></a>gitPath <span class="ot">=</span> <span class="st">&quot;https://github.com/Sun-lab/penalized_estimation/archive/refs/heads/master.zip&quot;</span></span>
-<span id="cb8-2"><a href="application-to-tcga-data.html#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(<span class="at">url =</span> gitPath, <span class="at">destfile =</span> <span class="st">&quot;~/Downloads/master.zip&quot;</span>)</span>
-<span id="cb8-3"><a href="application-to-tcga-data.html#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">unzip</span>(<span class="at">zipfile =</span> <span class="st">&quot;~/Downloads/master.zip&quot;</span>,<span class="at">exdir =</span> <span class="st">&quot;~/Downloads&quot;</span>)</span>
-<span id="cb8-4"><a href="application-to-tcga-data.html#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-5"><a href="application-to-tcga-data.html#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Install PEN Package</span></span>
-<span id="cb8-6"><a href="application-to-tcga-data.html#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;~/Downloads/penalized_estimation-master/PEN/&quot;</span>, </span>
-<span id="cb8-7"><a href="application-to-tcga-data.html#cb8-7" aria-hidden="true" tabindex="-1"></a>                 <span class="at">repos =</span> <span class="cn">NULL</span>, <span class="at">type =</span> <span class="st">&quot;source&quot;</span>)</span>
-<span id="cb8-8"><a href="application-to-tcga-data.html#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-9"><a href="application-to-tcga-data.html#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Install PenPC Package</span></span>
-<span id="cb8-10"><a href="application-to-tcga-data.html#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;~/Downloads/penalized_estimation-master/PenPC/&quot;</span>,</span>
-<span id="cb8-11"><a href="application-to-tcga-data.html#cb8-11" aria-hidden="true" tabindex="-1"></a>                 <span class="at">repos =</span> <span class="cn">NULL</span>, <span class="at">type =</span> <span class="st">&quot;source&quot;</span>)</span>
-<span id="cb8-12"><a href="application-to-tcga-data.html#cb8-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-13"><a href="application-to-tcga-data.html#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">&quot;dr&quot;</span>, <span class="st">&quot;glmnet&quot;</span>, <span class="st">&quot;Hmisc&quot;</span>, <span class="st">&quot;gpr&quot;</span>))</span>
-<span id="cb8-14"><a href="application-to-tcga-data.html#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Install PenPC Package</span></span>
-<span id="cb8-15"><a href="application-to-tcga-data.html#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;~/Downloads/penalized_estimation-master/BPrimm/&quot;</span>,</span>
-<span id="cb8-16"><a href="application-to-tcga-data.html#cb8-16" aria-hidden="true" tabindex="-1"></a>                 <span class="at">repos =</span> <span class="cn">NULL</span>, <span class="at">type =</span> <span class="st">&quot;source&quot;</span>)</span></code></pre></div>
-<div id="penalized-regression-penpc" class="section level3" number="6.3.1">
-<h3><span class="header-section-number">6.3.1</span> Penalized Regression (PenPC)</h3>
-<p><span class="citation">(<a href="#ref-ha2016penpc" role="doc-biblioref"><strong>ha2016penpc?</strong></a>)</span></p>
-<p>After install packages, we read required data.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="application-to-tcga-data.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Read RNA HT-Seq data</span></span>
-<span id="cb9-2"><a href="application-to-tcga-data.html#cb9-2" aria-hidden="true" tabindex="-1"></a>RNASeq <span class="ot">=</span> readr<span class="sc">::</span><span class="fu">read_rds</span>(<span class="st">&quot;data/RNASeq.rds&quot;</span>)  </span>
-<span id="cb9-3"><a href="application-to-tcga-data.html#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-4"><a href="application-to-tcga-data.html#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Read MSigDB Hallmark 50</span></span>
-<span id="cb9-5"><a href="application-to-tcga-data.html#cb9-5" aria-hidden="true" tabindex="-1"></a>msig <span class="ot">=</span> readr<span class="sc">::</span><span class="fu">read_rds</span>(<span class="st">&quot;data/msigdb.rds&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb9-6"><a href="application-to-tcga-data.html#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(gs_name,gene_symbol) </span>
-<span id="cb9-7"><a href="application-to-tcga-data.html#cb9-7" aria-hidden="true" tabindex="-1"></a>hallmark_list <span class="ot">=</span> <span class="fu">unique</span>(msig<span class="sc">$</span>gs_name)</span>
-<span id="cb9-8"><a href="application-to-tcga-data.html#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-9"><a href="application-to-tcga-data.html#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Pathway Commons</span></span>
-<span id="cb9-10"><a href="application-to-tcga-data.html#cb9-10" aria-hidden="true" tabindex="-1"></a>pathwayCommons <span class="ot">=</span> readr<span class="sc">::</span><span class="fu">read_rds</span>(<span class="st">&quot;data/pathwaycommons.rds&quot;</span>)  <span class="sc">%&gt;%</span> </span>
-<span id="cb9-11"><a href="application-to-tcga-data.html#cb9-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(PARTICIPANT_A,PARTICIPANT_B,INTERACTION_TYPE)</span></code></pre></div>
-<p>after that, we choose genes candid by <code>Hallmark 50</code>.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="application-to-tcga-data.html#cb10-1" aria-hidden="true" tabindex="-1"></a>k <span class="ot">=</span> <span class="dv">1</span></span>
-<span id="cb10-2"><a href="application-to-tcga-data.html#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-3"><a href="application-to-tcga-data.html#cb10-3" aria-hidden="true" tabindex="-1"></a>gene_candid <span class="ot">=</span> msig <span class="sc">%&gt;%</span> </span>
-<span id="cb10-4"><a href="application-to-tcga-data.html#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(gs_name <span class="sc">==</span> hallmark_list[<span class="dv">1</span>]) <span class="sc">%&gt;%</span> </span>
-<span id="cb10-5"><a href="application-to-tcga-data.html#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(gene_symbol) <span class="sc">%&gt;%</span> </span>
-<span id="cb10-6"><a href="application-to-tcga-data.html#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unlist</span>() </span></code></pre></div>
-<p>filter data by genes candid:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="application-to-tcga-data.html#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter data to hallmark_list[k]</span></span>
-<span id="cb11-2"><a href="application-to-tcga-data.html#cb11-2" aria-hidden="true" tabindex="-1"></a>.data  <span class="ot">=</span> RNASeq <span class="sc">%&gt;%</span> </span>
-<span id="cb11-3"><a href="application-to-tcga-data.html#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>( hgnc_symbol <span class="sc">%in%</span> gene_candid)</span>
-<span id="cb11-4"><a href="application-to-tcga-data.html#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-5"><a href="application-to-tcga-data.html#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Keep list of genes</span></span>
-<span id="cb11-6"><a href="application-to-tcga-data.html#cb11-6" aria-hidden="true" tabindex="-1"></a>RNASeqGenes <span class="ot">=</span> .data[[<span class="st">&quot;hgnc_symbol&quot;</span>]] </span>
-<span id="cb11-7"><a href="application-to-tcga-data.html#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-8"><a href="application-to-tcga-data.html#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert Data to matrix</span></span>
-<span id="cb11-9"><a href="application-to-tcga-data.html#cb11-9" aria-hidden="true" tabindex="-1"></a>inpudData <span class="ot">=</span> .data <span class="sc">%&gt;%</span> </span>
-<span id="cb11-10"><a href="application-to-tcga-data.html#cb11-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>gene_id,<span class="sc">-</span>hgnc_symbol) <span class="sc">%&gt;%</span> </span>
-<span id="cb11-11"><a href="application-to-tcga-data.html#cb11-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.matrix</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb11-12"><a href="application-to-tcga-data.html#cb11-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">t</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb11-13"><a href="application-to-tcga-data.html#cb11-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale</span>() <span class="co"># standardize data</span></span></code></pre></div>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="application-to-tcga-data.html#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># True Graph Edges</span></span>
-<span id="cb12-2"><a href="application-to-tcga-data.html#cb12-2" aria-hidden="true" tabindex="-1"></a>subPath <span class="ot">=</span> pathwayCommons <span class="sc">%&gt;%</span> </span>
-<span id="cb12-3"><a href="application-to-tcga-data.html#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(PARTICIPANT_A <span class="sc">%in%</span> RNASeqGenes <span class="sc">&amp;</span> PARTICIPANT_B <span class="sc">%in%</span> RNASeqGenes)</span>
-<span id="cb12-4"><a href="application-to-tcga-data.html#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-5"><a href="application-to-tcga-data.html#cb12-5" aria-hidden="true" tabindex="-1"></a>trueGraph <span class="ot">=</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="at">nrow =</span> <span class="fu">length</span>(RNASeqGenes), <span class="at">ncol =</span> <span class="fu">length</span>(RNASeqGenes))</span>
-<span id="cb12-6"><a href="application-to-tcga-data.html#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(trueGraph) <span class="ot">=</span> <span class="fu">rownames</span>(trueGraph) <span class="ot">=</span> RNASeqGenes</span>
-<span id="cb12-7"><a href="application-to-tcga-data.html#cb12-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-8"><a href="application-to-tcga-data.html#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(subPath)){</span>
-<span id="cb12-9"><a href="application-to-tcga-data.html#cb12-9" aria-hidden="true" tabindex="-1"></a>  trueGraph[subPath<span class="sc">$</span>PARTICIPANT_A[i], subPath<span class="sc">$</span>PARTICIPANT_B[i]] <span class="ot">=</span> <span class="dv">1</span></span>
-<span id="cb12-10"><a href="application-to-tcga-data.html#cb12-10" aria-hidden="true" tabindex="-1"></a>  trueGraph[subPath<span class="sc">$</span>PARTICIPANT_B[i], subPath<span class="sc">$</span>PARTICIPANT_A[i]] <span class="ot">=</span> <span class="dv">1</span></span>
-<span id="cb12-11"><a href="application-to-tcga-data.html#cb12-11" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="application-to-tcga-data.html#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Read RNA HT-Seq data</span></span>
+<span id="cb11-2"><a href="application-to-tcga-data.html#cb11-2" aria-hidden="true" tabindex="-1"></a>RNASeq <span class="ot">=</span> readr<span class="sc">::</span><span class="fu">read_rds</span>(<span class="st">&quot;data/RNASeq.rds&quot;</span>)  </span>
+<span id="cb11-3"><a href="application-to-tcga-data.html#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="application-to-tcga-data.html#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Read MSigDB Hallmark 50</span></span>
+<span id="cb11-5"><a href="application-to-tcga-data.html#cb11-5" aria-hidden="true" tabindex="-1"></a>msig <span class="ot">=</span> readr<span class="sc">::</span><span class="fu">read_rds</span>(<span class="st">&quot;data/msigdb.rds&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb11-6"><a href="application-to-tcga-data.html#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(gs_name,gene_symbol) </span>
+<span id="cb11-7"><a href="application-to-tcga-data.html#cb11-7" aria-hidden="true" tabindex="-1"></a>hallmark_list <span class="ot">=</span> <span class="fu">unique</span>(msig<span class="sc">$</span>gs_name)</span>
+<span id="cb11-8"><a href="application-to-tcga-data.html#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-9"><a href="application-to-tcga-data.html#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Pathway Commons</span></span>
+<span id="cb11-10"><a href="application-to-tcga-data.html#cb11-10" aria-hidden="true" tabindex="-1"></a>pathwayCommons <span class="ot">=</span> readr<span class="sc">::</span><span class="fu">read_rds</span>(<span class="st">&quot;data/pathwaycommons.rds&quot;</span>)  <span class="sc">%&gt;%</span> </span>
+<span id="cb11-11"><a href="application-to-tcga-data.html#cb11-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(PARTICIPANT_A,PARTICIPANT_B,INTERACTION_TYPE)</span></code></pre></div>
+<p>After that, we choose genes candid by <code>Hallmark 50</code>.
+We prepare data for every hallmark and save separately in <code>data/benchmark_data</code> path
+for parallel computation.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="application-to-tcga-data.html#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(hallmark_list)){</span>
+<span id="cb12-2"><a href="application-to-tcga-data.html#cb12-2" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb12-3"><a href="application-to-tcga-data.html#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 1. Extract List of Hallmark genes</span></span>
+<span id="cb12-4"><a href="application-to-tcga-data.html#cb12-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb12-5"><a href="application-to-tcga-data.html#cb12-5" aria-hidden="true" tabindex="-1"></a>  gene_candid <span class="ot">=</span> msig <span class="sc">%&gt;%</span> </span>
+<span id="cb12-6"><a href="application-to-tcga-data.html#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(gs_name <span class="sc">==</span> hallmark_list[k]) <span class="sc">%&gt;%</span> </span>
+<span id="cb12-7"><a href="application-to-tcga-data.html#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(gene_symbol) <span class="sc">%&gt;%</span> </span>
+<span id="cb12-8"><a href="application-to-tcga-data.html#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unlist</span>() </span>
+<span id="cb12-9"><a href="application-to-tcga-data.html#cb12-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-10"><a href="application-to-tcga-data.html#cb12-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 2. filter data by genes candid:</span></span>
+<span id="cb12-11"><a href="application-to-tcga-data.html#cb12-11" aria-hidden="true" tabindex="-1"></a>  .data  <span class="ot">=</span> RNASeq <span class="sc">%&gt;%</span> </span>
+<span id="cb12-12"><a href="application-to-tcga-data.html#cb12-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>( hgnc_symbol <span class="sc">%in%</span> gene_candid)</span>
+<span id="cb12-13"><a href="application-to-tcga-data.html#cb12-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-14"><a href="application-to-tcga-data.html#cb12-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Keep list of genes</span></span>
+<span id="cb12-15"><a href="application-to-tcga-data.html#cb12-15" aria-hidden="true" tabindex="-1"></a>  RNASeqGenes <span class="ot">=</span> .data[[<span class="st">&quot;hgnc_symbol&quot;</span>]] </span>
+<span id="cb12-16"><a href="application-to-tcga-data.html#cb12-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-17"><a href="application-to-tcga-data.html#cb12-17" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Convert Data to matrix</span></span>
+<span id="cb12-18"><a href="application-to-tcga-data.html#cb12-18" aria-hidden="true" tabindex="-1"></a>  inpudData <span class="ot">=</span> .data <span class="sc">%&gt;%</span> </span>
+<span id="cb12-19"><a href="application-to-tcga-data.html#cb12-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(<span class="sc">-</span>gene_id,<span class="sc">-</span>hgnc_symbol) <span class="sc">%&gt;%</span> </span>
+<span id="cb12-20"><a href="application-to-tcga-data.html#cb12-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.matrix</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb12-21"><a href="application-to-tcga-data.html#cb12-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">t</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb12-22"><a href="application-to-tcga-data.html#cb12-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale</span>() <span class="co"># standardize data</span></span>
+<span id="cb12-23"><a href="application-to-tcga-data.html#cb12-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-24"><a href="application-to-tcga-data.html#cb12-24" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Extract True Graph Edges</span></span>
+<span id="cb12-25"><a href="application-to-tcga-data.html#cb12-25" aria-hidden="true" tabindex="-1"></a>  subPath <span class="ot">=</span> pathwayCommons <span class="sc">%&gt;%</span> </span>
+<span id="cb12-26"><a href="application-to-tcga-data.html#cb12-26" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(PARTICIPANT_A <span class="sc">%in%</span> RNASeqGenes <span class="sc">&amp;</span> PARTICIPANT_B <span class="sc">%in%</span> RNASeqGenes)</span>
+<span id="cb12-27"><a href="application-to-tcga-data.html#cb12-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-28"><a href="application-to-tcga-data.html#cb12-28" aria-hidden="true" tabindex="-1"></a>  trueGraph <span class="ot">=</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="at">nrow =</span> <span class="fu">length</span>(RNASeqGenes), <span class="at">ncol =</span> <span class="fu">length</span>(RNASeqGenes))</span>
+<span id="cb12-29"><a href="application-to-tcga-data.html#cb12-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">colnames</span>(trueGraph) <span class="ot">=</span> <span class="fu">rownames</span>(trueGraph) <span class="ot">=</span> RNASeqGenes</span>
+<span id="cb12-30"><a href="application-to-tcga-data.html#cb12-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-31"><a href="application-to-tcga-data.html#cb12-31" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(subPath)){</span>
+<span id="cb12-32"><a href="application-to-tcga-data.html#cb12-32" aria-hidden="true" tabindex="-1"></a>    trueGraph[subPath<span class="sc">$</span>PARTICIPANT_A[i], subPath<span class="sc">$</span>PARTICIPANT_B[i]] <span class="ot">=</span> <span class="dv">1</span></span>
+<span id="cb12-33"><a href="application-to-tcga-data.html#cb12-33" aria-hidden="true" tabindex="-1"></a>    trueGraph[subPath<span class="sc">$</span>PARTICIPANT_B[i], subPath<span class="sc">$</span>PARTICIPANT_A[i]] <span class="ot">=</span> <span class="dv">1</span></span>
+<span id="cb12-34"><a href="application-to-tcga-data.html#cb12-34" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb12-35"><a href="application-to-tcga-data.html#cb12-35" aria-hidden="true" tabindex="-1"></a>  readr<span class="sc">::</span><span class="fu">write_rds</span>(</span>
+<span id="cb12-36"><a href="application-to-tcga-data.html#cb12-36" aria-hidden="true" tabindex="-1"></a>    <span class="fu">list</span>(<span class="at">inpudData =</span> inpudData, <span class="at">trueGraph =</span> trueGraph, <span class="at">RNASeqGenes =</span> RNASeqGenes),</span>
+<span id="cb12-37"><a href="application-to-tcga-data.html#cb12-37" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sprintf</span>(<span class="st">&quot;data/benchmark_data/hallmark_%s_beckmark_data.rds&quot;</span>,k))<span class="er">)</span></span>
+<span id="cb12-38"><a href="application-to-tcga-data.html#cb12-38" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>We need define function to compare model performance via comparing
+true graph with estimated graph.</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="application-to-tcga-data.html#cb13-1" aria-hidden="true" tabindex="-1"></a>modelPerformance <span class="ot">=</span> <span class="cf">function</span>(estimateGraph,trueGraph){</span>
 <span id="cb13-2"><a href="application-to-tcga-data.html#cb13-2" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb13-3"><a href="application-to-tcga-data.html#cb13-3" aria-hidden="true" tabindex="-1"></a>  estimateGraph[estimateGraph<span class="sc">!=</span><span class="dv">0</span><span class="sc">|</span><span class="fu">t</span>(estimateGraph)<span class="sc">!=</span><span class="dv">0</span>] <span class="ot">=</span> <span class="dv">1</span></span>
@@ -2254,12 +2247,22 @@ We also install <code>BPrimm</code> package related to method uses in <span clas
 <span id="cb13-11"><a href="application-to-tcga-data.html#cb13-11" aria-hidden="true" tabindex="-1"></a>  nE0 <span class="ot">=</span> <span class="fu">sum</span>(trueGraph)<span class="sc">/</span><span class="dv">2</span>        <span class="co"># True Number of Edges</span></span>
 <span id="cb13-12"><a href="application-to-tcga-data.html#cb13-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">list</span>(<span class="at">TP =</span> TP, <span class="at">TN =</span> TN, <span class="at">FP =</span> FP, <span class="at">FN =</span> FN, <span class="at">nE =</span> nE, <span class="at">nE0 =</span> nE0))</span>
 <span id="cb13-13"><a href="application-to-tcga-data.html#cb13-13" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="application-to-tcga-data.html#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># PEN log penalty Neighborhood Selection extBIC</span></span>
-<span id="cb14-2"><a href="application-to-tcga-data.html#cb14-2" aria-hidden="true" tabindex="-1"></a>p <span class="ot">=</span> <span class="fu">ncol</span>(inpudData)</span>
-<span id="cb14-3"><a href="application-to-tcga-data.html#cb14-3" aria-hidden="true" tabindex="-1"></a>estimateGraph  <span class="ot">=</span> <span class="fu">ne.PEN</span>(<span class="at">dat =</span> inpudData, <span class="at">nlambda =</span> <span class="dv">100</span>, <span class="at">ntau =</span> <span class="dv">10</span>, </span>
-<span id="cb14-4"><a href="application-to-tcga-data.html#cb14-4" aria-hidden="true" tabindex="-1"></a>                        <span class="at">V =</span> <span class="dv">1</span><span class="sc">:</span>p, <span class="at">order =</span> <span class="cn">TRUE</span>, <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb14-5"><a href="application-to-tcga-data.html#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="fu">modelPerformance</span>(estimateGraph,trueGraph)</span></code></pre></div>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="application-to-tcga-data.html#cb15-1" aria-hidden="true" tabindex="-1"></a>vGraphM <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="at">nrow =</span> p, <span class="at">ncol =</span> p) </span>
+<div id="penalized-regression-penpc" class="section level3" number="6.3.1">
+<h3><span class="header-section-number">6.3.1</span> Penalized Regression (PenPC)</h3>
+<p><span class="citation">(<a href="#ref-ha2016penpc" role="doc-biblioref"><strong>ha2016penpc?</strong></a>)</span></p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="application-to-tcga-data.html#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># PEN log penalty Neighborhood Selection</span></span>
+<span id="cb14-2"><a href="application-to-tcga-data.html#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Model.selection &quot;BIC&quot; or &quot;ExtendedBIC&quot;</span></span>
+<span id="cb14-3"><a href="application-to-tcga-data.html#cb14-3" aria-hidden="true" tabindex="-1"></a>p <span class="ot">=</span> <span class="fu">ncol</span>(inpudData)</span>
+<span id="cb14-4"><a href="application-to-tcga-data.html#cb14-4" aria-hidden="true" tabindex="-1"></a>estimateGraph_BIC  <span class="ot">=</span> <span class="fu">ne.PEN</span>(<span class="at">dat =</span> inpudData, <span class="at">nlambda =</span> <span class="dv">100</span>, <span class="at">ntau =</span> <span class="dv">10</span>, </span>
+<span id="cb14-5"><a href="application-to-tcga-data.html#cb14-5" aria-hidden="true" tabindex="-1"></a>                        <span class="at">V =</span> <span class="dv">1</span><span class="sc">:</span>p, <span class="at">order =</span> <span class="cn">TRUE</span>, <span class="at">verbose =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb14-6"><a href="application-to-tcga-data.html#cb14-6" aria-hidden="true" tabindex="-1"></a>                        <span class="at">Model.selection =</span> <span class="st">&quot;BIC&quot;</span>)</span>
+<span id="cb14-7"><a href="application-to-tcga-data.html#cb14-7" aria-hidden="true" tabindex="-1"></a>estimateGraph_EBIC  <span class="ot">=</span> <span class="fu">ne.PEN</span>(<span class="at">dat =</span> inpudData, <span class="at">nlambda =</span> <span class="dv">100</span>, <span class="at">ntau =</span> <span class="dv">10</span>, </span>
+<span id="cb14-8"><a href="application-to-tcga-data.html#cb14-8" aria-hidden="true" tabindex="-1"></a>                        <span class="at">V =</span> <span class="dv">1</span><span class="sc">:</span>p, <span class="at">order =</span> <span class="cn">TRUE</span>, <span class="at">verbose =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb14-9"><a href="application-to-tcga-data.html#cb14-9" aria-hidden="true" tabindex="-1"></a>                        <span class="at">Model.selection =</span> <span class="st">&quot;ExtendedBIC&quot;</span>)</span></code></pre></div>
+</div>
+<div id="pc-algorithm-for-model-free-estimation" class="section level3" number="6.3.2">
+<h3><span class="header-section-number">6.3.2</span> PC algorithm for model free estimation</h3>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="application-to-tcga-data.html#cb15-1" aria-hidden="true" tabindex="-1"></a>vGraphM_BIC <span class="ot">&lt;-</span>  vGraphM_EBIC <span class="ot">&lt;-</span> vGraphM_EBICGG <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="at">nrow =</span> p, <span class="at">ncol =</span> p) </span>
 <span id="cb15-2"><a href="application-to-tcga-data.html#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-3"><a href="application-to-tcga-data.html#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(c <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>p){</span>
 <span id="cb15-4"><a href="application-to-tcga-data.html#cb15-4" aria-hidden="true" tabindex="-1"></a>  </span>
@@ -2277,11 +2280,18 @@ We also install <code>BPrimm</code> package related to method uses in <span clas
 <span id="cb15-16"><a href="application-to-tcga-data.html#cb15-16" aria-hidden="true" tabindex="-1"></a>              <span class="at">tau =</span> tuning<span class="sc">$</span>tau, <span class="at">pMax =</span> pmax, </span>
 <span id="cb15-17"><a href="application-to-tcga-data.html#cb15-17" aria-hidden="true" tabindex="-1"></a>              <span class="at">recursive =</span> <span class="cn">FALSE</span>)</span>
 <span id="cb15-18"><a href="application-to-tcga-data.html#cb15-18" aria-hidden="true" tabindex="-1"></a>   </span>
-<span id="cb15-19"><a href="application-to-tcga-data.html#cb15-19" aria-hidden="true" tabindex="-1"></a>  vGraphM[p, I<span class="sc">$</span>w_bic] <span class="ot">&lt;-</span> <span class="dv">1</span> </span>
-<span id="cb15-20"><a href="application-to-tcga-data.html#cb15-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(c)</span>
-<span id="cb15-21"><a href="application-to-tcga-data.html#cb15-21" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb15-22"><a href="application-to-tcga-data.html#cb15-22" aria-hidden="true" tabindex="-1"></a>readr<span class="sc">::</span><span class="fu">write_rds</span>(vGraphM,<span class="st">&quot;data/vGraphM.rds&quot;</span>)</span>
-<span id="cb15-23"><a href="application-to-tcga-data.html#cb15-23" aria-hidden="true" tabindex="-1"></a>estimateGraph <span class="ot">&lt;-</span> <span class="fu">mofredsPC</span>(<span class="fu">mirror</span>(vGraphM),inpudData,<span class="at">dimRed =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<span id="cb15-19"><a href="application-to-tcga-data.html#cb15-19" aria-hidden="true" tabindex="-1"></a>  vGraphM_BIC[p, I<span class="sc">$</span>w_bic] <span class="ot">&lt;-</span> <span class="dv">1</span> </span>
+<span id="cb15-20"><a href="application-to-tcga-data.html#cb15-20" aria-hidden="true" tabindex="-1"></a>  vGraphM_EBIC[p, I<span class="sc">$</span>w_extbic] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb15-21"><a href="application-to-tcga-data.html#cb15-21" aria-hidden="true" tabindex="-1"></a>  vGraphM_EBICGG[p, I<span class="sc">$</span>w_extbicgg] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb15-22"><a href="application-to-tcga-data.html#cb15-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(c)</span>
+<span id="cb15-23"><a href="application-to-tcga-data.html#cb15-23" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb15-24"><a href="application-to-tcga-data.html#cb15-24" aria-hidden="true" tabindex="-1"></a><span class="co"># readr::write_rds(vGraphM,&quot;data/vGraphM.rds&quot;)</span></span>
+<span id="cb15-25"><a href="application-to-tcga-data.html#cb15-25" aria-hidden="true" tabindex="-1"></a>estimateGraph_BIC <span class="ot">&lt;-</span> <span class="fu">mofredsPC</span>(<span class="fu">mirror</span>(vGraphM_BIC), <span class="at">VERBOSE =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb15-26"><a href="application-to-tcga-data.html#cb15-26" aria-hidden="true" tabindex="-1"></a>                               inpudData,<span class="at">dimRed =</span> <span class="cn">FALSE</span>, <span class="at">alpha =</span> <span class="fl">0.01</span>)</span>
+<span id="cb15-27"><a href="application-to-tcga-data.html#cb15-27" aria-hidden="true" tabindex="-1"></a>estimateGraph_EBIC <span class="ot">&lt;-</span> <span class="fu">mofredsPC</span>(<span class="fu">mirror</span>(vGraphM_EBIC), <span class="at">VERBOSE =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb15-28"><a href="application-to-tcga-data.html#cb15-28" aria-hidden="true" tabindex="-1"></a>                                inpudData,<span class="at">dimRed =</span> <span class="cn">TRUE</span>, <span class="at">alpha =</span> <span class="fl">0.01</span>)</span>
+<span id="cb15-29"><a href="application-to-tcga-data.html#cb15-29" aria-hidden="true" tabindex="-1"></a>estimateGraph_EBICGG <span class="ot">&lt;-</span> <span class="fu">mofredsPC</span>(<span class="fu">mirror</span>(vGraphM_EBICGG),inpudData, <span class="at">VERBOSE =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb15-30"><a href="application-to-tcga-data.html#cb15-30" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">dimRed =</span> <span class="cn">TRUE</span>, <span class="at">alpha =</span> <span class="fl">0.01</span>)</span></code></pre></div>
 
 </div>
 </div>

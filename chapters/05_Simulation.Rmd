@@ -1,1 +1,76 @@
 # Simulation
+
+
+## Install Pacakges
+
+First download source of package PenPC and its dependency PEN package from [link](https://github.com/Sun-lab/penalized_estimation).
+We also install `BPrimm` package related to method uses in [@yang2021model] 
+
+```{r,eval=FALSE, echo=TRUE}
+gitPath = "https://github.com/Sun-lab/penalized_estimation/archive/refs/heads/master.zip"
+download.file(url = gitPath, destfile = "~/Downloads/master.zip")
+unzip(zipfile = "~/Downloads/master.zip",exdir = "~/Downloads")
+
+# Install PEN Package
+install.packages("~/Downloads/penalized_estimation-master/PEN/", 
+                 repos = NULL, type = "source")
+
+# Install PenPC Package
+install.packages("~/Downloads/penalized_estimation-master/PenPC/",
+                 repos = NULL, type = "source")
+
+install.packages(c("dr", "glmnet", "Hmisc", "gpr"))
+# Install PenPC Package
+install.packages("~/Downloads/penalized_estimation-master/BPrimm/",
+                 repos = NULL, type = "source")
+```
+
+After install packages, we required simulation data.
+
+
+List of functions $f(x)$:
+
+- $x$
+- $x^2$
+- $x^3$
+- $exp(x)$
+
+```{r,eval=FALSE}
+library(mvtnorm)
+
+n = 500
+p = 100
+d0 = 1
+pr = d0/p
+sigma = 1
+covMat = diag(p); diag(covMat) = sigma 
+
+
+A = matrix(0, p, p)
+w  = which(lower.tri(A))
+ruf = runif(n = length(w), min = 0.1, max = 1)
+A[w] = rbinom(n = length(w), size = 1, prob = pr)*ruf
+
+Sigh = Matrix::solve(diag(p) - A,sparse=TRUE)
+Xi = rmvnorm(n = n, sigma = Sigh %*% t(Sigh))
+
+
+# Random Upper triangle Matrix
+rut = matrix(runif(p^2,0.1,1),p)
+rut[lower.tri(rut)] <- 0
+diag(rut) <- 0
+```
+
+```{r,eval=FALSE}
+x1 <- function(x) x
+x2 <- function(x) x^2
+x3 <- function(x) x^3
+ex <- function(x) exp(x)
+
+transformer <- x1
+
+# two equation
+transformer(t(rut)%*% A) + rmvnorm(1,mean = rep(0,p), sigma = covMat)
+
+```
+
