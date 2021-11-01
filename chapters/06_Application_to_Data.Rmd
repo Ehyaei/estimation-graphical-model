@@ -255,7 +255,7 @@ for(i in 1:length(hallmark_list)){
   RNASeqGenes = .data[["hgnc_symbol"]] 
 
   # Convert Data to matrix
-  inpudData = .data %>% 
+  inputData = .data %>% 
     select(-gene_id,-hgnc_symbol) %>% 
     as.matrix() %>% 
     t() %>% 
@@ -273,7 +273,7 @@ for(i in 1:length(hallmark_list)){
     trueGraph[subPath$PARTICIPANT_B[i], subPath$PARTICIPANT_A[i]] = 1
   }
   readr::write_rds(
-    list(inpudData = inpudData, trueGraph = trueGraph, RNASeqGenes = RNASeqGenes),
+    list(inputData = inputData, trueGraph = trueGraph, RNASeqGenes = RNASeqGenes),
     sprintf("data/benchmark_data/hallmark_%s_beckmark_data.rds",k)))
 }
 ```
@@ -301,28 +301,40 @@ modelPerformance = function(estimateGraph,trueGraph){
 
 [@ha2016penpc]
 
+```{r}
+k = 38
+.data = readr::read_rds(sprintf("data/benchmark_data/hallmark_%s_beckmark_data.rds",k))
+inputData = .data$inputData
+trueGraph = .data$trueGraph
+RNASeqGenes = .data$RNASeqGenes
+```
+
 
 ```{r PenPc, eval=FALSE}
 # PEN log penalty Neighborhood Selection
+library(PenPC)
 # Model.selection "BIC" or "ExtendedBIC"
-p = ncol(inpudData)
-estimateGraph_BIC  = ne.PEN(dat = inpudData, nlambda = 100, ntau = 10, 
+p = ncol(inputData)
+estimateGraph_BIC  = ne.PEN(dat = inputData, nlambda = 100, ntau = 10, 
                         V = 1:p, order = TRUE, verbose = FALSE,
                         Model.selection = "BIC")
-estimateGraph_EBIC  = ne.PEN(dat = inpudData, nlambda = 100, ntau = 10, 
+estimateGraph_EBIC  = ne.PEN(dat = inputData, nlambda = 100, ntau = 10, 
                         V = 1:p, order = TRUE, verbose = FALSE,
                         Model.selection = "ExtendedBIC")
+modelPerformance(estimateGraph_BIC,trueGraph)
+modelPerformance(estimateGraph_EBIC,trueGraph)
 ```
 
 ### PC algorithm for model free estimation
 
 ```{r,eval=FALSE}
+library(BPrimm)
 vGraphM_BIC <-  vGraphM_EBIC <- vGraphM_EBICGG <- matrix(0, nrow = p, ncol = p) 
 
 for(c in 1:p){
   
-  x <- inpudData[,-c]
-  y <- inpudData[,c]
+  x <- inputData[,-c]
+  y <- inputData[,c]
   
   tuning <- gentp(y,x, method = "spline")
   pmax <- ncol(x) / 2
@@ -340,13 +352,53 @@ for(c in 1:p){
   vGraphM_EBICGG[p, I$w_extbicgg] <- 1
   print(c)
 }
-# readr::write_rds(vGraphM,"data/vGraphM.rds")
-estimateGraph_BIC <- mofredsPC(mirror(vGraphM_BIC), VERBOSE = TRUE,
-                               inpudData,dimRed = FALSE, alpha = 0.01)
+
+
+estimateGraph_BIC <- mofredsPC(mirror(vGraphM_BIC), VERBOSE = TRUE,condtest = Songtest,
+                               inputData,dimRed = FALSE, alpha = 0.01)
 estimateGraph_EBIC <- mofredsPC(mirror(vGraphM_EBIC), VERBOSE = TRUE,
-                                inpudData,dimRed = TRUE, alpha = 0.01)
-estimateGraph_EBICGG <- mofredsPC(mirror(vGraphM_EBICGG),inpudData, VERBOSE = TRUE,
+                                inputData,dimRed = TRUE, alpha = 0.01)
+estimateGraph_EBICGG <- mofredsPC(mirror(vGraphM_EBICGG),inputData, VERBOSE = TRUE,
                                   dimRed = TRUE, alpha = 0.01)
+```
+
+### Feature Ordering by Conditional Independence
+
+```{r}
+library(FOCI)
+Per  = 100 # Number of Simulation
+vGraphM_FOCI <- matrix(0,p,p)
+r <- nrow(inputData)
+
+for(i in 1:p){
+  for(j in 1:p){
+    .rt = rep(0,Per+1) # Random Permutation Test
+    for(k in 1:(Per+1)){
+      Y = inputData[,i]
+      if(k == 1) Z = inputData[,j] 
+      else Z = inputData[sample(1:r, r,replace = F),j] 
+      .rt[k] <- codec_categorical(Y,Z,type = "continuous")
+    }
+    .rt = abs(.rt)
+    vGraphM_FOCI[i,j] =  sum(.rt[1]>=.rt[-1])/Per
+  }
+}
+```
+
+```{r}
+vGraphM_FOCI <- matrix(0,p,p)
+
+cname = 1:p
+for(c in 1:p){
+  
+  x <- inputData[,-c]
+  y <- inputData[,c]
+  
+  FOCI <- foci_categorical(y, x, type = "discrete", numCores = 4)
+  vGraphM_FOCI[c, cname[-c][FOCI$selectedVar$index]] <- 1
+  print(c)
+}
 
 ```
+
 
