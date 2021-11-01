@@ -364,7 +364,7 @@ estimateGraph_EBICGG <- mofredsPC(mirror(vGraphM_EBICGG),inputData, VERBOSE = TR
 
 ### Feature Ordering by Conditional Independence
 
-```{r}
+```{r, eval=FALSE}
 library(FOCI)
 Per  = 100 # Number of Simulation
 vGraphM_FOCI <- matrix(0,p,p)
@@ -385,7 +385,7 @@ for(i in 1:p){
 }
 ```
 
-```{r}
+```{r, eval=FALSE}
 vGraphM_FOCI <- matrix(0,p,p)
 
 cname = 1:p
