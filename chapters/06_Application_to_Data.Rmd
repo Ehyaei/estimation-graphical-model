@@ -304,7 +304,7 @@ modelPerformance = function(estimateGraph,trueGraph){
 ```{r}
 k = 38
 .data = readr::read_rds(sprintf("data/benchmark_data/hallmark_%s_beckmark_data.rds",k))
-inputData = .data$inputData
+inputData = .data$inpudData
 trueGraph = .data$trueGraph
 RNASeqGenes = .data$RNASeqGenes
 ```
@@ -377,9 +377,9 @@ for(i in 1:p){
       Y = inputData[,i]
       if(k == 1) Z = inputData[,j] 
       else Z = inputData[sample(1:r, r,replace = F),j] 
-      .rt[k] <- codec_categorical(Y,Z,type = "continuous")
+      .rt[k] <- (codec_categorical(Y,Z,type = "discrete") + codec_categorical(Y,Z,type = "discrete"))/2
     }
-    .rt = abs(.rt)
+    # .rt = abs(.rt)
     vGraphM_FOCI[i,j] =  sum(.rt[1]>=.rt[-1])/Per
   }
 }
@@ -387,7 +387,7 @@ for(i in 1:p){
 
 ```{r, eval=FALSE}
 vGraphM_FOCI <- matrix(0,p,p)
-
+colnames(inputData) =  1:ncol(inputData)
 cname = 1:p
 for(c in 1:p){
   
